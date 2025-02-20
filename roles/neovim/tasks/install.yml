@@ -8,22 +8,38 @@
 - name: Print Neovim status
   ansible.builtin.debug:
     msg: "Neovim is already installed at {{ neovim_check.stdout }}"
-  when: neovim_check.rc != 0 or force_build | default(false)
+  when: neovim_check.rc != 0 or neovim_force_build
 
 - name: Ensure required build dependencies are installed
   ansible.builtin.package:
     name:
-      - ninja-build
-      - gettext
-      - cmake
-      - g++
-      - git
-      - ripgrep #
+      - "{{ item }}"
     state: present
+  loop: "{{ neovim_dependencies }}"
   become: true
   when:
-    - ansible_os_family != 'Darwin'
-    - neovim_check.rc != 0 or force_build | default(false)
+    - neovim_check.rc != 0 or neovim_force_build
+
+- name: Ensure required third-party dependencies are installed
+  ansible.builtin.package:
+    name:
+      - "{{ item }}"
+    state: present
+  loop: "{{ neovim_bundle_dependencies }}"
+  become: true
+  when:
+    - neovim_check.rc != 0 or neovim_force_build
+
+- name: Ensure required plugin dependencies are installed
+  ansible.builtin.package:
+    name:
+      - "{{ item }}"
+    state: present
+  loop: "{{ neovim_plugin_dependencies }}"
+  become: true
+  when:
+    - neovim_check.rc != 0 or neovim_force_build
+
 
 - name: Check if Neovim source is already downloaded
   ansible.builtin.stat:
@@ -34,25 +50,17 @@
   ansible.builtin.git:
     repo: "https://github.com/neovim/neovim.git"
     dest: "{{ neovim_install_path }}"
-    version: "{{ neovim_version | default('master') }}"
+    version: "{{ neovim_version }}"
     depth: 1
-    force: "{{ force_build | default(false) }}"
+    force: "{{ neovim_force_build }}"
   register: clone
   when:
-    - force_build | default(false) or not neovim_git_folder.stat.exists
-    - neovim_check.rc != 0 or force_build | default(false)
-
-- name: Ensure Neovim source directory has correct permissions
-  ansible.builtin.file:
-    path: "{{ neovim_install_path }}"
-    state: directory
-    owner: "{{ neovim_owner }}"
-    group: "{{ neovim_group_user if not neovim_shared else 'root' }}"
-    mode: '0755'
+    - neovim_force_build or not neovim_git_folder.stat.exists
+    - neovim_check.rc != 0 or neovim_force_build
 
 - name: Check if Neovim binary already exists
   ansible.builtin.stat:
-    path: "{{ neovim_install_path }}/build/bin/nvim"
+    path: "{{ neovim_bin_path }}"
   register: neovim_binary
 
 - name: Build Neovim from source
@@ -60,13 +68,14 @@
     chdir: "{{ neovim_install_path }}"
     params:
       CMAKE_BUILD_TYPE: RelWithDebInfo
+      CMAKE_INSTALL_PREFIX: "{{ neovim_bin_path }}"
   register: build_neovim
   become: true
-  become_user: "{{ neovim_build_user }}"
+  become_user: "{{ neovim_bin_user }}"
   changed_when: "'[100%]' in build_neovim.stdout or '[100%]' in build_neovim.stderr"
   when:
-    - force_build | default(false) or not neovim_binary.stat.exists
-    - neovim_check.rc != 0 or force_build | default(false)
+    - neovim_force_build or not neovim_binary.stat.exists
+    - neovim_check.rc != 0 or neovim_force_build
 
 
 - name: Check if Neovim binary was built
@@ -79,24 +88,25 @@
     msg: "Neovim build failed! Binary was not found at {{ neovim_install_path }}/build/bin/nvim"
   when:
     - not neovim_binary_check.stat.exists
-    - neovim_check.rc != 0 or force_build | default(false)
+    - neovim_check.rc != 0 or neovim_force_build
 
 - name: Install Neovim
   community.general.make:
     chdir: "{{ neovim_install_path }}"
     target: install
   become: true
-  become_user: "{{ neovim_build_user }}"
+  become_user: "{{ neovim_bin_user }}"
   register: install_neovim
   changed_when: "'-- Installing:' in install_neovim.stdout or '-- Installing:' in install_neovim.stderr"
   when:
     - build_neovim.changed
-    - neovim_check.rc != 0 or force_build | default(false)
+    - neovim_check.rc != 0 or neovim_force_build
 
-- name: Remove build folder (optional)
+- name: Remove Neovim build directory
   ansible.builtin.file:
-    path: "{{ neovim_install_path }}/build"
+    path: "{{ neovim_install_path }}"
     state: absent
   when:
-    - remove_build_after | default(false)
-    - neovim_check.rc != 0 or force_build | default(false)
+    - neovim_check.rc != 0
+
+

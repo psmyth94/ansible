@@ -5,6 +5,10 @@
   become: true
 
   vars_prompt:
+    - name: neovim_force_rebuild
+      prompt: "Do you want to force rebuild Neovim from source? (y/[n])"
+      private: false
+      default: n
     - name: default_zsh
       prompt: "Do you want to make Zsh the default shell ([y]/n)"
       private: false
@@ -83,7 +87,7 @@
 
     # - name: Apply Role Zsh without Oh-My-Zsh
     #   ansible.builtin.user:
-    #     user: "{{ user_name }}"
+    #     user: "{{ ansible_user }}"
     #     shell: /bin/zsh
     #   when: 
     #     - default_zsh == 'y'
@@ -93,7 +97,7 @@
       ansible.builtin.include_role:
         name: viasite-ansible.zsh
       vars:
-        zsh_user: "{{ user_name }}"
+        zsh_user: "{{ ansible_user }}"
         zsh_change_user_shell: true
       when: install_oh_my_zsh == 'y'
 
@@ -101,7 +105,8 @@
       ansible.builtin.include_role:
         name: neovim
       vars:
-        neovim_user: "{{ user_name }}"
+        neovim_user: "{{ ansible_user }}"
+        neovim_enable_github_copilot: false
 
     - name: Apply Role WSL Clipboard Support if on WSL
       ansible.builtin.include_role:
@@ -111,13 +116,13 @@
       ansible.builtin.include_role:
         name: nodejs
       vars:
-        nodejs_user: "{{ user_name }}"
+        nodejs_user: "{{ ansible_user }}"
 
     # - name: Apply Role Tmux without Oh-My-Tmux
     #   ansible.builtin.include_role:
     #     name: tmux
     #   vars:
-    #     tmux_user: "{{ user_name }}"
+    #     tmux_user: "{{ ansible_user }}"
     #   when: 
     #     - install_tmux == 'y'
     #     - install_oh_my_tmux == 'n'
@@ -126,7 +131,7 @@
       ansible.builtin.include_role:
         name: tmux
       vars:
-        tmux_user: "{{ user_name }}"
+        tmux_user: "{{ ansible_user }}"
       when: 
         - install_tmux == 'y'
         - install_oh_my_tmux == 'y'

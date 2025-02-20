@@ -1,28 +1,58 @@
 ---
-# defaults file for neovim role
+# Determines if the installation is shared/system-wide or user-specific.
+neovim_shared: false
+neovim_bin_shared: true
 
 # Define the user for whom Neovim will be installed.
 neovim_user: "{{ ansible_user_id }}"
+neovim_bin_user: "{{ 'root' if neovim_bin_shared else neovim_user }}"
+
 # Define the group for which Neovim will be installed.
 neovim_user_group: "{{ neovim_user }}"
 
-# Determines if the installation is shared/system-wide or user-specific.
-neovim_shared: false
 
-# Where to install Neovim. By default:
-# - /opt/neovim if system-wide (shared)
-# - ~/.local/neovim if user-specific
-neovim_install_path: >-
-  {{ '/opt/neovim' if neovim_shared
-     else '~' + neovim_user + '/.local/neovim' }}
+neovim_install_path: "~{{ neovim_user }}/neovim"
+
+neovim_bin_path: >-
+  {{ '/usr/local' if neovim_bin_shared
+     else '~' + neovim_user + '/.local' }}
+
 
 # Git repo to clone for building Neovim from source.
 neovim_src_repo: "https://github.com/neovim/neovim.git"
 # Branch to build from (default: master).
 neovim_src_branch: "master"
 
-# Optional config paths. If you have dotfiles or custom config, set these.
-neovim_src_config: ""
-neovim_dest_config: ""
+neovim_dotfiles_path: "~{{ neovim_user }}/.dotfiles"
+neovim_src_config_path: "{{ neovim_dotfiles_path }}/neovim"
+neovim_dest_config_path: "~{{ neovim_user }}/.config/nvim"
 
 neovim_enable_github_copilot: true
+neovim_github_copilot_src_path: "{{ neovim_dotfiles_path }}/github-copilot"
+neovim_github_copilot_dest_path: "~{{ neovim_user }}/.config/github-copilot"
+
+# force rebuild of Neovim from source
+neovim_force_build: false
+
+neovim_dependencies:
+  - "ninja-build"
+  - "gettext"
+  - "cmake"
+  - "g++"
+  - "unzip"
+  - "curl"
+
+# bundle dependencies list
+neovim_bundle_dependencies:
+  - "libluajit5.1-dev"
+  - "luajit"
+  - "luajit-5.1-dev"
+  - "lua-mpack"
+  - "lua-lpeg"
+  - "libunibilium-dev"
+  - "libmsgpack-dev"
+  - "libtermkey-dev"
+
+neovim_plugin_dependencies:
+  - "ripgrep"
+  - "luarocks"

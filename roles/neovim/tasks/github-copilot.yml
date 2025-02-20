@@ -1,0 +1,27 @@
+---
+- name: Ensure github-copilot directory exists
+  become: true
+  ansible.builtin.file:
+    dest: "{{ neovim_github_copilot_dir }}"
+    mode: 0700
+    state: directory
+  tags:
+    - github-copilot
+
+- name: Install github-copilot OAuth
+  become: true
+  ansible.builtin.copy:
+    src: "{{ neovim_github_copilot_source_key }}"
+    dest: "{{ neovim_github_copilot_dest_key }}"
+    mode: 0600
+  tags:
+    - github-copilot
+
+- name: Set authorized key
+  become: true
+  ansible.builtin.authorized_key:
+    user: "{{ neovim_user }}"
+    state: present
+    key: "{{ neovim_github_copilot_dest_key }}"
+  tags:
+    - github-copilot

@@ -2,6 +2,14 @@
 
 set -e
 
+# First argument is the playbook name
+PLAYBOOK=""
+if [ -z "$1" ]; then
+  PLAYBOOK="install"
+else
+  PLAYBOOK="install_$1"
+fi
+
 if ! command -v ansible >/dev/null 2>&1; then
   echo "Ansible is not installed. Installing..."
   echo "Checking if pipx is installed..."
@@ -22,7 +30,7 @@ if [ ! -f ~/.dotfiles/ssh/id_rsa ]; then
     "./ansible/playbooks/install_sshkey.yml" \
     --ask-become-pass \
     --ask-vault-pass \
-    -e "user_name=$(whoami)"
+    -e "ansible_user=$(whoami)"
 else
   echo "SSH key already exists. Skipping..."
 fi
@@ -31,9 +39,6 @@ fi
 echo "Running Ansible playbook..."
 ANSIBLE_CONFIG="./ansible.cfg" \
   ansible-playbook \
-  "./ansible/playbooks/install.yml" \
+  "./playbooks/${PLAYBOOK}.yml" \
   --ask-become-pass \
-  -e "user_name=$(whoami) user_home=$HOME"
-
-chmod +x ./decrypt_ssh_key
-./decrypt_ssh_key
+  -e "ansible_user=$(whoami)"

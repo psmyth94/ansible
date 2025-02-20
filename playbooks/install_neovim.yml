@@ -1,0 +1,21 @@
+
+---
+- name: Setup ssh key
+  hosts: localhost
+  become: true
+  vars_prompt:
+    - name: neovim_force_rebuild
+      prompt: "Do you want to force rebuild Neovim from source? (y/[n])"
+      private: false
+      default: n
+
+  roles:
+    - role: neovim
+      vars:
+        neovim_user: "{{ ansible_user }}"
+      tags:
+        - install
+        - configure
+        - github-copilot
+
+

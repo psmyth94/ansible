@@ -1,0 +1,102 @@
+2025-02-20 13:11:35,597 p=38317 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 13:11:35,597 p=38317 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 13:11:35,627 p=38317 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 13:11:36,007 p=38317 u=psmyth n=ansible | PLAY [Setup ssh key] ***********************************************************************************************************************************************************************
+2025-02-20 13:11:36,081 p=38317 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
+2025-02-20 13:11:37,780 p=38317 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:11:37,892 p=38317 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 13:11:38,025 p=38317 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
+2025-02-20 13:11:38,042 p=38317 u=psmyth n=ansible | TASK [neovim : Check if Neovim is already installed as a command] **************************************************************************************************************************
+2025-02-20 13:11:38,697 p=38317 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:11:38,716 p=38317 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
+2025-02-20 13:11:38,742 p=38317 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:11:38,762 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
+2025-02-20 13:11:38,801 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=ninja-build) 
+2025-02-20 13:11:38,814 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=gettext) 
+2025-02-20 13:11:38,823 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=cmake) 
+2025-02-20 13:11:38,836 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=g++) 
+2025-02-20 13:11:38,845 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=unzip) 
+2025-02-20 13:11:38,849 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=curl) 
+2025-02-20 13:11:38,856 p=38317 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:11:38,868 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
+2025-02-20 13:11:38,901 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libluajit5.1-dev) 
+2025-02-20 13:11:38,916 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luajit) 
+2025-02-20 13:11:38,925 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luajit-5.1-dev) 
+2025-02-20 13:11:38,933 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=lua-mpack) 
+2025-02-20 13:11:38,945 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=lua-lpeg) 
+2025-02-20 13:11:38,957 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libunibilium-dev) 
+2025-02-20 13:11:38,968 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libmsgpack-dev) 
+2025-02-20 13:11:38,976 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libtermkey-dev) 
+2025-02-20 13:11:38,981 p=38317 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:11:38,992 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
+2025-02-20 13:11:39,032 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=ripgrep) 
+2025-02-20 13:11:39,036 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luarocks) 
+2025-02-20 13:11:39,039 p=38317 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:11:39,052 p=38317 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
+2025-02-20 13:11:39,556 p=38317 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:11:39,569 p=38317 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
+2025-02-20 13:11:39,598 p=38317 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:11:39,609 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure Neovim source directory has correct permissions] *********************************************************************************************************************
+2025-02-20 13:11:39,767 p=38317 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'neovim_owner' is undefined. 'neovim_owner' is undefined\n\nThe error appears to be in '/home/psmyth/ansible/roles/neovim/tasks/install.yml': line 61, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- name: Ensure Neovim source directory has correct permissions\n  ^ here\n"}
+2025-02-20 13:11:39,769 p=38317 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
+2025-02-20 13:11:39,769 p=38317 u=psmyth n=ansible | localhost                  : ok=4    changed=0    unreachable=0    failed=1    skipped=5    rescued=0    ignored=0   
+2025-02-20 13:13:25,841 p=39852 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 13:13:25,842 p=39852 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 13:13:25,866 p=39852 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 13:13:27,776 p=39852 u=psmyth n=ansible | PLAY [Setup ssh key] ***********************************************************************************************************************************************************************
+2025-02-20 13:13:27,824 p=39852 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
+2025-02-20 13:13:29,385 p=39852 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:13:29,487 p=39852 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 13:13:29,634 p=39852 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
+2025-02-20 13:13:29,653 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim is already installed as a command] **************************************************************************************************************************
+2025-02-20 13:13:30,171 p=39852 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:13:30,188 p=39852 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
+2025-02-20 13:13:30,213 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:30,229 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
+2025-02-20 13:13:30,261 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=ninja-build) 
+2025-02-20 13:13:30,270 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=gettext) 
+2025-02-20 13:13:30,280 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=cmake) 
+2025-02-20 13:13:30,291 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=g++) 
+2025-02-20 13:13:30,300 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=unzip) 
+2025-02-20 13:13:30,304 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=curl) 
+2025-02-20 13:13:30,313 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:30,324 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
+2025-02-20 13:13:30,355 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libluajit5.1-dev) 
+2025-02-20 13:13:30,368 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luajit) 
+2025-02-20 13:13:30,380 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luajit-5.1-dev) 
+2025-02-20 13:13:30,391 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=lua-mpack) 
+2025-02-20 13:13:30,400 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=lua-lpeg) 
+2025-02-20 13:13:30,410 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libunibilium-dev) 
+2025-02-20 13:13:30,424 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libmsgpack-dev) 
+2025-02-20 13:13:30,432 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libtermkey-dev) 
+2025-02-20 13:13:30,442 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:30,454 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
+2025-02-20 13:13:30,494 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=ripgrep) 
+2025-02-20 13:13:30,502 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luarocks) 
+2025-02-20 13:13:30,505 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:30,517 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
+2025-02-20 13:13:31,079 p=39852 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:13:31,103 p=39852 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
+2025-02-20 13:13:31,145 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:31,158 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary already exists] **************************************************************************************************************************************
+2025-02-20 13:13:31,522 p=39852 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:13:31,536 p=39852 u=psmyth n=ansible | TASK [neovim : Build Neovim from source] ***************************************************************************************************************************************************
+2025-02-20 13:13:31,567 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:31,580 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary was built] *******************************************************************************************************************************************
+2025-02-20 13:13:31,903 p=39852 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 13:13:31,918 p=39852 u=psmyth n=ansible | TASK [neovim : Fail if Neovim build was unsuccessful] **************************************************************************************************************************************
+2025-02-20 13:13:31,945 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:31,958 p=39852 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 13:13:31,986 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:31,994 p=39852 u=psmyth n=ansible | TASK [neovim : Remove Neovim build directory] **********************************************************************************************************************************************
+2025-02-20 13:13:32,019 p=39852 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 13:13:32,028 p=39852 u=psmyth n=ansible | TASK [neovim : Configure Neovim] ***********************************************************************************************************************************************************
+2025-02-20 13:13:32,061 p=39852 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"reason": "Could not find or access '/home/psmyth/ansible/playbooks/configure.yml' on the Ansible Controller."}
+2025-02-20 13:13:32,063 p=39852 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
+2025-02-20 13:13:32,064 p=39852 u=psmyth n=ansible | localhost                  : ok=6    changed=0    unreachable=0    failed=1    skipped=9    rescued=0    ignored=0   
