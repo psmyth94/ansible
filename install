@@ -10,6 +10,29 @@ else
   PLAYBOOK="install_$1"
 fi
 
+# second argument is vault password file (default .vault.password.txt)
+BECOME_FILE="$2"
+if [ -z "$2" ]; then
+  BECOME_FILE=".become.password.txt"
+fi
+
+if [ ! -f "$BECOME_FILE" ]; then
+  echo "$BECOME_FILE does not exists"
+  exit 1
+fi
+
+BECOME_PASS=$(cat "$BECOME_FILE")
+
+VAULT_FILE="$3"
+if [ -z "$3" ]; then
+  VAULT_FILE=".vault.password.txt"
+fi
+
+if [ ! -f "$VAULT_FILE" ]; then
+  echo "$VAULT_FILE does not exists"
+  exit 1
+fi
+
 if ! command -v ansible >/dev/null 2>&1; then
   echo "Ansible is not installed. Installing..."
   echo "Checking if pipx is installed..."
@@ -24,7 +47,7 @@ if ! command -v ansible >/dev/null 2>&1; then
 fi
 
 mkdir -p ~/.ssh
-if [ ! -f ~/.dotfiles/ssh/id_rsa ]; then
+if [ ! -f ~/.ssh/id_rsa ]; then
   ANSIBLE_CONFIG="./ansible.cfg" \
     ansible-playbook \
     "./ansible/playbooks/install_sshkey.yml" \
@@ -40,5 +63,5 @@ echo "Running Ansible playbook..."
 ANSIBLE_CONFIG="./ansible.cfg" \
   ansible-playbook \
   "./playbooks/${PLAYBOOK}.yml" \
-  --ask-become-pass \
-  -e "ansible_user=$(whoami)"
+  --vault-password-file="$VAULT_FILE" \
+  -e "ansible_user=$(whoami) ansible_become_pass=${BECOME_PASS} dotfiles_repo=https://github.com/psmyth94/.dotfiles dotfiles_version=main dotfiles_dir=${HOME}/.dotfiles"

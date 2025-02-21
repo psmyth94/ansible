@@ -1,0 +1,15 @@
+---
+# remove if exists the destination config directory
+- name: Remove the destination config directory if it exists
+  ansible.builtin.file:
+    path: "{{ neovim_dest_config_dir }}"
+    state: absent
+  when: neovim_dest_config_dir != ''
+
+# symlink the source config directory to the destination config directory
+- name: Symlink the source config directory to the destination config directory
+  ansible.builtin.file:
+    src: "{{ neovim_src_config_dir }}"
+    dest: "{{ neovim_dest_config_dir }}"
+    state: link
+  when: neovim_src_config_dir != '' and neovim_dest_config_dir != ''

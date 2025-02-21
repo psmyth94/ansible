@@ -1,21 +1,31 @@
-
 ---
-- name: Setup ssh key
+- name: Setup neovim
   hosts: localhost
   become: true
+  become_user: "{{ ansible_user }}"
   vars_prompt:
     - name: neovim_force_rebuild
       prompt: "Do you want to force rebuild Neovim from source? (y/[n])"
       private: false
       default: n
 
+  vars:
+    dotfiles_repo: "{{ dotfiles_repo | default('') }}"
+    dotfiles_dir: "~{{ ansible_user }}/.dotfiles"
+    dotfiles_version: "{{ dotfiles_version | default('main') }}"
   roles:
+    - role: dotfiles
+      vars:
+        dotfiles_user: "{{ ansible_user }}"
+        dotfiles_repo: "{{ dotfiles_repo }}"
+        dotfiles_version: "{{ dotfiles_version }}"
+
     - role: neovim
       vars:
         neovim_user: "{{ ansible_user }}"
+        neovim_force_build: "{{ neovim_force_rebuild | bool }}"
+        neovim_dotfiles_dir: "{{ dotfiles_dir }}"
       tags:
         - install
         - configure
         - github-copilot
-
-

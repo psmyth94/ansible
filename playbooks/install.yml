@@ -3,6 +3,7 @@
   hosts: localhost
   gather_facts: true
   become: true
+  become_user: "{{ ansible_user }}"
 
   vars_prompt:
     - name: neovim_force_rebuild
@@ -45,6 +46,12 @@
       prompt: "Do you want to install Conda? (y/[n])"
       private: false
       default: n
+
+  vars:
+    dotfiles_repo: "{{ dotfiles_repo | default('') }}"
+    dotfiles_dir: "~{{ ansible_user }}/.dotfiles"
+    dotfiles_version: "{{ dotfiles_version | default('main') }}"
+
   tasks:
     - name: Install geerlingguy.docker
       community.general.ansible_galaxy_install:
@@ -85,6 +92,26 @@
         force: true
       when: install_k3s == 'y'
 
+    - name: Apply Role Dotfiles
+      ansible.builtin.include_role:
+        name: dotfiles
+      vars:
+        dotfiles_user: "{{ ansible_user }}"
+        dotfiles_repo: "{{ dotfiles_repo }}"
+        dotfiles_version: "{{ dotfiles_version }}"
+
+    - name: Apply Role Neovim
+      ansible.builtin.include_role:
+        name: neovim
+      vars:
+        neovim_user: "{{ ansible_user }}"
+        neovim_force_build: "{{ neovim_force_rebuild | bool }}"
+        neovim_dotfiles_dir: "{{ dotfiles_dir }}"
+      tags:
+        - install
+        - configure
+        - github-copilot
+
     # - name: Apply Role Zsh without Oh-My-Zsh
     #   ansible.builtin.user:
     #     user: "{{ ansible_user }}"
@@ -98,15 +125,7 @@
         name: viasite-ansible.zsh
       vars:
         zsh_user: "{{ ansible_user }}"
-        zsh_change_user_shell: true
       when: install_oh_my_zsh == 'y'
-
-    - name: Apply Role Neovim
-      ansible.builtin.include_role:
-        name: neovim
-      vars:
-        neovim_user: "{{ ansible_user }}"
-        neovim_enable_github_copilot: false
 
     - name: Apply Role WSL Clipboard Support if on WSL
       ansible.builtin.include_role:
@@ -161,6 +180,7 @@
       when: install_conda == 'y'
 
     - name: Apply Role R
-      ansible.builtin.include_role:
-        name: r
+      ansible.builtin.package:
+        name: r-base
+        state: present
       when: install_r == 'y'

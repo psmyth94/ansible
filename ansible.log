@@ -1,102 +1,670 @@
-2025-02-20 13:11:35,597 p=38317 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+2025-02-20 17:24:11,463 p=160973 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
 
-2025-02-20 13:11:35,597 p=38317 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+2025-02-20 17:24:11,463 p=160973 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
 
-2025-02-20 13:11:35,627 p=38317 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+2025-02-20 17:24:11,465 p=160973 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
 
-2025-02-20 13:11:36,007 p=38317 u=psmyth n=ansible | PLAY [Setup ssh key] ***********************************************************************************************************************************************************************
-2025-02-20 13:11:36,081 p=38317 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
-2025-02-20 13:11:37,780 p=38317 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:11:37,892 p=38317 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
-2025-02-20 13:11:38,025 p=38317 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
-2025-02-20 13:11:38,042 p=38317 u=psmyth n=ansible | TASK [neovim : Check if Neovim is already installed as a command] **************************************************************************************************************************
-2025-02-20 13:11:38,697 p=38317 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:11:38,716 p=38317 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
-2025-02-20 13:11:38,742 p=38317 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:11:38,762 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
-2025-02-20 13:11:38,801 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=ninja-build) 
-2025-02-20 13:11:38,814 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=gettext) 
-2025-02-20 13:11:38,823 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=cmake) 
-2025-02-20 13:11:38,836 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=g++) 
-2025-02-20 13:11:38,845 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=unzip) 
-2025-02-20 13:11:38,849 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=curl) 
-2025-02-20 13:11:38,856 p=38317 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:11:38,868 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
-2025-02-20 13:11:38,901 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libluajit5.1-dev) 
-2025-02-20 13:11:38,916 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luajit) 
-2025-02-20 13:11:38,925 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luajit-5.1-dev) 
-2025-02-20 13:11:38,933 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=lua-mpack) 
-2025-02-20 13:11:38,945 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=lua-lpeg) 
-2025-02-20 13:11:38,957 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libunibilium-dev) 
-2025-02-20 13:11:38,968 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libmsgpack-dev) 
-2025-02-20 13:11:38,976 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=libtermkey-dev) 
-2025-02-20 13:11:38,981 p=38317 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:11:38,992 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
-2025-02-20 13:11:39,032 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=ripgrep) 
-2025-02-20 13:11:39,036 p=38317 u=psmyth n=ansible | skipping: [localhost] => (item=luarocks) 
-2025-02-20 13:11:39,039 p=38317 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:11:39,052 p=38317 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
-2025-02-20 13:11:39,556 p=38317 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:11:39,569 p=38317 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
-2025-02-20 13:11:39,598 p=38317 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:11:39,609 p=38317 u=psmyth n=ansible | TASK [neovim : Ensure Neovim source directory has correct permissions] *********************************************************************************************************************
-2025-02-20 13:11:39,767 p=38317 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"msg": "The task includes an option with an undefined variable. The error was: 'neovim_owner' is undefined. 'neovim_owner' is undefined\n\nThe error appears to be in '/home/psmyth/ansible/roles/neovim/tasks/install.yml': line 61, column 3, but may\nbe elsewhere in the file depending on the exact syntax problem.\n\nThe offending line appears to be:\n\n\n- name: Ensure Neovim source directory has correct permissions\n  ^ here\n"}
-2025-02-20 13:11:39,769 p=38317 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
-2025-02-20 13:11:39,769 p=38317 u=psmyth n=ansible | localhost                  : ok=4    changed=0    unreachable=0    failed=1    skipped=5    rescued=0    ignored=0   
-2025-02-20 13:13:25,841 p=39852 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+2025-02-20 17:24:11,517 p=160973 u=psmyth n=ansible INFO| playbook: playbooks/install_neovim.yml
+2025-02-20 17:24:11,654 p=160944 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:24:11,655 p=160944 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:24:11,658 p=160944 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:24:11,658 p=160944 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:24:11,971 p=160976 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:24:12,021 p=160944 u=psmyth n=args WARNING| Unable to load module ansible.builtin.authorized_key at roles/neovim/tasks/github-copilot.yml:24 for options validation
+2025-02-20 17:24:12,022 p=160944 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of ansible.builtin.authorized_key module.
+2025-02-20 17:24:29,746 p=161008 u=psmyth n=args WARNING| Unable to load module ansible.builtin.authorized_key at roles/neovim/tasks/github-copilot.yml:24 for options validation
+2025-02-20 17:24:29,747 p=161008 u=psmyth n=ansiblelint.rules.fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of ansible.builtin.authorized_key module.
+2025-02-20 17:24:30,042 p=161033 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:24:35,078 p=161130 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:24:55,265 p=161254 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
 
-2025-02-20 13:13:25,842 p=39852 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+2025-02-20 17:24:55,265 p=161254 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
 
-2025-02-20 13:13:25,866 p=39852 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+2025-02-20 17:24:55,267 p=161254 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
 
-2025-02-20 13:13:27,776 p=39852 u=psmyth n=ansible | PLAY [Setup ssh key] ***********************************************************************************************************************************************************************
-2025-02-20 13:13:27,824 p=39852 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
-2025-02-20 13:13:29,385 p=39852 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:13:29,487 p=39852 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
-2025-02-20 13:13:29,634 p=39852 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
-2025-02-20 13:13:29,653 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim is already installed as a command] **************************************************************************************************************************
-2025-02-20 13:13:30,171 p=39852 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:13:30,188 p=39852 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
-2025-02-20 13:13:30,213 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:30,229 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
-2025-02-20 13:13:30,261 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=ninja-build) 
-2025-02-20 13:13:30,270 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=gettext) 
-2025-02-20 13:13:30,280 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=cmake) 
-2025-02-20 13:13:30,291 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=g++) 
-2025-02-20 13:13:30,300 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=unzip) 
-2025-02-20 13:13:30,304 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=curl) 
-2025-02-20 13:13:30,313 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:30,324 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
-2025-02-20 13:13:30,355 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libluajit5.1-dev) 
-2025-02-20 13:13:30,368 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luajit) 
-2025-02-20 13:13:30,380 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luajit-5.1-dev) 
-2025-02-20 13:13:30,391 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=lua-mpack) 
-2025-02-20 13:13:30,400 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=lua-lpeg) 
-2025-02-20 13:13:30,410 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libunibilium-dev) 
-2025-02-20 13:13:30,424 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libmsgpack-dev) 
-2025-02-20 13:13:30,432 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=libtermkey-dev) 
-2025-02-20 13:13:30,442 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:30,454 p=39852 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
-2025-02-20 13:13:30,494 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=ripgrep) 
-2025-02-20 13:13:30,502 p=39852 u=psmyth n=ansible | skipping: [localhost] => (item=luarocks) 
-2025-02-20 13:13:30,505 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:30,517 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
-2025-02-20 13:13:31,079 p=39852 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:13:31,103 p=39852 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
-2025-02-20 13:13:31,145 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:31,158 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary already exists] **************************************************************************************************************************************
-2025-02-20 13:13:31,522 p=39852 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:13:31,536 p=39852 u=psmyth n=ansible | TASK [neovim : Build Neovim from source] ***************************************************************************************************************************************************
-2025-02-20 13:13:31,567 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:31,580 p=39852 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary was built] *******************************************************************************************************************************************
-2025-02-20 13:13:31,903 p=39852 u=psmyth n=ansible | ok: [localhost]
-2025-02-20 13:13:31,918 p=39852 u=psmyth n=ansible | TASK [neovim : Fail if Neovim build was unsuccessful] **************************************************************************************************************************************
-2025-02-20 13:13:31,945 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:31,958 p=39852 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
-2025-02-20 13:13:31,986 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:31,994 p=39852 u=psmyth n=ansible | TASK [neovim : Remove Neovim build directory] **********************************************************************************************************************************************
-2025-02-20 13:13:32,019 p=39852 u=psmyth n=ansible | skipping: [localhost]
-2025-02-20 13:13:32,028 p=39852 u=psmyth n=ansible | TASK [neovim : Configure Neovim] ***********************************************************************************************************************************************************
-2025-02-20 13:13:32,061 p=39852 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"reason": "Could not find or access '/home/psmyth/ansible/playbooks/configure.yml' on the Ansible Controller."}
-2025-02-20 13:13:32,063 p=39852 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
-2025-02-20 13:13:32,064 p=39852 u=psmyth n=ansible | localhost                  : ok=6    changed=0    unreachable=0    failed=1    skipped=9    rescued=0    ignored=0   
+2025-02-20 17:24:55,288 p=161254 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 50, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:25:03,050 p=161470 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:25:03,050 p=161470 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:25:03,053 p=161470 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:25:03,074 p=161470 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:25:48,612 p=161545 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:25:55,359 p=161705 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:27:31,658 p=162899 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:27:47,091 p=163062 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:28:00,970 p=163406 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:28:42,164 p=164556 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:28:42,164 p=164556 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:28:42,166 p=164556 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:28:42,188 p=164556 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:29:00,636 p=165020 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:29:00,636 p=165020 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:29:00,638 p=165020 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:29:00,665 p=165020 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:29:17,059 p=165598 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:29:17,059 p=165598 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:29:17,061 p=165598 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:29:17,083 p=165598 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:29:20,736 p=165687 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:29:20,736 p=165687 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:29:20,739 p=165687 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:29:20,763 p=165687 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:29:40,210 p=165846 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:29:40,210 p=165846 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:29:40,212 p=165846 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:29:40,233 p=165846 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:29:59,017 p=166005 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:29:59,017 p=166005 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:29:59,019 p=166005 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:29:59,041 p=166005 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:30:14,278 p=166039 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:30:14,278 p=166039 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:30:14,280 p=166039 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:30:14,303 p=166039 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:30:22,970 p=166100 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 17:30:22,970 p=166100 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:30:22,994 p=166100 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 17:30:33,170 p=166100 u=psmyth n=ansible | PLAY [Bootstrap Development Environment] ***************************************************************************************************************************************************
+2025-02-20 17:30:33,215 p=166100 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
+2025-02-20 17:30:36,481 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:36,595 p=166100 u=psmyth n=ansible | TASK [Install geerlingguy.docker] **********************************************************************************************************************************************************
+2025-02-20 17:30:36,619 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:36,640 p=166100 u=psmyth n=ansible | TASK [Install geerlingguy.go] **************************************************************************************************************************************************************
+2025-02-20 17:30:36,666 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:36,682 p=166100 u=psmyth n=ansible | TASK [Install viasite-ansible.zsh] *********************************************************************************************************************************************************
+2025-02-20 17:30:41,676 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:41,690 p=166100 u=psmyth n=ansible | TASK [Install robertdebock.cargo] **********************************************************************************************************************************************************
+2025-02-20 17:30:46,147 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:46,159 p=166100 u=psmyth n=ansible | TASK [Install xanmanning.k3s] **************************************************************************************************************************************************************
+2025-02-20 17:30:46,185 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:46,199 p=166100 u=psmyth n=ansible | TASK [Apply Role Dotfiles] *****************************************************************************************************************************************************************
+2025-02-20 17:30:46,268 p=166100 u=psmyth n=ansible | TASK [dotfiles : Update the dotfiles repository] *******************************************************************************************************************************************
+2025-02-20 17:30:47,407 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:47,428 p=166100 u=psmyth n=ansible | TASK [Apply Role Neovim] *******************************************************************************************************************************************************************
+2025-02-20 17:30:47,610 p=166100 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 17:30:47,668 p=166100 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
+2025-02-20 17:30:47,685 p=166100 u=psmyth n=ansible | TASK [neovim : Check if Neovim is installed] ***********************************************************************************************************************************************
+2025-02-20 17:30:48,199 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:48,208 p=166100 u=psmyth n=ansible | TASK [neovim : Determine if Neovim needs to be built] **************************************************************************************************************************************
+2025-02-20 17:30:48,320 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:48,331 p=166100 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
+2025-02-20 17:30:48,361 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:48,377 p=166100 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
+2025-02-20 17:30:49,655 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:49,666 p=166100 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
+2025-02-20 17:30:50,682 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:50,688 p=166100 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
+2025-02-20 17:30:51,682 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:51,696 p=166100 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
+2025-02-20 17:30:52,166 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:52,175 p=166100 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
+2025-02-20 17:30:56,250 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:56,260 p=166100 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary already exists] **************************************************************************************************************************************
+2025-02-20 17:30:56,602 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:56,613 p=166100 u=psmyth n=ansible | TASK [neovim : Build Neovim from source] ***************************************************************************************************************************************************
+2025-02-20 17:30:56,651 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:56,660 p=166100 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 17:30:56,690 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:56,702 p=166100 u=psmyth n=ansible | TASK [neovim : Remove Neovim build directory] **********************************************************************************************************************************************
+2025-02-20 17:30:57,406 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:57,415 p=166100 u=psmyth n=ansible | TASK [neovim : Configure Neovim] ***********************************************************************************************************************************************************
+2025-02-20 17:30:57,454 p=166100 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/configure.yml for localhost
+2025-02-20 17:30:57,495 p=166100 u=psmyth n=ansible | TASK [neovim : Remove the destination config directory if it exists] ***********************************************************************************************************************
+2025-02-20 17:30:57,823 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:57,830 p=166100 u=psmyth n=ansible | TASK [neovim : Symlink the source config directory to the destination config directory] ****************************************************************************************************
+2025-02-20 17:30:58,164 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:30:58,180 p=166100 u=psmyth n=ansible | TASK [neovim : Setup github-copilot plugin] ************************************************************************************************************************************************
+2025-02-20 17:30:58,220 p=166100 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/github-copilot.yml for localhost
+2025-02-20 17:30:58,258 p=166100 u=psmyth n=ansible | TASK [neovim : Ensure github-copilot directory exists] *************************************************************************************************************************************
+2025-02-20 17:30:58,575 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:58,585 p=166100 u=psmyth n=ansible | TASK [neovim : Install github-copilot OAuth] ***********************************************************************************************************************************************
+2025-02-20 17:30:59,146 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:30:59,152 p=166100 u=psmyth n=ansible | TASK [neovim : Setup system-wide for shared installation] **********************************************************************************************************************************
+2025-02-20 17:30:59,177 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:30:59,191 p=166100 u=psmyth n=ansible | TASK [Apply Role Zsh with Oh-My-Zsh] *******************************************************************************************************************************************************
+2025-02-20 17:30:59,338 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : include_tasks] *************************************************************************************************************************************************
+2025-02-20 17:30:59,384 p=166100 u=psmyth n=ansible | included: /home/psmyth/.ansible/roles/viasite-ansible.zsh/tasks/install.yml for localhost
+2025-02-20 17:30:59,396 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Update package cache] ******************************************************************************************************************************************
+2025-02-20 17:31:00,268 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:00,274 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Update package cache (dnf)] ************************************************************************************************************************************
+2025-02-20 17:31:00,300 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:31:00,308 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Install zsh, git, wget, fd-find, fzf] **************************************************************************************************************************
+2025-02-20 17:31:05,747 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:05,758 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Check if ~psmyth/.antigen exist] *******************************************************************************************************************************
+2025-02-20 17:31:06,099 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:06,110 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Create directory ~psmyth/.antigen] *****************************************************************************************************************************
+2025-02-20 17:31:06,461 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:06,471 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Clone antigen patch-1] *****************************************************************************************************************************************
+2025-02-20 17:31:07,569 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:07,575 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Clone iwfmp/mc-solarized-skin] *********************************************************************************************************************************
+2025-02-20 17:31:07,605 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:31:07,612 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Check fzf installed] *******************************************************************************************************************************************
+2025-02-20 17:31:07,982 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:07,989 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set zsh_fzf_path to /usr/local/bin] ****************************************************************************************************************************
+2025-02-20 17:31:08,010 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:31:08,016 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set zsh_fzf_path_absolute] *************************************************************************************************************************************
+2025-02-20 17:31:08,117 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:08,129 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Ensure users home binary folder is present] ********************************************************************************************************************
+2025-02-20 17:31:08,494 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:08,504 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Download fzf to ~psmyth/bin] ***********************************************************************************************************************************
+2025-02-20 17:31:10,149 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:10,156 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set directory permissions] *************************************************************************************************************************************
+2025-02-20 17:31:10,500 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:10,505 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : include_tasks] *************************************************************************************************************************************************
+2025-02-20 17:31:10,548 p=166100 u=psmyth n=ansible | included: /home/psmyth/.ansible/roles/viasite-ansible.zsh/tasks/configure.yml for localhost
+2025-02-20 17:31:10,584 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Check zsh version] *********************************************************************************************************************************************
+2025-02-20 17:31:10,920 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:10,932 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set zsh_version variable] **************************************************************************************************************************************
+2025-02-20 17:31:11,087 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:11,093 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Merge bundles lists] *******************************************************************************************************************************************
+2025-02-20 17:31:11,278 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:11,286 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Disable autoupdate if zsh_shared install] **********************************************************************************************************************
+2025-02-20 17:31:11,308 p=166100 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:31:11,314 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Check commands exists] *****************************************************************************************************************************************
+2025-02-20 17:31:11,364 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'command-not-found', 'when': True}) 
+2025-02-20 17:31:11,373 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'brew', 'when': False}) 
+2025-02-20 17:31:11,777 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'docker', 'command': 'docker'})
+2025-02-20 17:31:12,031 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'docker-compose', 'command': 'docker-compose'})
+2025-02-20 17:31:12,270 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'docker-compose', 'command': 'docker compose'})
+2025-02-20 17:31:12,282 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=fancy-ctrl-z) 
+2025-02-20 17:31:12,291 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=git-extras) 
+2025-02-20 17:31:12,302 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=gnu-utils) 
+2025-02-20 17:31:12,610 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'httpie', 'command': 'http'})
+2025-02-20 17:31:12,870 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'golang', 'command': 'go'})
+2025-02-20 17:31:13,220 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'gulp', 'command': 'gulp'})
+2025-02-20 17:31:13,542 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'helm', 'command': 'helm'})
+2025-02-20 17:31:13,781 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'kubectl', 'command': 'kubectl'})
+2025-02-20 17:31:14,036 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'pip', 'command': 'pip'})
+2025-02-20 17:31:14,334 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'rake', 'command': 'rake'})
+2025-02-20 17:31:14,630 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'symfony2', 'command': 'symfony'})
+2025-02-20 17:31:14,880 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'systemd', 'command': 'systemctl'})
+2025-02-20 17:31:14,897 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=python) 
+2025-02-20 17:31:15,140 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'tmux', 'command': 'tmux'})
+2025-02-20 17:31:15,436 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'vagrant', 'command': 'vagrant'})
+2025-02-20 17:31:15,748 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'viasite/server-scripts', 'command': 'dbdump'})
+2025-02-20 17:31:16,056 p=166100 u=psmyth n=ansible | ok: [localhost] => (item={'name': 'yarn', 'command': 'yarn'})
+2025-02-20 17:31:16,066 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'zsh-users/zsh-autosuggestions', 'when': True}) 
+2025-02-20 17:31:16,083 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=popstas/zsh-command-time) 
+2025-02-20 17:31:16,092 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'unixorn/autoupdate-antigen.zshplugin', 'when': True}) 
+2025-02-20 17:31:16,106 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'urbainvaes/fzf-marks', 'when': True}) 
+2025-02-20 17:31:16,115 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item=viasite-ansible/fzf-widgets) 
+2025-02-20 17:31:16,136 p=166100 u=psmyth n=ansible | skipping: [localhost] => (item={'name': 'zdharma-continuum/fast-syntax-highlighting', 'when': True}) 
+2025-02-20 17:31:16,179 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Merge hotkeys lists] *******************************************************************************************************************************************
+2025-02-20 17:31:16,378 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:16,388 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Check antigen version] *****************************************************************************************************************************************
+2025-02-20 17:31:16,778 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:16,783 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set zsh_antigen_installed_version variable] ********************************************************************************************************************
+2025-02-20 17:31:16,972 p=166100 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:31:16,980 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Write .zshrc config] *******************************************************************************************************************************************
+2025-02-20 17:31:17,966 p=166100 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:31:17,975 p=166100 u=psmyth n=ansible | TASK [viasite-ansible.zsh : Set zsh as default shell] **************************************************************************************************************************************
+2025-02-20 17:31:18,630 p=166100 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"changed": false, "msg": "usermod: Permission denied.\nusermod: cannot lock /etc/passwd; try again later.\n", "name": "psmyth", "rc": 1}
+2025-02-20 17:31:18,633 p=166100 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
+2025-02-20 17:31:18,633 p=166100 u=psmyth n=ansible | localhost                  : ok=40   changed=12   unreachable=0    failed=1    skipped=11   rescued=0    ignored=0   
+2025-02-20 17:32:08,127 p=168232 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:32:23,541 p=168312 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:32:23,541 p=168312 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:32:23,543 p=168312 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:32:23,563 p=168312 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:32:48,712 p=168473 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:32:48,712 p=168473 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:32:48,714 p=168473 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:32:48,734 p=168473 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:32:58,459 p=168630 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:32:58,459 p=168630 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:32:58,461 p=168630 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:32:58,483 p=168630 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:33:16,865 p=168643 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 17:33:16,865 p=168643 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:33:16,891 p=168643 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 17:33:17,275 p=168643 u=psmyth n=ansible | ERROR! 'become' is not a valid attribute for a IncludeRole
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 123, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+
+    - name: Apply Role Zsh with Oh-My-Zsh
+      ^ here
+
+2025-02-20 17:33:25,950 p=168911 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:33:25,950 p=168911 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:33:25,952 p=168911 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:33:25,974 p=168911 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:33:43,106 p=169258 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:33:43,106 p=169258 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:33:43,108 p=169258 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:33:43,131 p=169258 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:33:45,394 p=169352 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:33:45,394 p=169352 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:33:45,396 p=169352 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:33:45,417 p=169352 u=psmyth n=ansible ERROR| ERROR! couldn't resolve module/action 'community.general.ansible_galaxy_install'. This often indicates a misspelling, missing collection, or incorrect module path.
+
+The error appears to be in '/home/psmyth/ansible/playbooks/install.yml': line 56, column 7, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+  tasks:
+    - name: Install geerlingguy.docker
+      ^ here
+
+2025-02-20 17:34:04,929 p=169431 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 17:34:04,930 p=169431 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:34:04,955 p=169431 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 17:34:10,938 p=169431 u=psmyth n=ansible |  [ERROR]: User interrupted execution
+
+2025-02-20 17:34:19,402 p=169668 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:34:19,402 p=169668 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:34:19,405 p=169668 u=psmyth n=ansiblelint.rules.fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:34:19,406 p=169668 u=psmyth n=ansiblelint.rules.fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:34:19,719 p=169703 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:34:23,200 p=169732 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:34:23,201 p=169732 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:34:23,204 p=169732 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:34:23,204 p=169732 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:34:23,523 p=169756 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:35:35,606 p=170029 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:35:35,607 p=170029 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:35:35,609 p=170029 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:35:35,610 p=170029 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:35:35,902 p=170053 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:36:21,933 p=170196 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 17:36:21,933 p=170196 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:36:21,959 p=170196 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 17:36:33,924 p=170196 u=psmyth n=ansible | PLAY [Bootstrap Development Environment] ***************************************************************************************************************************************************
+2025-02-20 17:36:33,938 p=170196 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
+2025-02-20 17:36:36,866 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:36,966 p=170196 u=psmyth n=ansible | TASK [Install geerlingguy.docker] **********************************************************************************************************************************************************
+2025-02-20 17:36:36,989 p=170196 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:36:37,013 p=170196 u=psmyth n=ansible | TASK [Install geerlingguy.go] **************************************************************************************************************************************************************
+2025-02-20 17:36:37,039 p=170196 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:36:37,054 p=170196 u=psmyth n=ansible | TASK [Install viasite-ansible.zsh] *********************************************************************************************************************************************************
+2025-02-20 17:36:42,495 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:42,512 p=170196 u=psmyth n=ansible | TASK [Install robertdebock.cargo] **********************************************************************************************************************************************************
+2025-02-20 17:36:46,877 p=170196 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:36:46,937 p=170196 u=psmyth n=ansible | TASK [Install xanmanning.k3s] **************************************************************************************************************************************************************
+2025-02-20 17:36:46,987 p=170196 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:36:47,008 p=170196 u=psmyth n=ansible | TASK [Apply Role Dotfiles] *****************************************************************************************************************************************************************
+2025-02-20 17:36:47,082 p=170196 u=psmyth n=ansible | TASK [dotfiles : Update the dotfiles repository] *******************************************************************************************************************************************
+2025-02-20 17:36:48,212 p=170196 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:36:48,228 p=170196 u=psmyth n=ansible | TASK [Apply Role Neovim] *******************************************************************************************************************************************************************
+2025-02-20 17:36:48,310 p=170196 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 17:36:48,360 p=170196 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
+2025-02-20 17:36:48,378 p=170196 u=psmyth n=ansible | TASK [neovim : Check if Neovim is installed] ***********************************************************************************************************************************************
+2025-02-20 17:36:48,923 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:48,936 p=170196 u=psmyth n=ansible | TASK [neovim : Determine if Neovim needs to be built] **************************************************************************************************************************************
+2025-02-20 17:36:49,044 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:49,056 p=170196 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
+2025-02-20 17:36:49,084 p=170196 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:36:49,095 p=170196 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
+2025-02-20 17:36:50,447 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:50,458 p=170196 u=psmyth n=ansible | TASK [neovim : Ensure required third-party dependencies are installed] *********************************************************************************************************************
+2025-02-20 17:36:51,545 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:51,553 p=170196 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
+2025-02-20 17:36:52,605 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:52,613 p=170196 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
+2025-02-20 17:36:53,076 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:53,084 p=170196 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
+2025-02-20 17:36:58,050 p=170196 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:36:58,064 p=170196 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary already exists] **************************************************************************************************************************************
+2025-02-20 17:36:58,509 p=170196 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:36:58,527 p=170196 u=psmyth n=ansible | TASK [neovim : Build Neovim from source] ***************************************************************************************************************************************************
+2025-02-20 17:36:59,635 p=170196 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"changed": false, "cmd": "/usr/bin/gmake CMAKE_BUILD_TYPE=RelWithDebInfo USE_BUNDLED=OFF CMAKE_INSTALL_PREFIX=/usr/local", "msg": "CMake Error at /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:230 (message):\n  Could NOT find Luv (missing: LUV_LIBRARY LUV_INCLUDE_DIR) (Required is at\n  least version \"1.43.0\")\nCall Stack (most recent call first):\n  /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)\n  cmake/FindLuv.cmake:4 (find_package_handle_standard_args)\n  src/nvim/CMakeLists.txt:27 (find_package)\n\n\ngmake: *** [Makefile:93: build/.ran-cmake] Error 1", "rc": 2, "stderr": "CMake Error at /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:230 (message):\n  Could NOT find Luv (missing: LUV_LIBRARY LUV_INCLUDE_DIR) (Required is at\n  least version \"1.43.0\")\nCall Stack (most recent call first):\n  /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)\n  cmake/FindLuv.cmake:4 (find_package_handle_standard_args)\n  src/nvim/CMakeLists.txt:27 (find_package)\n\n\ngmake: *** [Makefile:93: build/.ran-cmake] Error 1\n", "stderr_lines": ["CMake Error at /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:230 (message):", "  Could NOT find Luv (missing: LUV_LIBRARY LUV_INCLUDE_DIR) (Required is at", "  least version \"1.43.0\")", "Call Stack (most recent call first):", "  /usr/share/cmake-3.28/Modules/FindPackageHandleStandardArgs.cmake:600 (_FPHSA_FAILURE_MESSAGE)", "  cmake/FindLuv.cmake:4 (find_package_handle_standard_args)", "  src/nvim/CMakeLists.txt:27 (find_package)", "", "", "gmake: *** [Makefile:93: build/.ran-cmake] Error 1"], "stdout": "mkdir -p build\ntouch \"build/.ran-deps-cmake\"\n/usr/bin/cmake -B build -G \"Ninja\" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local /home/psmyth/neovim/\n-- The C compiler identification is GNU 13.3.0\n-- Detecting C compiler ABI info\n-- Detecting C compiler ABI info - done\n-- Check for working C compiler: /usr/bin/cc - skipped\n-- Detecting C compile features\n-- Detecting C compile features - done\n-- Found GNU Make at /usr/bin/gmake\n-- CMAKE_INSTALL_PREFIX=/usr/local\n-- CMAKE_BUILD_TYPE=RelWithDebInfo\n-- Using Lua interpreter: /usr/bin/luajit\n-- Using Lua interpreter for code generation: /usr/bin/luajit\n-- Using Lua compiler: /usr/bin/luajit -b -s %s -\n-- Configuring incomplete, errors occurred!\n", "stdout_lines": ["mkdir -p build", "touch \"build/.ran-deps-cmake\"", "/usr/bin/cmake -B build -G \"Ninja\" -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr/local /home/psmyth/neovim/", "-- The C compiler identification is GNU 13.3.0", "-- Detecting C compiler ABI info", "-- Detecting C compiler ABI info - done", "-- Check for working C compiler: /usr/bin/cc - skipped", "-- Detecting C compile features", "-- Detecting C compile features - done", "-- Found GNU Make at /usr/bin/gmake", "-- CMAKE_INSTALL_PREFIX=/usr/local", "-- CMAKE_BUILD_TYPE=RelWithDebInfo", "-- Using Lua interpreter: /usr/bin/luajit", "-- Using Lua interpreter for code generation: /usr/bin/luajit", "-- Using Lua compiler: /usr/bin/luajit -b -s %s -", "-- Configuring incomplete, errors occurred!"]}
+2025-02-20 17:36:59,638 p=170196 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
+2025-02-20 17:36:59,639 p=170196 u=psmyth n=ansible | localhost                  : ok=13   changed=3    unreachable=0    failed=1    skipped=4    rescued=0    ignored=0   
+2025-02-20 17:40:44,342 p=171138 u=psmyth n=ansible WARNING| [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory
+as an inventory source
+
+2025-02-20 17:40:44,343 p=171138 u=psmyth n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:40:44,345 p=171138 u=psmyth n=ansible WARNING| [WARNING]: provided hosts list is empty, only localhost is available. Note that
+the implicit localhost does not match 'all'
+
+2025-02-20 17:40:44,389 p=171138 u=psmyth n=ansible INFO| playbook: playbooks/install_neovim.yml
+2025-02-20 17:40:44,747 p=171143 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:40:55,987 p=171179 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:40:55,988 p=171179 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:40:55,991 p=171179 u=psmyth n=ansiblelint.rules.fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:40:55,991 p=171179 u=psmyth n=ansiblelint.rules.fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:40:56,298 p=171203 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:42:00,690 p=171536 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:58 for options validation
+2025-02-20 17:42:00,691 p=171536 u=psmyth n=args WARNING| Unable to load module community.general.make at roles/neovim/tasks/install.yml:71 for options validation
+2025-02-20 17:42:00,694 p=171536 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:42:00,694 p=171536 u=psmyth n=fqcn WARNING| Invalid value (None)for resolved_fqcn attribute of community.general.make module.
+2025-02-20 17:42:01,051 p=171560 u=psmyth n=ansible INFO| {
+    "ansible.builtin.runas": "Run As user",
+    "ansible.builtin.su": "Substitute User",
+    "ansible.builtin.sudo": "Substitute User DO"
+}
+2025-02-20 17:42:06,009 p=171568 u=psmyth n=ansible | [WARNING]: Unable to parse /home/psmyth/ansible/inventory:~/.ansible/inventory as an inventory source
+
+2025-02-20 17:42:06,009 p=171568 u=psmyth n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-20 17:42:06,036 p=171568 u=psmyth n=ansible | [WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+
+2025-02-20 17:42:09,922 p=171568 u=psmyth n=ansible | PLAY [Bootstrap Development Environment] ***************************************************************************************************************************************************
+2025-02-20 17:42:09,938 p=171568 u=psmyth n=ansible | TASK [Gathering Facts] *********************************************************************************************************************************************************************
+2025-02-20 17:42:12,803 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:12,898 p=171568 u=psmyth n=ansible | TASK [Install geerlingguy.docker] **********************************************************************************************************************************************************
+2025-02-20 17:42:12,928 p=171568 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:42:12,948 p=171568 u=psmyth n=ansible | TASK [Install geerlingguy.go] **************************************************************************************************************************************************************
+2025-02-20 17:42:12,973 p=171568 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:42:12,989 p=171568 u=psmyth n=ansible | TASK [Install viasite-ansible.zsh] *********************************************************************************************************************************************************
+2025-02-20 17:42:17,753 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:17,767 p=171568 u=psmyth n=ansible | TASK [Install robertdebock.cargo] **********************************************************************************************************************************************************
+2025-02-20 17:42:22,310 p=171568 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:42:22,321 p=171568 u=psmyth n=ansible | TASK [Install xanmanning.k3s] **************************************************************************************************************************************************************
+2025-02-20 17:42:22,348 p=171568 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:42:22,360 p=171568 u=psmyth n=ansible | TASK [Apply Role Dotfiles] *****************************************************************************************************************************************************************
+2025-02-20 17:42:22,424 p=171568 u=psmyth n=ansible | TASK [dotfiles : Update the dotfiles repository] *******************************************************************************************************************************************
+2025-02-20 17:42:23,535 p=171568 u=psmyth n=ansible | changed: [localhost]
+2025-02-20 17:42:23,574 p=171568 u=psmyth n=ansible | TASK [Apply Role Neovim] *******************************************************************************************************************************************************************
+2025-02-20 17:42:23,722 p=171568 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 17:42:23,767 p=171568 u=psmyth n=ansible | included: /home/psmyth/ansible/roles/neovim/tasks/install.yml for localhost
+2025-02-20 17:42:23,780 p=171568 u=psmyth n=ansible | TASK [neovim : Check if Neovim is installed] ***********************************************************************************************************************************************
+2025-02-20 17:42:24,272 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:24,281 p=171568 u=psmyth n=ansible | TASK [neovim : Determine if Neovim needs to be built] **************************************************************************************************************************************
+2025-02-20 17:42:24,384 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:24,395 p=171568 u=psmyth n=ansible | TASK [neovim : Print Neovim status] ********************************************************************************************************************************************************
+2025-02-20 17:42:24,424 p=171568 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:42:24,434 p=171568 u=psmyth n=ansible | TASK [neovim : Ensure required build dependencies are installed] ***************************************************************************************************************************
+2025-02-20 17:42:25,713 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:25,727 p=171568 u=psmyth n=ansible | TASK [neovim : Ensure required plugin dependencies are installed] **************************************************************************************************************************
+2025-02-20 17:42:26,730 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:26,739 p=171568 u=psmyth n=ansible | TASK [neovim : Check if Neovim source is already downloaded] *******************************************************************************************************************************
+2025-02-20 17:42:27,222 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:27,229 p=171568 u=psmyth n=ansible | TASK [neovim : Clone Neovim repository] ****************************************************************************************************************************************************
+2025-02-20 17:42:28,496 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:28,504 p=171568 u=psmyth n=ansible | TASK [neovim : Check if Neovim binary already exists] **************************************************************************************************************************************
+2025-02-20 17:42:28,877 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:42:28,884 p=171568 u=psmyth n=ansible | TASK [neovim : Build Neovim from source] ***************************************************************************************************************************************************
+2025-02-20 17:43:28,465 p=171568 u=psmyth n=ansible | ok: [localhost]
+2025-02-20 17:43:28,477 p=171568 u=psmyth n=ansible | TASK [neovim : Install Neovim] *************************************************************************************************************************************************************
+2025-02-20 17:43:28,516 p=171568 u=psmyth n=ansible | skipping: [localhost]
+2025-02-20 17:43:28,526 p=171568 u=psmyth n=ansible | TASK [neovim : Remove Neovim build directory] **********************************************************************************************************************************************
+2025-02-20 17:43:29,303 p=171568 u=psmyth n=ansible | fatal: [localhost]: FAILED! => {"changed": false, "msg": "rmtree failed: [Errno 13] Permission denied: 'libnlua0.so'"}
+2025-02-20 17:43:29,305 p=171568 u=psmyth n=ansible | PLAY RECAP *********************************************************************************************************************************************************************************
+2025-02-20 17:43:29,306 p=171568 u=psmyth n=ansible | localhost                  : ok=13   changed=2    unreachable=0    failed=1    skipped=5    rescued=0    ignored=0   

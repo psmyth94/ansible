@@ -11,25 +11,27 @@ neovim_bin_user: "{{ 'root' if neovim_bin_shared else neovim_user }}"
 neovim_user_group: "{{ neovim_user }}"
 
 
-neovim_install_path: "~{{ neovim_user }}/neovim"
+neovim_install_dir: "~{{ neovim_user }}/neovim"
 
-neovim_bin_path: >-
+neovim_bin_dir: >-
   {{ '/usr/local' if neovim_bin_shared
      else '~' + neovim_user + '/.local' }}
 
 
 # Git repo to clone for building Neovim from source.
-neovim_src_repo: "https://github.com/neovim/neovim.git"
+neovim_repo: "https://github.com/neovim/neovim.git"
 # Branch to build from (default: master).
-neovim_src_branch: "master"
+neovim_version: "master"
 
-neovim_dotfiles_path: "~{{ neovim_user }}/.dotfiles"
-neovim_src_config_path: "{{ neovim_dotfiles_path }}/neovim"
-neovim_dest_config_path: "~{{ neovim_user }}/.config/nvim"
+neovim_dotfiles_dir: "~{{ neovim_user }}/.dotfiles"
+neovim_src_config_dir: "{{ neovim_dotfiles_dir }}/nvim"
+neovim_dest_config_dir: "~{{ neovim_user }}/.config/nvim"
 
 neovim_enable_github_copilot: true
-neovim_github_copilot_src_path: "{{ neovim_dotfiles_path }}/github-copilot"
-neovim_github_copilot_dest_path: "~{{ neovim_user }}/.config/github-copilot"
+neovim_github_copilot_src_dir: "{{ neovim_dotfiles_dir }}/github-copilot"
+neovim_github_copilot_src_key: "{{ neovim_github_copilot_src_dir }}/apps.json"
+neovim_github_copilot_dest_dir: "~{{ neovim_user }}/.config/github-copilot"
+neovim_github_copilot_dest_key: "{{ neovim_github_copilot_dest_dir }}/apps.json"
 
 # force rebuild of Neovim from source
 neovim_force_build: false
@@ -42,16 +44,16 @@ neovim_dependencies:
   - "unzip"
   - "curl"
 
-# bundle dependencies list
 neovim_bundle_dependencies:
-  - "libluajit5.1-dev"
-  - "luajit"
-  - "luajit-5.1-dev"
-  - "lua-mpack"
-  - "lua-lpeg"
-  - "libunibilium-dev"
-  - "libmsgpack-dev"
-  - "libtermkey-dev"
+  - libuv1-dev
+  - libtermkey-dev
+  - libvterm-dev
+  - luajit
+  - liblua5.1-dev
+  - lua-lpeg
+  - lua-mpack
+  - libmsgpack-dev
+  - tree-sitter-cli
 
 neovim_plugin_dependencies:
   - "ripgrep"

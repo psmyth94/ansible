@@ -73,7 +73,7 @@
 
 - name: Install Node.js {{ nodejs_version }} with NVM
   ansible.builtin.shell: |
-    {{ nodejs_src_nvm }} && 
+    {{ nodejs_src_nvm }} &&
     nvm install {{ nodejs_version }} &&
     nvm alias default {{ nodejs_version }} &&
     nvm use default

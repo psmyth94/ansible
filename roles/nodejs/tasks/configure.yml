@@ -1,6 +1,6 @@
 ---
 - name: Get user's home directory (Linux/macOS)
-  getent:
+  ansible.builtin.getent:
     database: passwd
     key: "{{ nodejs_user }}"
   register: nodejs_nvm_dir

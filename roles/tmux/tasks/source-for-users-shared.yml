@@ -31,7 +31,7 @@
   ansible.builtin.copy:
     content: |
       # For each user, we can just source the system-wide config
-      source {{ tmux_install_path }}/.tmux.conf
+      source {{ tmux_install_dir }}/.tmux.conf
     dest: "{{ item }}/.tmux.conf"
     mode: '0644'
   loop: "{{ allpaths }}"

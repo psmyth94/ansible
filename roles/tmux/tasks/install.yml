@@ -23,13 +23,13 @@
 
 - name: Check if directory is empty
   find:
-    paths: "{{ tmux_install_path }}"
+    paths: "{{ tmux_install_dir }}"
     hidden: true
   register: dir_contents
 
 - name: Create directory for oh-my-tmux
   ansible.builtin.file:
-    path: "{{ tmux_install_path }}"
+    path: "{{ tmux_install_dir }}"
     state: directory
     mode: '0755'
     owner: "{{ tmux_user }}"
@@ -37,14 +37,14 @@
   become: true
   become_user: "{{ tmux_user }}"
   when:
-    - tmux_install_path is not none
+    - tmux_install_dir is not none
     - dir_contents.matched == 0
 
 
 - name: Clone oh-my-tmux repository
   ansible.builtin.git:
     repo: "{{ tmux_repo_url }}"
-    dest: "{{ tmux_install_path }}"
+    dest: "{{ tmux_install_dir }}"
     version: "{{ tmux_repo_version }}"
     update: true
     force: true
@@ -52,5 +52,5 @@
   become_user: "{{ tmux_user }}"
   register: tmux_register_clone
   when: 
-    - tmux_install_path is not none
+    - tmux_install_dir is not none
     - dir_contents.matched == 0

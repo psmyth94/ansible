@@ -1,8 +1,8 @@
 ---
 - name: Ensure .tmux.conf is linked to oh-my-tmux
   ansible.builtin.file:
-    src: "{{ tmux_install_path }}/.tmux.conf"
-    dest: "{{ tmux_config_path }}"
+    src: "{{ tmux_install_dir }}/.tmux.conf"
+    dest: "{{ tmux_config_dir }}"
     state: link
     mode: '0755'
     owner: "{{ tmux_user }}"
@@ -11,11 +11,11 @@
 
 - name: Ensure .tmux.conf.local is copied or linked
   ansible.builtin.file:
-    src: "{{ tmux_dotfile_path }}/.tmux.conf.local"
-    dest: "{{ tmux_local_config_path }}"
+    src: "{{ tmux_dotfile_dir }}/.tmux.conf.local"
+    dest: "{{ tmux_local_config_dir }}"
     mode: '0755'
     owner: "{{ tmux_user }}"
     group: "{{ tmux_user_group }}"
     state: link
     force: true
-  when: tmux_dotfile_path is defined and tmux_local_config_path is defined
+  when: tmux_dotfile_dir is defined and tmux_local_config_dir is defined
