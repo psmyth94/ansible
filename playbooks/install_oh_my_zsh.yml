@@ -1,0 +1,24 @@
+---
+- name: Setup oh-my-zsh
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  vars_prompt:
+    # - name: oh-my-zsh_force_rebuild
+      # prompt: "Do you want to force rebuild oh-my-zsh from source? (y/n)"
+      # private: false
+      # default: n
+
+  vars:
+    dotfiles_repo: "{{ dotfiles_repo | default('') }}"
+    dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
+    dotfiles_version: "{{ dotfiles_version | default('main') }}"
+  roles:
+    - role: oh-my-zsh
+      vars:
+        oh_my_zsh_user: "{{ dotfiles_user }}"
+      tags:
+        - install
+        - configure
+        - github-copilot
+

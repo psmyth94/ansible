@@ -1,15 +1,18 @@
----
-- name: Get user's home directory (Linux/macOS)
-  ansible.builtin.getent:
-    database: passwd
-    key: "{{ nodejs_user }}"
-  register: nodejs_nvm_dir
-  when: ansible_system != "Windows"
+- name: Check if zshrc exists
+  ansible.builtin.stat:
+    path: "~{{ nodejs_user }}/.zshrc"
+  register: zshrc_check
 
-- name: Ensure NVM is loaded in the user shell startup file
+- name: Check if bashrc exists
+  ansible.builtin.stat:
+    path: "~{{ nodejs_user }}/.bashrc"
+  register: bashrc_check
+
+- name: Ensure NVM is loaded in the user zshrc startup file
   become: true
+  become_user: "root"
   ansible.builtin.lineinfile:
-    path: "{{ nodejs_shell_config }}"
+    path: "~{{ nodejs_user }}/.zshrc"
     create: true
     line: |
       export NVM_DIR="{{ nodejs_nvm_dir }}"
@@ -20,6 +23,26 @@
     # Ensure the file is owned by the correct user/group.
     owner: "{{ nodejs_user }}"
     group: "{{ nodejs_user_group }}"
-  register: _nvm_in_shell
   # Mark changed only if a new line was actually inserted
-  changed_when: _nvm_in_shell.msg is defined and 'line added' in _nvm_in_shell.msg
+  changed_when: _nvm_in_zshrc.msg is defined and 'line added' in _nvm_in_zshrc.msg
+  when: zshrc_check.stat.exists
+
+- name: Ensure NVM is loaded in the user bashrc startup file
+  become: true
+  become_user: "root"
+  ansible.builtin.lineinfile:
+    path: "~{{ nodejs_user }}/.bashrc"
+    create: true
+    line: |
+      export NVM_DIR="{{ nodejs_nvm_dir }}"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    state: present
+    # Explicitly set permissions. This ensures the file has 0644.
+    mode: "0644"
+    # Ensure the file is owned by the correct user/group.
+    owner: "{{ nodejs_user }}"
+    group: "{{ nodejs_user_group }}"
+  register: _nvm_in_bashrc
+  # Mark changed only if a new line was actually inserted
+  changed_when: _nvm_in_bashrc.msg is defined and 'line added' in _nvm_in_bashrc.msg
+  when: bashrc_check.stat.exists

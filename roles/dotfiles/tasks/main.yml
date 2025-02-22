@@ -1,9 +1,0 @@
----
-- name: Update the dotfiles repository
-  ansible.builtin.git:
-    repo: "{{ dotfiles_repo }}"
-    dest: "{{ dotfiles_dir }}"
-    version: "{{ dotfiles_version }}"
-    update: true
-    recursive: true
-    track_submodules: true

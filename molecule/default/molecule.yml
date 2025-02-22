@@ -1,0 +1,31 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/requirements.yml
+driver:
+  name: docker
+scenario: 
+  name: default
+platforms:
+  - name: instance
+    image: "geerlingguy/docker-ubuntu2204-ansible"
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      pipelining: true
+      allow_world_readable_tmpfiles: true
+      interpreter_python: auto
+  options:
+    extra-vars:
+      dotfiles_user: "root"
+      ansible_dotfiles_repo: "https://github.com/psmyth94/.dotfiles"
+      ansible_dotfiles_dir: "/root/.dotfiles"
+  env:
+    ANSIBLE_ROLES_PATH: "~/.ansible/roles:../../roles"
+    ANSIBLE_COLLECTIONS_PATH: "~/.ansible/collections"
+  playbooks:
+    converge: ../resources/converge.yml

@@ -17,11 +17,11 @@
   tags:
     - ssh
 
-- name: Set authorized key
-  become: true
-  ansible.builtin.authorized_key:
-    user: "{{ sshkey_user }}"
-    state: present
-    key: "{{ sshkey_dest_key }}"
-  tags:
-    - ssh
+# - name: Set authorized key
+#   become: true
+#   ansible.builtin.authorized_key:
+#     user: "{{ sshkey_user }}"
+#     state: present
+#     key: "{{ sshkey_dest_key }}"
+#   tags:
+#     - ssh

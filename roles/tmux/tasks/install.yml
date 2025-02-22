@@ -4,13 +4,7 @@
     update_cache: true
     cache_valid_time: 86400
   become: true
-  when: ansible_os_family != 'Darwin' and ansible_pkg_mgr != 'dnf'
-
-- name: Update package cache (dnf)
-  ansible.builtin.package:
-    update_cache: true
-  become: true
-  when: ansible_pkg_mgr == 'dnf'
+  become_user: "root"
 
 - name: Install tmux, git, etc.
   ansible.builtin.package:
@@ -19,7 +13,7 @@
       - git
     state: present
   become: true
-  when: ansible_os_family != 'Darwin'
+  become_user: "root"
 
 - name: Check if directory is empty
   find:

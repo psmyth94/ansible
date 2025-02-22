@@ -1,0 +1,115 @@
+---
+- name: Bootstrap Development Environment
+  hosts: localhost
+  gather_facts: true
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+  tasks:
+    - name: Setup dotfiles
+      ansible.builtin.include_role:
+        name: dotfiles
+      vars:
+        dotfiles_user: "{{ dotfiles_user }}"
+        dotfiles_repo: "{{ ansible_dotfiles_repo }}"
+        dotfiles_version: "{{ ansible_dotfiles_version }}"
+
+    - name: Setup sshkey
+      ansible.builtin.include_role:
+        name: sshkey
+      vars:
+        sshkey_user: "{{ dotfiles_user }}"
+
+    - name: Install geerlingguy.docker
+      community.general.ansible_galaxy_install:
+        type: role
+        name: "geerlingguy.docker"
+        dest: "~{{ dotfiles_user }}/.ansible/roles"
+        force: true
+
+    - name: Install geerlingguy.go
+      community.general.ansible_galaxy_install:
+        type: role
+        name: geerlingguy.go
+        dest: "~{{ dotfiles_user }}/.ansible/roles"
+        force: true
+
+    - name: Install viasite-ansible.zsh
+      community.general.ansible_galaxy_install:
+        type: role
+        name: viasite-ansible.zsh
+        dest: "~{{ dotfiles_user }}/.ansible/roles"
+        force: true
+
+    - name: Install robertdebock.cargo
+      community.general.ansible_galaxy_install:
+        type: role
+        name: robertdebock.cargo
+        dest: "~{{ dotfiles_user }}/.ansible/roles"
+        force: true
+
+    - name: Install xanmanning.k3s
+      community.general.ansible_galaxy_install:
+        type: role
+        name: xanmanning.k3s
+        dest: "~{{ dotfiles_user }}/.ansible/roles"
+        force: true
+
+    - name: Setup Neovim
+      ansible.builtin.include_role:
+        name: neovim
+      vars:
+        neovim_user: "{{ dotfiles_user }}"
+        neovim_force_build: "{{ neovim_force_rebuild | bool }}"
+        neovim_dotfiles_dir: "{{ dotfiles_dir }}"
+      tags:
+        - install
+        - configure
+        - github-copilot
+
+    - name: Setup Zsh with Oh-My-Zsh
+      ansible.builtin.include_role:
+        name: viasite-ansible.zsh
+      vars:
+        zsh_user: "{{ dotfiles_user }}"
+
+    - name: Setup WSL Clipboard Support if on WSL
+      ansible.builtin.include_role:
+        name: wsl_clipboard_support
+
+    - name: Setup Node.js
+      ansible.builtin.include_role:
+        name: nodejs
+      vars:
+        nodejs_user: "{{ dotfiles_user }}"
+
+    - name: Setup Tmux with Oh-My-Tmux
+      ansible.builtin.include_role:
+        name: tmux
+      vars:
+        tmux_user: "{{ dotfiles_user }}"
+
+    - name: Setup Go
+      ansible.builtin.include_role:
+        name: geerlingguy.go
+
+    - name: Setup Cargo
+      ansible.builtin.include_role:
+        name: robertdebock.cargo
+
+    - name: Setup Docker
+      ansible.builtin.include_role:
+        name: geerlingguy.docker
+
+    - name: Setup K3s
+      ansible.builtin.include_role:
+        name: xanmanning.k3s
+
+    - name: Setup Conda
+      ansible.builtin.include_role:
+        name: miniforge3
+
+    - name: Setup R
+      ansible.builtin.package:
+        name: r-base
+        state: present

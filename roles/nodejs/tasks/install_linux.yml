@@ -4,41 +4,31 @@
     name: curl
     state: present
   become: true
-  when: ansible_os_family != "Darwin"
+  become_user: "root"
 
-- name: Get user's home directory (Linux/macOS) if not shared
-  getent:
-    database: passwd
-    key: "{{ nodejs_user }}"
-  register: user_passwd
-  when: not nodejs_shared
-
-- name: Set `nvm_dir` based on `nodejs_shared`
-  set_fact:
+- name: Helper variable for sourcing nvm
+  ansible.builtin.set_fact:
     nodejs_src_nvm: "source {{ nodejs_nvm_dir }}"
-    nvm_dir: >-
-      {% if nodejs_shared %}
-        {{ nodejs_nvm_dir }}
-      {% else %}
-        {{ user_passwd.ansible_facts.getent_passwd[nodejs_user][4] + '/.nvm' }}
-      {% endif %}
 
 - name: Ensure NVM directory exists
   ansible.builtin.file:
-    path: "{{ nvm_dir }}"
+    path: "{{ nodejs_nvm_dir }}"
     state: directory
     owner: "{{ 'root' if nodejs_shared else nodejs_user }}"
     group: "{{ 'root' if nodejs_shared else nodejs_user_group }}"
     mode: '0755'
   become: true
 
-- name: Check if nvm is installed; if you see error, ignore it!
-  shell: "{{ nodejs_src_nvm }} && nvm -v"
-  args:
-    executable: /bin/bash
+- name: Check if nvm is installed
+  ansible.builtin.command: bash -c "command -v nvm"
   register: nvm_installed
   ignore_errors: true
+  changed_when: false
   failed_when: false
+
+- name: Check if nvm needs install
+  ansible.builtin.set_fact:
+    nvm_needs_build: "{{ nvm_installed.rc != 0 or nodejs_force_install }}"
 
 - name: Download NVM install script
   ansible.builtin.get_url:
@@ -48,23 +38,26 @@
     force: true
   become: true
   become_user: "{{ nodejs_user }}"
-  when: nvm_installed.rc == 0 or nodejs_force_reinstall | default(false)
 
 - name: Run NVM install script
   ansible.builtin.command: /tmp/nvm-install.sh
   environment:
-    NVM_DIR: "{{ nvm_dir }}"
+    nodejs_nvm_dir: "{{ nodejs_nvm_dir }}"
   become: true
   become_user: "{{ nodejs_user }}"
   args:
-    creates: "{{ nvm_dir }}/nvm.sh"
-  when: not nvm_installed.rc == 0 or nodejs_force_reinstall | default(false)
+    creates: "{{ nodejs_nvm_dir }}/nvm.sh"
+  when: nvm_needs_build
 
 - name: Check if Node.js is installed
-  ansible.builtin.command: "{{ nodejs_src_nvm }} && command -v node || which node"
+  ansible.builtin.command: bash -c "{{ nodejs_src_nvm }} && command -v node"
   register: node_check
   changed_when: false
   failed_when: false
+
+- name: Check if nvm needs install
+  ansible.builtin.set_fact:
+    nodejs_needs_build: "{{ node_check.rc != 0 or nodejs_force_install }}"
 
 - name: Print Node.js status
   ansible.builtin.debug:
@@ -85,4 +78,4 @@
   failed_when: false
   register: _node_install
   changed_when: _node_install.rc == 0
-  when: node_check.rc != 0 or nodejs_force_reinstall | default(false)
+  when: nodejs_needs_build

@@ -1,0 +1,255 @@
+---
+oh_my_zsh_user: "{{ dotfiles_user_id }}"
+
+# .zshrc config
+oh_my_zsh_hist_stamps: yyyy-mm-dd
+oh_my_zsh_share_history: no
+oh_my_zsh_update_interval: 30  # set 0 to disable autoupdates
+oh_my_zsh_editor:
+oh_my_zsh_term: xterm-256color
+oh_my_zsh_mc_solarized_skin: no
+
+oh_my_zsh_path:
+  - "{{ oh_my_zsh_fzf_path }}"
+  - /usr/local/sbin
+  - /usr/local/bin
+  - /usr/sbin
+  - /usr/bin
+  - /sbin
+  - /bin
+
+oh_my_zsh_load_etc_profile: yes
+
+fzf_widgets: viasite-ansible/fzf-widgets
+
+# Use a patched Antigen until PR is merged:
+oh_my_zsh_antigen_repo: https://github.com/viasite-ansible/antigen
+oh_my_zsh_antigen_version: patch-1
+
+oh_my_zsh_fzf_version: 0.52.1
+
+#
+# Plugins
+#
+oh_my_zsh_antigen_bundles:
+  - command-not-found
+  - { name: docker, command: docker }
+  - { name: docker-compose, command: docker-compose }
+  - { name: docker-compose, command: docker compose }
+  - fancy-ctrl-z
+  - git-extras
+  - gnu-utils
+  - { name: httpie, command: http }
+  - { name: golang, command: go }
+  - { name: gulp, command: gulp }
+  - { name: helm, command: helm }
+  - { name: kubectl, command: kubectl }
+  - { name: pip, command: pip }
+  - { name: rake, command: rake }
+  - { name: symfony2, command: symfony }
+  - { name: systemd, command: systemctl }
+  - python
+  - { name: tmux, command: tmux }
+  - { name: vagrant, command: vagrant }
+  - { name: viasite/server-scripts, command: dbdump }
+  - { name: yarn, command: yarn }
+
+  # Autosuggestions (works with oh_my_zsh >= 5.0)
+  - { name: zsh-users/zsh-autosuggestions, when: "{{ oh_my_zsh_version is version_compare('5.0', '>=') }}" }
+
+  - popstas/zsh-command-time
+
+  # Auto-update plugin if oh_my_zsh_update_interval > 0
+  - { name: unixorn/autoupdate-antigen.zshplugin, when: "{{ oh_my_zsh_update_interval > 0 }}" }
+
+  # fzf-marks plugin (works with oh_my_zsh >= 5.1)
+  - { name: urbainvaes/fzf-marks, when: "{{ oh_my_zsh_version is version_compare('5.1', '>=') }}" }
+
+  - "{{ fzf_widgets }}"
+
+  # Must be last; requires oh_my_zsh >= 4.3.17
+  - { name: zdharma-continuum/fast-syntax-highlighting, when: "{{ oh_my_zsh_version is version_compare('4.3.17', '>=') }}" }
+
+oh_my_zsh_antigen_bundles_extras: []
+
+oh_my_zsh_custom_before: ''  # any code before including ~/.zshrc.local
+oh_my_zsh_custom_after: ''   # any code after including ~/.zshrc.local
+
+oh_my_zsh_shared: no
+oh_my_zsh_source_for_all_users: no
+oh_my_zsh_change_user_shell: yes
+
+# Use Powerlevel10k
+oh_my_zsh_antigen_theme: "romkatv/powerlevel10k powerlevel10k"
+
+#
+# Hotkeys
+#
+oh_my_zsh_hotkeys:
+  # home & end keys work
+  - { hotkey: '\e[1~', action: beginning-of-line }
+  - { hotkey: '\e[4~', action: end-of-line }
+  - { hotkey: '^[[H', action: beginning-of-line, bundle: brew } # home/end has different codes on MacOS
+  - { hotkey: '^[[F', action: end-of-line, bundle: brew }
+  - { hotkey: '^[[1;5D', action: backward-word, bundle: brew }
+  - { hotkey: '^[[1;5C', action: forward-word, bundle: brew }
+  - { hotkey: '[D', action: backward-word, bundle: brew }
+  - { hotkey: '[C', action: forward-word, bundle: brew }
+
+  # alt+M for insert last word
+  - { hotkey: '^[m', action: copy-earlier-word }
+
+  # fzf-widgets
+  - { hotkey: '^@' ,   action: fzf-select-widget,            bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@.' ,  action: fzf-edit-dotfiles,            bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@c',   action: fzf-change-directory,         bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@f',   action: fzf-edit-files,               bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@k',   action: fzf-kill-processes,           bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@s',   action: fzf-exec-ssh,                 bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^\' ,   action: fzf-change-recent-directory,  bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^r',    action: fzf-insert-history,           bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^xf',   action: fzf-insert-files,             bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^xd',   action: fzf-insert-directory,         bundle: "{{ fzf_widgets }}" }
+
+  # fzf-widgets: Git
+  - { hotkey: '^@g',   action: fzf-select-git-widget,        bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@ga',  action: fzf-git-add-files,            bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@gc',  action: fzf-git-change-repository,    bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@gco', action: fzf-git-checkout-branch,      bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@gd',  action: fzf-git-delete-branches,      bundle: "{{ fzf_widgets }}" }
+
+  # fzf-widgets: GitHub
+  - { hotkey: '^@gh',   action: fzf-select-github-widget,    bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@ghi',  action: fzf-github-show-issue,       bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@ghe',  action: fzf-github-edit-issue,       bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@gho',  action: fzf-github-open-issue,       bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@ghc',  action: fzf-github-close-issue,      bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@ghco', action: fzf-github-comment-issue,    bundle: "{{ fzf_widgets }}" }
+
+  # fzf-widgets: Docker
+  - { hotkey: '^@d',   action: fzf-select-docker-widget,     bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dk',  action: fzf-docker-kill-containers,   bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dl',  action: fzf-docker-logs-container,    bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dr',  action: fzf-docker-remove-containers, bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dri', action: fzf-docker-remove-images,     bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@drv', action: fzf-docker-remove-volumes,    bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dsa', action: fzf-docker-start-containers,  bundle: "{{ fzf_widgets }}" }
+  - { hotkey: '^@dso', action: fzf-docker-stop-containers,   bundle: "{{ fzf_widgets }}" }
+
+  # autosuggestions
+  - { hotkey: '{{ oh_my_zsh_autosuggestions_bind_key }}',   action: autosuggest-accept, bundle: zsh-users/zsh-autosuggestions }
+  - { hotkey: '{{ oh_my_zsh_autosuggestions_bind_key_2 }}', action: autosuggest-accept, bundle: zsh-users/zsh-autosuggestions }
+
+oh_my_zsh_hotkeys_extras: []
+
+#
+# Aliases
+#
+oh_my_zsh_aliases:
+  - { alias: 'apt-update-list-upgrade', action: 'apt update && apt upgrade --dry-run | grep Inst | sort | fzf && apt upgrade' }
+  - { alias: 'dfh',                     action: 'df -h | grep -v docker' }
+  - { alias: 'ubuntu-release',          action: 'lsb_release -a' }
+  - { alias: '', action: '' }
+
+# Autosuggestions
+oh_my_zsh_autosuggestions_max_length: 15
+oh_my_zsh_autosuggestions_bind_key: ""
+oh_my_zsh_autosuggestions_bind_key_2: ""
+
+# fzf
+oh_my_zsh_fzf_path: "$HOME/bin"
+oh_my_zsh_fzf_height: "100%"
+oh_my_zsh_fzf_reverse: yes
+oh_my_zsh_fzf_border: no
+oh_my_zsh_fzf_ctrl_r_opts: '--exact'
+
+# command-time
+oh_my_zsh_command_time_min_seconds: 3
+oh_my_zsh_command_time_echo: ""
+
+#
+# Powerlevel9k
+#
+oh_my_zsh_powerlevel9k_left_prompt:
+  - context
+  - dir
+
+oh_my_zsh_powerlevel9k_right_prompt:
+  - status
+  - background_jobs
+  - vcs
+  - command_execution_time
+  - time
+
+oh_my_zsh_powerlevel_custom_elements:
+  - name: command_time
+    command: "oh_my_zsh_command_time"
+    background: "248"
+    foreground: "000"
+
+oh_my_zsh_powerlevel9k_hide_host_on_local: yes
+oh_my_zsh_powerlevel9k_always_show_context: no
+oh_my_zsh_powerlevel9k_always_show_user: no
+oh_my_zsh_powerlevel9k_prompt_on_newline: no
+oh_my_zsh_powerlevel9k_shorten_dir_length: 3
+oh_my_zsh_powerlevel9k_status_verbose: 0
+
+# Separators
+oh_my_zsh_segment_separators: yes
+
+# Context & dir colors
+oh_my_zsh_powerlevel9k_context_default_foreground: "255"
+oh_my_zsh_powerlevel9k_context_default_background: "024"
+oh_my_zsh_powerlevel9k_context_root_foreground: "255"
+oh_my_zsh_powerlevel9k_context_root_background: "124"
+oh_my_zsh_powerlevel9k_dir_foreground: "255"
+oh_my_zsh_powerlevel9k_dir_background: "240"
+oh_my_zsh_powerlevel9k_dir_etc_foreground: "{{ oh_my_zsh_powerlevel9k_dir_foreground }}"
+oh_my_zsh_powerlevel9k_dir_etc_background: "{{ oh_my_zsh_powerlevel9k_dir_background }}"
+oh_my_zsh_powerlevel9k_dir_path_highlight_foreground: "{{ oh_my_zsh_powerlevel9k_dir_foreground }}"
+oh_my_zsh_powerlevel9k_dir_path_highlight_background: "{{ oh_my_zsh_powerlevel9k_dir_background }}"
+
+# vcs colors
+oh_my_zsh_powerlevel9k_vcs_foreground: "232"
+oh_my_zsh_powerlevel9k_vcs_clean_background: "100"
+oh_my_zsh_powerlevel9k_vcs_modified_background: "094"
+oh_my_zsh_powerlevel9k_vcs_untracked_background: "094"
+
+# command execution time
+oh_my_zsh_powerlevel9k_command_execution_time_foreground: "000"
+oh_my_zsh_powerlevel9k_command_execution_time_background: "248"
+
+# powerlevel10k
+oh_my_zsh_powerlevel10k_instant_prompt: yes
+
+#
+# Variables set specifically for Debian
+#
+oh_my_zsh_user_group: "{{ oh_my_zsh_user }}"
+
+# Where antigen is stored
+oh_my_zsh_antigen_path: "{% if oh_my_zsh_shared %}/usr/share/zsh-config{% else %}~{{ oh_my_zsh_user }}/.antigen{% endif %}"
+oh_my_zsh_config: "{% if oh_my_zsh_shared %}/usr/share/zsh-config/.zshrc{% else %}~{{ oh_my_zsh_user }}/.zshrc{% endif %}"
+oh_my_zsh_antigen_path_compat: "{{ oh_my_zsh_antigen_path | replace('~' + oh_my_zsh_user, '$HOME') }}"
+
+# fzf for Debian
+oh_my_zsh_fzf_os: "linux"
+oh_my_zsh_fd_command: "fdfind"  # default to 'fdfind' on Debian/Ubuntu
+oh_my_zsh_fd_binary: "{{ oh_my_zsh_fd_command }}"
+oh_my_zsh_fzf_arch: >-
+  {% if 'aarch64' in ansible_architecture %}armv7
+  {% elif 'arm' in ansible_architecture %}arm64
+  {% elif '64' in ansible_architecture %}amd64
+  {% elif 'armv7' in ansible_architecture %}armv7
+  {% else %}386{% endif %}
+oh_my_zsh_fzf_url: "https://github.com/junegunn/fzf/releases/download/{{ oh_my_zsh_fzf_version }}/fzf-{{ oh_my_zsh_fzf_version }}-{{ oh_my_zsh_fzf_os }}_{{ oh_my_zsh_fzf_arch }}.tar.gz"
+oh_my_zsh_antigen_fzf_path: "{{ oh_my_zsh_antigen_path }}/repos/https-COLON--SLASH--SLASH-github.com-SLASH-junegunn-SLASH-fzf.git"
+oh_my_zsh_fzf_default_opts: >-
+  --height {{ oh_my_zsh_fzf_height }}
+  {% if oh_my_zsh_fzf_reverse %} --reverse{% endif %}
+  {% if oh_my_zsh_fzf_border %} --border{% endif %}
+
+# booleans for powerlevel9k
+oh_my_zsh_powerlevel9k_prompt_on_newline_bool: "{% if oh_my_zsh_powerlevel9k_prompt_on_newline %}true{% else %}false{% endif %}"
+oh_my_zsh_powerlevel9k_always_show_context_bool: "{% if oh_my_zsh_powerlevel9k_always_show_context %}true{% else %}false{% endif %}"
+oh_my_zsh_powerlevel9k_always_show_user_bool: "{% if oh_my_zsh_powerlevel9k_always_show_user %}true{% else %}false{% endif %}"

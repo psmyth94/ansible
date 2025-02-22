@@ -1,0 +1,16 @@
+---
+- name: Setup nodejs
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+  vars_prompt:
+    - name: force_install
+      prompt: "Reinstall if already installed? (y/n)"
+      private: false
+      default: n
+  roles:
+    - role: nodejs
+      vars:
+        nodejs_user: "{{ dotfiles_user }}"
+        nodejs_force_install: "{{ force_install == 'y' }}"

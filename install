@@ -13,7 +13,7 @@ fi
 # second argument is vault password file (default .vault.password.txt)
 BECOME_FILE="$2"
 if [ -z "$2" ]; then
-  BECOME_FILE=".become.password.txt"
+  BECOME_FILE="$HOME/.become.password.txt"
 fi
 
 if [ ! -f "$BECOME_FILE" ]; then
@@ -25,37 +25,12 @@ BECOME_PASS=$(cat "$BECOME_FILE")
 
 VAULT_FILE="$3"
 if [ -z "$3" ]; then
-  VAULT_FILE=".vault.password.txt"
+  VAULT_FILE="$HOME/.vault.password.txt"
 fi
 
 if [ ! -f "$VAULT_FILE" ]; then
   echo "$VAULT_FILE does not exists"
   exit 1
-fi
-
-if ! command -v ansible >/dev/null 2>&1; then
-  echo "Ansible is not installed. Installing..."
-  echo "Checking if pipx is installed..."
-  if ! command -v pipx >/dev/null 2>&1; then
-    echo "pipx is not installed. Installing..."
-    python3 -m pip install --user pipx
-  else
-    echo "pipx is installed."
-  fi
-  python3 -m pipx install ansible
-  python3 -m pipx ensurepath
-fi
-
-mkdir -p ~/.ssh
-if [ ! -f ~/.ssh/id_rsa ]; then
-  ANSIBLE_CONFIG="./ansible.cfg" \
-    ansible-playbook \
-    "./ansible/playbooks/install_sshkey.yml" \
-    --ask-become-pass \
-    --ask-vault-pass \
-    -e "ansible_user=$(whoami)"
-else
-  echo "SSH key already exists. Skipping..."
 fi
 
 # Run Ansible bootstrap playbook
@@ -64,4 +39,4 @@ ANSIBLE_CONFIG="./ansible.cfg" \
   ansible-playbook \
   "./playbooks/${PLAYBOOK}.yml" \
   --vault-password-file="$VAULT_FILE" \
-  -e "ansible_user=$(whoami) ansible_become_pass=${BECOME_PASS} dotfiles_repo=https://github.com/psmyth94/.dotfiles dotfiles_version=main dotfiles_dir=${HOME}/.dotfiles"
+  -e "dotfiles_user=$(whoami) ansible_become_pass=${BECOME_PASS} dotfiles_repo=https://github.com/psmyth94/.dotfiles dotfiles_version=main dotfiles_dir=${HOME}/.dotfiles"

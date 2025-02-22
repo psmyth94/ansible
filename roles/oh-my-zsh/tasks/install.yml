@@ -1,0 +1,99 @@
+---
+
+- name: Update package cache
+  ansible.builtin.package:
+    update_cache: true
+    cache_valid_time: 86400
+  become: true
+  become_user: "root"
+
+- name: Install zsh, git, wget, fd-find, fzf
+  ansible.builtin.package:
+    name:
+      - zsh
+      - git
+      - wget
+      - fd-find
+    state: present
+  # brew don't work from root user on macOS
+  become: true
+  become_user: "root"
+
+- name: Check if {{ oh_my_zsh_antigen_path }} exist
+  ansible.builtin.stat:
+    path: "{{ oh_my_zsh_antigen_path }}"
+  register: oh_my_zsh_antigen_path_present
+
+- name: Create directory {{ oh_my_zsh_antigen_path }}
+  become: true
+  become_user: "{{ oh_my_zsh_user }}"
+  ansible.builtin.file:
+    dest: "{{ oh_my_zsh_antigen_path }}"
+    mode: '0755'
+    state: directory
+  when: not oh_my_zsh_antigen_path_present.stat.exists
+
+- name: Clone antigen {{ oh_my_zsh_antigen_version }}
+  ansible.builtin.git:
+    repo: "{{ oh_my_zsh_antigen_repo }}"
+    dest: "{{ oh_my_zsh_antigen_path }}/antigen"
+    version: "{{ oh_my_zsh_antigen_version }}"
+    force: true
+  become: true
+  become_user: "{{ oh_my_zsh_user }}"
+  register: oh_my_zsh_register_antigen_clone
+
+- name: Clone iwfmp/mc-solarized-skin
+  ansible.builtin.git:
+    repo: https://github.com/iwfmp/mc-solarized-skin.git
+    version: master
+    dest: "~{{ oh_my_zsh_user }}/.mc/lib/mc-solarized"
+    force: true
+  become: true
+  become_user: "{{ oh_my_zsh_user }}"
+  when: oh_my_zsh_mc_solarized_skin and not oh_my_zsh_shared
+
+- name: Check fzf installed
+  ansible.builtin.command: which fzf
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  register: oh_my_zsh_register_fzf_command
+
+- name: Set oh_my_zsh_fzf_path to /usr/local/bin
+  ansible.builtin.set_fact:
+    oh_my_zsh_fzf_path: /usr/local/bin
+  changed_when: false
+  when: oh_my_zsh_shared
+
+- name: Set oh_my_zsh_fzf_path_absolute
+  ansible.builtin.set_fact:
+    oh_my_zsh_fzf_path_absolute: "{{ oh_my_zsh_fzf_path | replace('$HOME', '~' + oh_my_zsh_user) }}"
+  changed_when: false
+
+- name: Ensure users home binary folder is present
+  ansible.builtin.file:
+    path: "{{ oh_my_zsh_fzf_path_absolute }}"
+    owner: "{{ oh_my_zsh_user }}"
+    group: "{{ oh_my_zsh_user_group }}"
+    mode: u=rwx,g=rwx,o=rx
+    state: directory
+  when: not oh_my_zsh_shared
+
+- name: "Download fzf to {{ oh_my_zsh_fzf_path_absolute }}"
+  become: true
+  ansible.builtin.unarchive:
+    src: "{{ oh_my_zsh_fzf_url }}"
+    dest: "{{ oh_my_zsh_fzf_path_absolute }}"
+    remote_src: true
+    creates: "{{ oh_my_zsh_fzf_path_absolute }}/fzf"
+  when: oh_my_zsh_register_fzf_command.rc == 1
+
+- name: Set directory permissions
+  become: true
+  ansible.builtin.file:
+    name: "{{ oh_my_zsh_antigen_path }}"
+    owner: "{{ oh_my_zsh_user }}"
+    group: "{{ oh_my_zsh_user_group }}"
+    recurse: true
+  changed_when: false

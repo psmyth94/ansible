@@ -1,0 +1,35 @@
+---
+# Package update settings
+tmux_cache_valid_time: 86400
+
+# User and ownership settings for the installation
+tmux_user: "{{ ansible_user_id }}"
+tmux_user_group: "{{ tmux_user }}"
+tmux_dotfiles_dir: "~{{ tmux_user }}/.dotfiles"
+
+# List of packages to install
+tmux_packages:
+  - tmux
+  - git
+
+# oh‑my‑tmux repository settings
+#
+# If tmux_shared is true, a system‑wide installation is performed;
+# otherwise, the repository is cloned into the user's home directory.
+tmux_shared: false                  # Set to true for a shared installation
+tmux_source_for_all_users: false    # Set to true if the config should be sourced for all users (Debian/Ubuntu environments)
+
+tmux_install_dir: "{{ '/opt/oh-my-tmux' if tmux_shared else '~' + tmux_user + '/.oh-my-tmux' }}"
+tmux_repo_url: "https://github.com/gpakosz/.tmux.git"
+tmux_repo_version: "master"
+
+
+# Tmux configuration file paths
+#
+# For shared installations, the config files are placed in system-wide locations.
+# Otherwise, they are placed in the user’s home directory.
+tmux_dest_config_dir: "{{ '/etc/tmux' if tmux_shared else '~' + tmux_user + '/.config/tmux' }}"
+tmux_src_local_config_dir: "{{ tmux_dotfiles_dir }}/tmux"
+tmux_src_local_conf: "{{ tmux_src_local_config_dir }}/.tmux.conf"
+tmux_src_local_wsl_conf: "{{ tmux_src_local_config_dir }}/.tmux.conf.wsl"
+tmux_dest_local_conf: "{{ tmux_dest_config_dir }}/tmux.conf.local"

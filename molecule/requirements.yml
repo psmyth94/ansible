@@ -1,0 +1,9 @@
+roles:
+  - name: geerlingguy.docker
+  - name: geerlingguy.go
+  - name: viasite-ansible.zsh
+  - name: robertdebock.cargo
+  - name: xanmanning.k3s
+collections:
+  - name: community.general
+    source: https://galaxy.ansible.com

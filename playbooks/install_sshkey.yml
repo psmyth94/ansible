@@ -6,6 +6,6 @@
   roles:
     - role: sshkey
       vars:
-        sshkey_user: "{{ ansible_user }}"
+        sshkey_user: "{{ dotfiles_user }}"
 
 

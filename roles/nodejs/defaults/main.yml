@@ -1,8 +1,8 @@
 ---
-nodejs_user: "{{ ansible_user_id }}"
+nodejs_user: "{{ dotfiles_user_id }}"
 nodejs_user_group: "{{ nodejs_user }}"
 nodejs_shared: false
 nodejs_nvm_dir: "{% if nodejs_shared %}/usr/local/nvm{% else %}~{{ nodejs_user }}/.nvm{% endif %}"
 nodejs_nvm_install_url: "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh"
-nodejs_version: "18.16.0"
-nodejs_force_reinstall: false
+nodejs_version: "--lts"
+nodejs_force_install: false

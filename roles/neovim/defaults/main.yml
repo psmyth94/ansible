@@ -4,7 +4,7 @@ neovim_shared: false
 neovim_bin_shared: true
 
 # Define the user for whom Neovim will be installed.
-neovim_user: "{{ ansible_user_id }}"
+neovim_user: "{{ dotfiles_user_id }}"
 neovim_bin_user: "{{ 'root' if neovim_bin_shared else neovim_user }}"
 
 # Define the group for which Neovim will be installed.

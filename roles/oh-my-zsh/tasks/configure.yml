@@ -1,0 +1,95 @@
+---
+- name: Get zsh path
+  ansible.builtin.shell: "command -v zsh"
+  args:
+    executable: /bin/bash
+  register: oh_my_zsh_register_zsh_path
+  check_mode: false
+  changed_when: false
+  tags: configure
+
+- name: Ensure zsh is root
+  ansible.builtin.file:
+    path: "{{ oh_my_zsh_register_zsh_path.stdout }}"
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+  become_user: "root"
+
+- name: Check zsh version
+  ansible.builtin.shell: "set -o pipefail; zsh --version | cut -d ' ' -f2"
+  args:
+    executable: /bin/bash
+  register: oh_my_zsh_register_version
+  check_mode: false
+  changed_when: false
+  tags: configure
+
+- name: Set oh_my_zsh_version variable
+  ansible.builtin.set_fact:
+    oh_my_zsh_version: "{{ oh_my_zsh_register_version.stdout }}"
+
+- name: Merge bundles lists
+  ansible.builtin.set_fact:
+    oh_my_zsh_antigen_bundles: "{{ oh_my_zsh_antigen_bundles | union(oh_my_zsh_antigen_bundles_extras) | unique }}"
+
+- name: Disable autoupdate if oh_my_zsh_shared install
+  ansible.builtin.set_fact:
+    oh_my_zsh_update_interval: 0
+  when: oh_my_zsh_shared
+
+- name: Check commands exists
+  ansible.builtin.shell: "command -v {{ item.command }} || which {{ item.command }}"
+  with_items: "{{ oh_my_zsh_antigen_bundles }}"
+  failed_when: false
+  changed_when: false
+  check_mode: false
+  when: item.command is defined
+  register: oh_my_zsh_register_commands_exists
+
+- name: Merge hotkeys lists
+  ansible.builtin.set_fact:
+    oh_my_zsh_hotkeys: "{{ oh_my_zsh_hotkeys | union(oh_my_zsh_hotkeys_extras) | unique }}"
+
+- name: Check antigen version
+  ansible.builtin.shell: |
+    set -o pipefail
+    cat {{ oh_my_zsh_antigen_path }}/antigen/VERSION | sed 's/^v//'
+  args:
+    executable: /bin/bash
+  register: oh_my_zsh_register_antigen_version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+  tags: configure
+
+- name: Set oh_my_zsh_antigen_installed_version variable
+  ansible.builtin.set_fact:
+    oh_my_zsh_antigen_installed_version: "{{ oh_my_zsh_register_antigen_version.stdout }}"
+
+- name: Write .zshrc config
+  ansible.builtin.template:
+    src: zshrc.j2
+    dest: "{{ oh_my_zsh_config }}"
+    owner: "{{ oh_my_zsh_user }}"
+    group: "{{ oh_my_zsh_user_group }}"
+    mode: '0644'
+    backup: true
+
+- name: Set zsh as default shell
+  ansible.builtin.user:
+    name: "{{ oh_my_zsh_user }}"
+    shell: /bin/zsh
+  become: true
+  become_user: "root"
+  when: not oh_my_zsh_shared and oh_my_zsh_change_user_shell
+
+- name: Add skip_global_compinit for disable early compinit call in Ubuntu
+  ansible.builtin.lineinfile:
+    regexp: "skip_global_compinit=1"
+    line: "skip_global_compinit=1"
+    dest: /etc/zsh/zshenv
+    state: present
+  become: true
+  when: ansible_distribution == 'Ubuntu'

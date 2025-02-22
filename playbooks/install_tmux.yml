@@ -1,0 +1,27 @@
+---
+- name: Setup tmux
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+  vars:
+    dotfiles_repo: "{{ dotfiles_repo | default('') }}"
+    dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
+    dotfiles_version: "{{ dotfiles_version | default('main') }}"
+
+  tasks:
+    - name: Setup Dotfiles
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_dir }}"
+        version: "{{ dotfiles_version }}"
+        update: true
+        recursive: true
+        track_submodules: true
+        force: true
+  roles:
+    - role: tmux
+      vars:
+        tmux_user: "{{ dotfiles_user }}"
+
+
