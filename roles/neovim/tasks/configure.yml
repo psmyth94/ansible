@@ -13,3 +13,19 @@
     dest: "{{ neovim_dest_config_dir }}"
     state: link
   when: neovim_src_config_dir != '' and neovim_dest_config_dir != ''
+
+- name: Get XDG_RUNTIME_DIR
+  ansible.builtin.set_fact:
+    xdg_runtime_dir: "{{ lookup('env', 'XDG_RUNTIME_DIR') }}"
+  failed_when: false
+
+- name: Fix for plenary.nvim/issues/536
+  become: true
+  become_user: "root"
+  ansible.builtin.file:
+    path: "{{ xdg_runtime_dir }}"
+    owner: "{{ neovim_user }}"
+    group: "{{ neovim_user_group }}"
+    state: directory
+    mode: '0700'
+  when: xdg_runtime_dir is defined

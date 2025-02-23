@@ -13,17 +13,22 @@
     dotfiles_repo: "{{ dotfiles_repo | default('') }}"
     dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
     dotfiles_version: "{{ dotfiles_version | default('main') }}"
-  roles:
-    - role: dotfiles
-      vars:
-        dotfiles_user: "{{ dotfiles_user }}"
-        dotfiles_repo: "{{ dotfiles_repo }}"
-        dotfiles_version: "{{ dotfiles_version }}"
-
-    - role: neovim
+  tasks:
+    - name: Setup Dotfiles
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_dir }}"
+        version: "{{ dotfiles_version }}"
+        update: true
+        recursive: true
+        track_submodules: true
+        force: true
+    - name: Setup neovim
+      ansible.builtin.include_role:
+        name: neovim
       vars:
         neovim_user: "{{ dotfiles_user }}"
-        neovim_force_build: "{{ neovim_force_rebuild | bool }}"
+        neovim_force_build: "{{ neovim_force_rebuild == 'y' }}"
         neovim_dotfiles_dir: "{{ dotfiles_dir }}"
       tags:
         - install

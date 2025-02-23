@@ -8,6 +8,11 @@
     path: "~{{ nodejs_user }}/.bashrc"
   register: bashrc_check
 
+- name: Get dir path directory
+  ansible.builtin.command: "echo {{ nodejs_nvm_dir }}"
+  register: abs_nodejs_nvm_dir
+  changed_when: false
+
 - name: Ensure NVM is loaded in the user zshrc startup file
   become: true
   become_user: "root"
@@ -15,7 +20,7 @@
     path: "~{{ nodejs_user }}/.zshrc"
     create: true
     line: |
-      export NVM_DIR="{{ nodejs_nvm_dir }}"
+      export NVM_DIR="{{ abs_nodejs_nvm_dir.stdout }}"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     state: present
     # Explicitly set permissions. This ensures the file has 0644.
@@ -34,7 +39,7 @@
     path: "~{{ nodejs_user }}/.bashrc"
     create: true
     line: |
-      export NVM_DIR="{{ nodejs_nvm_dir }}"
+      export NVM_DIR="{{ abs_nodejs_nvm_dir.stdout }}"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     state: present
     # Explicitly set permissions. This ensures the file has 0644.
