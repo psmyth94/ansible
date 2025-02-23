@@ -1,0 +1,25 @@
+---
+- name: Cargo Setup
+  hosts: localhost
+  tasks:
+    - name: Check if cargo is installed
+      ansible.builtin.command: bash -c "command -v cargo"
+      register: cargo_check
+      changed_when: false
+
+    - name: Download cargo
+      ansible.builtin.get_url:
+        url: "https://sh.rustup.rs"
+        dest: "/tmp/rustup.sh"
+        mode: '0755'
+      become: true
+      become_user: "root"
+      when: cargo_check.rc != 0
+
+    - name: Install cargo
+      ansible.builtin.command: bash -c "/tmp/rustup.sh -y"
+      args:
+        creates: /usr/local/cargo/bin/cargo
+      become: true
+      become_user: "root"
+      when: cargo_check.rc != 0
