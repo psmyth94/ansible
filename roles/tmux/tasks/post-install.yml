@@ -23,7 +23,7 @@
   become_user: "{{ tmux_user }}"
   ansible.builtin.file:
     src: "{{ tmux_install_dir }}/.tmux.conf"
-    dest: "{{ tmux_dest_config_dir }}/.tmux.conf"
+    dest: "{{ tmux_dest_config }}"
     state: link
     mode: '0755'
     force: true
@@ -32,8 +32,8 @@
   become: true
   become_user: "{{ tmux_user }}"
   ansible.builtin.copy:
-    src: "{{ tmux_src_local_wsl_conf if is_wsl else tmux_src_local_conf }}"
-    dest: "{{ tmux_dest_config_dir }}/.tmux.conf.local"
+    src: "{{ tmux_src_local_config_wsl if is_wsl else tmux_src_local_config }}"
+    dest: "{{ tmux_dest_local_config }}"
     mode: '0755'
     force: true
-  when: tmux_dotfile_dir is defined and tmux_local_config_dir is defined
+  when: tmux_src_local_config_wsl != '' or tmux_src_local_config != ''

@@ -29,7 +29,8 @@ tmux_repo_version: "master"
 # For shared installations, the config files are placed in system-wide locations.
 # Otherwise, they are placed in the user’s home directory.
 tmux_dest_config_dir: "{{ '/etc/tmux' if tmux_shared else '~' + tmux_user + '/.config/tmux' }}"
-tmux_src_local_config_dir: "{{ tmux_dotfiles_dir }}/tmux"
-tmux_src_local_conf: "{{ tmux_src_local_config_dir }}/.tmux.conf"
-tmux_src_local_wsl_conf: "{{ tmux_src_local_config_dir }}/.tmux.conf.wsl"
-tmux_dest_local_conf: "{{ tmux_dest_config_dir }}/tmux.conf.local"
+tmux_dest_config: "{{ tmux_dest_config_dir }}/tmux.conf"
+tmux_src_local_configig_dir: "{{ tmux_dotfiles_dir }}/tmux"
+tmux_src_local_config: "{{ tmux_src_local_configig_dir }}/.tmux.conf.local"
+tmux_src_local_config_wsl: "{{ tmux_src_local_configig_dir }}/.tmux.conf.local.wsl"
+tmux_dest_local_config: "{{ tmux_dest_config_dir }}/tmux.conf.local"
