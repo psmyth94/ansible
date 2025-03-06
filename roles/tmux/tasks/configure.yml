@@ -1,4 +1,15 @@
 ---
+- name: Remove existing tmux configuration
+  become: true
+  become_user: "{{ tmux_user }}"
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  with_items: "{{ tmux_paths }}"
+  when:
+    - item is not none
+    - tmux_force_build
+
 - name: Detect if running on WSL
   ansible.builtin.command: cat /proc/version
   register: wsl_version

@@ -1,0 +1,10 @@
+---
+- name: Setup Go on Debian
+  ansible.builtin.include_tasks:
+    file: "install_deb.yml"
+  when: ansible_os_family == 'Debian'
+
+- name: Setup Go on Windows
+  ansible.builtin.include_tasks:
+    file: install_win.yml
+  when: ansible_os_family == 'Windows'

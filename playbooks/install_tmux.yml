@@ -4,11 +4,15 @@
   become: true
   become_user: "{{ dotfiles_user }}"
 
+  vars_prompt:
+    - name: dotfiles_force_build
+      prompt: "Remove previous tmux installation and build from source?"
+      private: false
+      default: "n"
   vars:
     dotfiles_repo: "{{ dotfiles_repo | default('') }}"
     dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
     dotfiles_version: "{{ dotfiles_version | default('main') }}"
-
   tasks:
     - name: Setup Dotfiles
       ansible.builtin.git:
@@ -19,9 +23,9 @@
         recursive: true
         track_submodules: true
         force: true
-  roles:
-    - role: tmux
+    - name: Setup Tmux
+      ansible.builtin.include_role:
+        name: tmux
       vars:
         tmux_user: "{{ dotfiles_user }}"
-
-
+        tmux_force_build: "{{ dotfiles_force_build }}"

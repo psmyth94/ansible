@@ -28,7 +28,7 @@
 
 - name: Check if nvm needs install
   ansible.builtin.set_fact:
-    nvm_needs_build: "{{ nvm_installed.rc != 0 or nodejs_force_install }}"
+    nvm_needs_build: "{{ nvm_installed.rc != 0 or nodejs_force_build }}"
 
 - name: Download NVM install script
   ansible.builtin.get_url:
@@ -57,7 +57,7 @@
 
 - name: Check if nvm needs install
   ansible.builtin.set_fact:
-    nodejs_needs_build: "{{ node_check.rc != 0 or nodejs_force_install }}"
+    nodejs_needs_build: "{{ node_check.rc != 0 or nodejs_force_build }}"
 
 - name: Print Node.js status
   ansible.builtin.debug:

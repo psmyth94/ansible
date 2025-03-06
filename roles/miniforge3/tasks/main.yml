@@ -1,82 +1,71 @@
 ---
 
-- name: Check for miniforge existence
+- name: Check for miniforge3 existence
   ansible.builtin.stat:
-    path: "{{ miniforge_prefix }}/bin/mamba"
-  register: miniforge_exists
+    path: "{{ miniforge3_prefix }}/bin/mamba"
+  register: miniforge3_exists
 
 - name: Include install tasks
   ansible.builtin.include_tasks: install.yml
-  when: not miniforge_exists.stat.exists
+  when: not miniforge3_exists.stat.exists
 
-- name: Collect miniforge version
-  ansible.builtin.command: "{{ miniforge_prefix }}/bin/mamba -V"
-  register: miniforge_installed_version
+- name: Collect miniforge3 version
+  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/mamba -V"
+  register: miniforge3_installed_version
   changed_when: false
 
-- name: Update miniforge version (exact)
+- name: Update miniforge3 version (exact)
   ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba install --yes
-    {{ '--override-channels --channel' if miniforge_channels else '' }}
-    {{ miniforge_channels | join(' --channel ') }}
-    conda={{ miniforge_version }}
-  when: miniforge_version != 'latest' and (miniforge_installed_version.stdout.split() | last) != miniforge_version
-  register: __miniforge_update
-  changed_when: __miniforge_update.rc != 0
+    {{ miniforge3_prefix }}/bin/mamba install --yes
+    {{ '--override-channels --channel' if miniforge3_channels else '' }}
+    {{ miniforge3_channels | join(' --channel ') }}
+    conda={{ miniforge3_version }}
+  when: miniforge3_version != 'latest' and (miniforge3_installed_version.stdout.split() | last) != miniforge3_version
+  register: __miniforge3_update
+  changed_when: __miniforge3_update.rc != 0
 
-- name: Update miniforge version (latest)
+- name: Update miniforge3 version (latest)
   ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba update --yes
-    {{ '--override-channels --channel' if miniforge_channels else '' }}
-    {{ miniforge_channels | join(' --channel ') }}
+    {{ miniforge3_prefix }}/bin/mamba update --yes
+    {{ '--override-channels --channel' if miniforge3_channels else '' }}
+    {{ miniforge3_channels | join(' --channel ') }}
     conda
-  register: __miniforge_update
-  changed_when: "'All requested packages already installed' not in __miniforge_update.stdout"
-  when: miniforge_version == 'latest'
+  register: __miniforge3_update
+  changed_when: "'All requested packages already installed' not in __miniforge3_update.stdout"
+  when: miniforge3_version == 'latest'
 
 - name: Install packages to conda base environment
   ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba install --yes
-    {{ '--override-channels --channel' if (miniforge_channels) else '' }}
-    {{ miniforge_channels | join(' --channel ') }}
-    {{ miniforge_base_env_packages | join(' ') }}
-  when: miniforge_base_env_packages
-  register: __miniforge_install_packages
-  changed_when: __miniforge_install_packages.rc != 0
+    {{ miniforge3_prefix }}/bin/mamba install --yes
+    {{ '--override-channels --channel' if (miniforge3_channels) else '' }}
+    {{ miniforge3_channels | join(' --channel ') }}
+    {{ miniforge3_base_env_packages | join(' ') }}
+  when: miniforge3_base_env_packages
+  register: __miniforge3_install_packages
+  changed_when: __miniforge3_install_packages.rc != 0
 
 # Apparently item.value.copy always refers to the built-in copy method of the dict, whereas item.value['copy'] only does
 # if the key 'copy' is not defined
 - name: Create conda envs
   ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba create --yes
-    {{ '--override-channels --channel' if (item.value.channels | default(miniforge_channels)) else '' }}
-    {{ (item.value.channels | default(miniforge_channels)) | join(' --channel ') }}
+    {{ miniforge3_prefix }}/bin/mamba create --yes
+    {{ '--override-channels --channel' if (item.value.channels | default(miniforge3_channels)) else '' }}
+    {{ (item.value.channels | default(miniforge3_channels)) | join(' --channel ') }}
     {{ '--name ' ~ item.key if not item.key.startswith('/') else '--prefix ' ~ item.key }}
     {{ '--copy' if (item.value['copy'] is boolean and item.value['copy']) else '' }}
     {{ item.value.packages | join(' ') }}
   args:
-    creates: "{{ miniforge_prefix ~ '/envs/' ~ item.key if not item.key.startswith('/') else item.key }}"
-  loop: "{{ miniforge_conda_environments | dict2items }}"
+    creates: "{{ miniforge3_prefix ~ '/envs/' ~ item.key if not item.key.startswith('/') else item.key }}"
+  loop: "{{ miniforge3_conda_environments | dict2items }}"
 
 - name: Update conda envs
   ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba install --yes
-    {{ '--override-channels --channel' if (item.value.channels | default(miniforge_channels)) else '' }}
-    {{ (item.value.channels | default(miniforge_channels)) | join(' --channel ') }}
+    {{ miniforge3_prefix }}/bin/mamba install --yes
+    {{ '--override-channels --channel' if (item.value.channels | default(miniforge3_channels)) else '' }}
+    {{ (item.value.channels | default(miniforge3_channels)) | join(' --channel ') }}
     {{ '--name ' ~ item.key if not item.key.startswith('/') else '--prefix ' ~ item.key }}
     {{ '--copy' if (item.value['copy'] is boolean and item.value['copy']) else '' }}
     {{ item.value.packages | join(' ') }}
-  register: __miniforge_conda_install_output
-  changed_when: "'All requested packages already installed' not in __miniforge_conda_install_output.stdout"
-  loop: "{{ miniforge_conda_environments | dict2items }}"
-
-- name: Create Galaxy conda env
-  ansible.builtin.command: >-
-    {{ miniforge_prefix }}/bin/mamba create --yes
-    {{ '--override-channels --channel' if galaxy_conda_env_channels else '' }}
-    {{ galaxy_conda_env_channels | join(' --channel ') }}
-    --name {{ galaxy_conda_env }}
-    {{ galaxy_conda_env_packages | join(' ') }}
-  args:
-    creates: "{{ miniforge_prefix }}/envs/{{ galaxy_conda_env }}"
-  when: galaxy_conda_create_env
+  register: __miniforge3_conda_install_output
+  changed_when: "'All requested packages already installed' not in __miniforge3_conda_install_output.stdout"
+  loop: "{{ miniforge3_conda_environments | dict2items }}"

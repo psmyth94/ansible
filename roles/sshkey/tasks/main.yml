@@ -3,17 +3,26 @@
   become: true
   ansible.builtin.file:
     dest: "{{ sshkey_dir }}"
-    mode: 0700
+    mode: "0700"
     state: directory
   tags:
     - ssh
 
-- name: Install SSH key
+- name: Install Private SSH key
   become: true
   ansible.builtin.copy:
-    src: "{{ sshkey_source_key }}"
-    dest: "{{ sshkey_dest_key }}"
-    mode: 0600
+    src: "{{ sshkey_source_priv_key }}"
+    dest: "{{ sshkey_dest_priv_key }}"
+    mode: "0600"
+  tags:
+    - ssh
+
+- name: Install Public SSH key
+  become: true
+  ansible.builtin.copy:
+    src: "{{ sshkey_source_pub_key }}"
+    dest: "{{ sshkey_dest_pub_key }}"
+    mode: "0600"
   tags:
     - ssh
 
@@ -22,6 +31,6 @@
 #   ansible.builtin.authorized_key:
 #     user: "{{ sshkey_user }}"
 #     state: present
-#     key: "{{ sshkey_dest_key }}"
+#     key: "{{ sshkey_dest_priv_key }}"
 #   tags:
 #     - ssh

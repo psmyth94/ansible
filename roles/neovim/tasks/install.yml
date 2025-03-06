@@ -1,48 +1,22 @@
 ---
-- name: Check if Neovim is installed
-  become: true
-  become_user: "{{ neovim_user }}"
-  ansible.builtin.command: " which nvim"
-  register: neovim_check
-  changed_when: false
-  failed_when: false
-
-- name: Print Neovim status
-  ansible.builtin.debug:
-    msg: "Neovim check: {{ neovim_check.rc }}"
-
-- name: Print Neovim status
-  ansible.builtin.debug:
-    msg: "Neovim force build: {{ neovim_force_build }}"
-
-- name: Determine if Neovim needs to be built
-  ansible.builtin.set_fact:
-    neovim_needs_build: "{{ neovim_check.rc != 0 or neovim_force_build }}"
-
-- name: Print Neovim status
-  ansible.builtin.debug:
-    msg: "Neovim needs build: {{ neovim_needs_build }}"
 
 - name: Ensure required build dependencies are installed
   ansible.builtin.package:
     name: "{{ neovim_dependencies }}"
     state: present
   become: true
-  when: neovim_needs_build
 
 # - name: Ensure required third-party dependencies are installed
 #   ansible.builtin.package:
 #     name: "{{ neovim_bundle_dependencies }}"
 #     state: present
 #   become: true
-#   when: neovim_needs_build
 
 - name: Ensure required plugin dependencies are installed
   ansible.builtin.package:
     name: "{{ neovim_plugin_dependencies }}"
     state: present
   become: true
-  when: neovim_needs_build
 
 - name: Check if Neovim source is already downloaded
   ansible.builtin.stat:
@@ -58,7 +32,7 @@
     depth: 1
     force: "{{ neovim_force_build }}"
   register: clone
-  when: neovim_needs_build or not neovim_git_folder.stat.exists
+  when: not neovim_git_folder.stat.exists
 
 - name: Check if Neovim binary already exists at {{ neovim_bin_dir }}/bin/nvim
   ansible.builtin.stat:
@@ -76,7 +50,7 @@
   become: true
   become_user: "{{ neovim_user }}"
   changed_when: "'[100%]' in build_neovim.stdout or '[100%]' in build_neovim.stderr"
-  when: neovim_needs_build or not neovim_binary.stat.exists
+  when: not neovim_binary.stat.exists
 
 - name: Install Neovim
   community.general.make:
@@ -86,11 +60,10 @@
   become_user: "{{ neovim_user }}"
   register: install_neovim
   changed_when: "'-- Installing:' in install_neovim.stdout or '-- Installing:' in install_neovim.stderr"
-  when: neovim_needs_build and build_neovim.changed
+  when: build_neovim.changed
 
 - name: Remove Neovim build directory
   become: true
   ansible.builtin.file:
     path: "{{ neovim_install_dir }}"
     state: absent
-  when: neovim_needs_build

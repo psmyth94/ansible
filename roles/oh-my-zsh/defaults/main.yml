@@ -1,5 +1,6 @@
 ---
 oh_my_zsh_user: "{{ dotfiles_user_id }}"
+oh_my_zsh_force_build: false
 
 # .zshrc config
 oh_my_zsh_hist_stamps: yyyy-mm-dd

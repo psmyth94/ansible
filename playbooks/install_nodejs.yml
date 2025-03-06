@@ -5,7 +5,7 @@
   become_user: "{{ dotfiles_user }}"
 
   vars_prompt:
-    - name: force_install
+    - name: force_build
       prompt: "Reinstall if already installed? (y/n)"
       private: false
       default: n
@@ -13,4 +13,4 @@
     - role: nodejs
       vars:
         nodejs_user: "{{ dotfiles_user }}"
-        nodejs_force_install: "{{ force_install == 'y' }}"
+        nodejs_force_build: "{{ force_build == 'y' }}"

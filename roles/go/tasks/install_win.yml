@@ -1,0 +1,5 @@
+---
+- name: Install Go on Windows
+  ansible.builtin.win_chocolatey:
+    name: golang
+    state: present
