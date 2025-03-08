@@ -1,0 +1,16 @@
+---
+- name: Setup conda
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+
+  vars_prompt:
+    - name: force_build
+      prompt: "Reinstall if already installed? (y/n)"
+      private: false
+      default: n
+  roles:
+    - role: miniforge3
+      vars:
+        miniforge3_user: "{{ dotfiles_user }}"
+        miniforge3_force_build: "{{ force_build == 'y' }}"
