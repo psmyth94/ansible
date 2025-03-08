@@ -1,4 +1,5 @@
 ---
+miniforge3_force_build: false
 miniforge3_user: "{{ ansible_user_id }}"
 miniforge3_prefix: "~{{ miniforge3_user }}/miniforge3"
 
