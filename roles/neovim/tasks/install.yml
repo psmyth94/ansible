@@ -30,14 +30,19 @@
     dest: "{{ neovim_install_dir }}"
     version: "{{ neovim_version }}"
     depth: 1
-    force: "{{ neovim_force_build }}"
+    force: true
+    update: true
   register: clone
   when: not neovim_git_folder.stat.exists
 
-- name: Check if Neovim binary already exists at {{ neovim_bin_dir }}/bin/nvim
+- name: Check if Neovim binary already exists at {{ neovim_cmake_install_dir }}/bin/nvim
   ansible.builtin.stat:
-    path: "{{ neovim_bin_dir }}/bin/nvim"
+    path: "{{ neovim_cmake_install_dir }}/bin/nvim"
   register: neovim_binary
+
+- name: Does neovim need to be built?
+  ansible.builtin.set_fact:
+    neovim_needs_build: "{{ not neovim_binary.stat.exists or neovim_force_build }}"
 
 - name: Build Neovim from source
   community.general.make:
@@ -45,25 +50,26 @@
     params:
       CMAKE_BUILD_TYPE: "RelWithDebInfo"
       # USE_BUNDLED: "OFF"
-      CMAKE_INSTALL_PREFIX: "{{ neovim_bin_dir }}"
+      CMAKE_INSTALL_PREFIX: "{{ neovim_cmake_install_dir }}"
   register: build_neovim
   become: true
   become_user: "{{ neovim_user }}"
   changed_when: "'[100%]' in build_neovim.stdout or '[100%]' in build_neovim.stderr"
-  when: not neovim_binary.stat.exists
+  when: neovim_needs_build
 
 - name: Install Neovim
   community.general.make:
     chdir: "{{ neovim_install_dir }}"
     target: install
   become: true
-  become_user: "{{ neovim_user }}"
+  become_user: "root"
   register: install_neovim
   changed_when: "'-- Installing:' in install_neovim.stdout or '-- Installing:' in install_neovim.stderr"
-  when: build_neovim.changed
+  when: neovim_needs_build
 
-- name: Remove Neovim build directory
+- name: Remove Neovim install directory
   become: true
+  become_user: "root"
   ansible.builtin.file:
     path: "{{ neovim_install_dir }}"
     state: absent
