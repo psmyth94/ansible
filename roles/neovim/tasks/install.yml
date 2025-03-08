@@ -18,6 +18,12 @@
     state: present
   become: true
 
+- name: Ensure required python libraries are installed
+  ansible.builtin.pip:
+    name: "{{ neovim_pip_dependencies }}"
+    state: present
+  become: true
+
 - name: Check if Neovim source is already downloaded
   ansible.builtin.stat:
     path: "{{ neovim_install_dir }}/.git"

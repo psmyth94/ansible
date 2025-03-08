@@ -58,3 +58,12 @@ neovim_bundle_dependencies:
 neovim_plugin_dependencies:
   - "ripgrep"
   - "luarocks"
+  - "python3-pip"
+
+neovim_pip_dependencies:
+  - "pynvim"
+  - "ruff"
+  - "pyright"
+  - "debugpy"
+  - "pytest"
+  - "pytest-xdist"
