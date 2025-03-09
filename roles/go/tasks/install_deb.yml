@@ -1,0 +1,11 @@
+
+---
+- name: Add Go repository to apt
+  ansible.builtin.apt_repository:
+    repo: ppa:longsleep/golang-backports
+    state: present
+
+- name: Install Go
+  ansible.builtin.package:
+    name: golang-go
+    state: present

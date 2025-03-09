@@ -1,8 +1,21 @@
 ---
+- name: Check if Neovim is installed
+  become: true
+  become_user: "{{ neovim_user }}"
+  ansible.builtin.command: bash -c "command -v nvim"
+  register: neovim_check
+  changed_when: false
+  failed_when: false
+
+- name: Determine if Neovim needs to be built
+  ansible.builtin.set_fact:
+    neovim_needs_build: "{{ neovim_check.rc != 0 or neovim_force_build }}"
+
 - name: "Install Neovim"
   ansible.builtin.include_tasks: install.yml
   tags:
     - install
+  when: neovim_needs_build
 
 - name: "Configure Neovim"
   ansible.builtin.include_tasks: configure.yml

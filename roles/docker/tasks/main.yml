@@ -1,0 +1,25 @@
+---
+- name: Check if docker is installed
+  ansible.builtin.command: bash -c "command -v nvim"
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Determine if docker needs to be built
+  ansible.builtin.set_fact:
+    docker_needs_build: "{{ docker_check.rc != 0 or docker_force_build }}"
+
+- name: Install docker
+  ansible.builtin.include_tasks:
+    file: install.yml
+  tags:
+    - docker
+    - install
+  when: docker_needs_build
+
+- name: Start docker
+  ansible.builtin.include_tasks:
+    file: post-install.yml
+  tags:
+    - docker
+    - configure

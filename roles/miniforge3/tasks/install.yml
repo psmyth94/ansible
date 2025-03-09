@@ -1,0 +1,27 @@
+---
+- name: Create miniforge3 installer tempfile
+  ansible.builtin.tempfile:
+    prefix: ansible-miniforge3-installer.
+    suffix: .sh
+  register: miniforge3_installer_tempfile
+
+- name: Collect miniforge3 installer
+  ansible.builtin.get_url:
+    url: "{{ miniforge3_installer_url }}"
+    dest: "{{ miniforge3_installer_tempfile.path }}"
+    mode: '0755'
+    force: true
+  become: true
+  become_user: "{{ miniforge3_user }}"
+
+- name: Miniforge3 installer block
+  become: true
+  become_user: "{{ miniforge3_user }}"
+  ansible.builtin.block:
+    - name: Run miniforge3 installer
+      ansible.builtin.command: "{{ miniforge3_installer_shell }} {{ miniforge3_installer_tempfile.path }} -b -p {{ miniforge3_prefix }}"
+  always:
+    - name: Remove miniconda installer
+      ansible.builtin.file:
+        path: "{{ miniforge3_installer_tempfile.path }}"
+        state: absent

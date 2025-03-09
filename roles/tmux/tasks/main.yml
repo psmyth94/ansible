@@ -1,16 +1,27 @@
 ---
-- include_tasks: install.yml
+- name: Check if tmux is installed
+  ansible.builtin.command: bash -c "command -v tmux"
+  register: tmux_check
+  changed_when: false
+
+- name: Check if we need to install tmux
+  ansible.builtin.set_fact:
+    tmux_needs_build: "{{ tmux_check.rc != 0 or tmux_force_build }}"
+  changed_when: false
+
+- ansible.builtin.include_tasks: install.yml
   tags:
     - tmux
     - install
+  when: tmux_needs_build
 
-- include_tasks: post-install.yml
+- ansible.builtin.include_tasks: configure.yml
   tags:
     - tmux
     - configure
 
-- include_tasks: source-for-users-shared.yml
+- ansible.builtin.include_tasks: source-for-users-shared.yml
   tags:
     - tmux
-    - install
+    - source
   when: tmux_shared and tmux_source_for_all_users

@@ -1,5 +1,5 @@
 ---
-- name: Setup nodejs
+- name: Setup conda
   hosts: localhost
   become: true
   become_user: "{{ dotfiles_user }}"
@@ -10,7 +10,7 @@
       private: false
       default: n
   roles:
-    - role: nodejs
+    - role: miniforge3
       vars:
-        nodejs_user: "{{ dotfiles_user }}"
-        nodejs_force_build: "{{ force_build == 'y' }}"
+        miniforge3_user: "{{ dotfiles_user }}"
+        miniforge3_force_build: "{{ force_build == 'y' }}"

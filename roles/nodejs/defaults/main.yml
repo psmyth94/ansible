@@ -5,4 +5,4 @@ nodejs_shared: false
 nodejs_nvm_dir: "{% if nodejs_shared %}/usr/local/nvm{% else %}~{{ nodejs_user }}/.nvm{% endif %}"
 nodejs_nvm_install_url: "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh"
 nodejs_version: "--lts"
-nodejs_force_install: false
+nodejs_force_build: false

@@ -6,6 +6,7 @@ tmux_cache_valid_time: 86400
 tmux_user: "{{ ansible_user_id }}"
 tmux_user_group: "{{ tmux_user }}"
 tmux_dotfiles_dir: "~{{ tmux_user }}/.dotfiles"
+tmux_force_build: false
 
 # List of packages to install
 tmux_packages:
@@ -34,3 +35,15 @@ tmux_src_local_configig_dir: "{{ tmux_dotfiles_dir }}/tmux"
 tmux_src_local_config: "{{ tmux_src_local_configig_dir }}/.tmux.conf.local"
 tmux_src_local_config_wsl: "{{ tmux_src_local_configig_dir }}/.tmux.conf.local.wsl"
 tmux_dest_local_config: "{{ tmux_dest_config_dir }}/tmux.conf.local"
+
+tmux_paths:
+  - "{{ tmux_dest_config }}"
+  - "{{ tmux_dest_local_config }}"
+  - "{{ lookup('env', 'XDG_CONFIG_HOME') + '/tmux/tmux.conf' }}"
+  - "{{ lookup('env', 'XDG_CONFIG_HOME') + '/tmux/tmux.conf.local' }}"
+  - "~{{ tmux_user }}/.tmux.conf"
+  - "~{{ tmux_user }}/.tmux.conf.local"
+  - "/etc/tmux.conf"
+  - "/etc/tmux/tmux.conf"
+  - "/etc/tmux.conf.local"
+  - "/etc/tmux/tmux.conf.local"

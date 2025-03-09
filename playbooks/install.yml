@@ -7,43 +7,39 @@
 
   vars_prompt:
     - name: ansible_neovim_force_build
-      prompt: "Do you want to force building Neovim from source even if installed already? (y/n)"
+      prompt: "Do you want to force building Neovim from source even if installed already? ([y]es/[n]o)"
       private: false
       default: n
-    - name: default_zsh
-      prompt: "Do you want to make Zsh the default shell (y/n)"
+    - name: sshkey_type
+      prompt: "What type of SSH key do you want to copy? (id_[r]sa/id_[e]d25519)"
       private: false
-      default: y
-    - name: install_oh_my_zsh
-      prompt: "Do you want to install Oh-My-Zsh? (y/n)"
+      default: e
+    - name: install_zsh
+      prompt: "Do you want to install Oh-My-Zsh? ([y]es/[n]o/[f]orce)"
       private: false
       default: y
     - name: install_tmux
-      prompt: "Do you want to install Tmux? (y/n)"
-      private: false
-      default: y
-    - name: install_oh_my_tmux
-      prompt: "Do you want to install Oh-My-Tmux? (y/n)"
+      prompt: "Do you want to install Tmux w/ Oh-My-Tmux? ([y]es/[n]o/[f]orce)"
       private: false
       default: y
     - name: install_docker
-      prompt: "Do you want to install Docker? (y/n)"
+      prompt: "Do you want to install Docker? ([y]es/[n]o/[f]orce)"
       private: false
       default: n
     - name: install_r
-      prompt: "Do you want to install R? (y/n)"
+      prompt: "Do you want to install R? ([y]es/[n]o)"
       private: false
       default: n
     - name: install_go
-      prompt: "Do you want to install Go? (y/n)"
+      prompt: "Do you want to install Go? ([y]es/[n]o)"
       private: false
       default: n
-    - name: install_k3s
-      prompt: "Do you want to install K3s? (y/n)"
-      private: false
-      default: n
+    # - name: install_k3s
+    #   prompt: "Do you want to install K3s? ([y]es/[n]o)"
+    #   private: false
+    #   default: n
     - name: install_conda
-      prompt: "Do you want to install Conda? (y/n)"
+      prompt: "Do you want to install Conda? ([y]es/[n]o)"
       private: false
       default: n
 
@@ -52,33 +48,6 @@
     dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
     dotfiles_version: "{{ dotfiles_version | default('main') }}"
   tasks:
-    - name: Install geerlingguy.docker
-      community.general.ansible_galaxy_install:
-        type: role
-        name: "geerlingguy.docker"
-        force: true
-      when: install_docker == 'y'
-
-    - name: Install geerlingguy.go
-      community.general.ansible_galaxy_install:
-        type: role
-        name: geerlingguy.go
-        force: true
-      when: install_go == 'y'
-
-    - name: Install robertdebock.cargo
-      community.general.ansible_galaxy_install:
-        type: role
-        name: robertdebock.cargo
-        force: true
-
-    - name: Install xanmanning.k3s
-      community.general.ansible_galaxy_install:
-        type: role
-        name: xanmanning.k3s
-        force: true
-      when: install_k3s == 'y'
-
     - name: Setup Dotfiles
       ansible.builtin.git:
         repo: "{{ dotfiles_repo }}"
@@ -112,7 +81,14 @@
         name: oh-my-zsh
       vars:
         oh_my_zsh_user: "{{ dotfiles_user }}"
-      when: install_oh_my_zsh == 'y'
+        oh_my_zsh_force_build: "{{ install_zsh == 'f' }}" # doesn't do anything for now
+      when: install_zsh == 'y' or install_zsh == 'f'
+
+    - name: Setup Rust
+      ansible.builtin.include_role:
+        name: rust
+      vars:
+        rust_user: "{{ dotilfes_user }}"
 
     - name: Setup WSL Clipboard Support if on WSL
       ansible.builtin.include_role:
@@ -131,29 +107,21 @@
         tmux_user: "{{ dotfiles_user }}"
       when:
         - install_tmux == 'y'
-        - install_oh_my_tmux == 'y'
 
     - name: Setup Go
       ansible.builtin.include_role:
-        name: geerlingguy.go
+        name: go
       when: install_go == 'y'
-
-    - name: Setup Cargo
-      ansible.builtin.include_role:
-        name: robertdebock.cargo
-      vars:
-        ansible_become: true
-        ansible_become_user: root
 
     - name: Setup Docker
       ansible.builtin.include_role:
-        name: geerlingguy.docker
+        name: docker
       when: install_docker == 'y'
 
-    - name: Setup K3s
-      ansible.builtin.include_role:
-        name: xanmanning.k3s
-      when: install_k3s == 'y'
+    # - name: Setup K3s
+    #   ansible.builtin.include_role:
+    #     name: xanmanning.k3s
+    #   when: install_k3s == 'y'
 
     - name: Setup Conda
       ansible.builtin.include_role:
@@ -164,4 +132,6 @@
       ansible.builtin.package:
         name: r-base
         state: present
+      become: true
+      become_user: root
       when: install_r == 'y'

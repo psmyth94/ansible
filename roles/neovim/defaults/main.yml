@@ -13,7 +13,7 @@ neovim_user_group: "{{ neovim_user }}"
 
 neovim_install_dir: "~{{ neovim_user }}/neovim"
 
-neovim_bin_dir: >-
+neovim_cmake_install_dir: >-
   {{ '/usr/local' if neovim_bin_shared
      else '~' + neovim_user + '/.local' }}
 
@@ -58,3 +58,12 @@ neovim_bundle_dependencies:
 neovim_plugin_dependencies:
   - "ripgrep"
   - "luarocks"
+  - "python3-pip"
+
+neovim_pip_dependencies:
+  - "pynvim"
+  - "ruff"
+  - "pyright"
+  - "debugpy"
+  - "pytest"
+  - "pytest-xdist"
