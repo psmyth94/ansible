@@ -17,9 +17,11 @@
 - name: Miniforge3 installer block
   become: true
   become_user: "{{ miniforge3_user }}"
-  ansible.builtin.block:
+  block:
     - name: Run miniforge3 installer
       ansible.builtin.command: "{{ miniforge3_installer_shell }} {{ miniforge3_installer_tempfile.path }} -b -p {{ miniforge3_prefix }}"
+      args:
+        creates: "{{ miniforge3_prefix }}"
   always:
     - name: Remove miniconda installer
       ansible.builtin.file:

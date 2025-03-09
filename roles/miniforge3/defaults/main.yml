@@ -46,8 +46,11 @@ miniforge3_installer_arch: "{{ ansible_architecture }}"
 miniforge3_installer: >-
   Miniforge3-{{ ansible_system }}-{{ ansible_architecture }}.sh
 
-miniforge3_download_url: >-
+miniforge3_installer_url: >-
   https://github.com/conda-forge/miniforge/releases/latest/download/{{ miniforge3_installer }}
 
 # The shell to call the downloaded installer script with
 miniforge3_installer_shell: /bin/sh
+
+# Path to a certificate bundle to use for SSL verification
+miniforge3_cert_path: ""

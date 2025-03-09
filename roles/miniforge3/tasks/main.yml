@@ -20,6 +20,8 @@
     {{ '--override-channels --channel' if miniforge3_channels else '' }}
     {{ miniforge3_channels | join(' --channel ') }}
     conda={{ miniforge3_version }}
+  environment:
+    SSL_CERT_FILE: "{{ miniforge3_cert_path }}"
   when: miniforge3_version != 'latest' and (miniforge3_installed_version.stdout.split() | last) != miniforge3_version
   register: __miniforge3_update
   changed_when: __miniforge3_update.rc != 0
@@ -30,6 +32,8 @@
     {{ '--override-channels --channel' if miniforge3_channels else '' }}
     {{ miniforge3_channels | join(' --channel ') }}
     conda
+  environment:
+    SSL_CERT_FILE: "{{ miniforge3_cert_path }}"
   register: __miniforge3_update
   changed_when: "'All requested packages already installed' not in __miniforge3_update.stdout"
   when: miniforge3_version == 'latest'
@@ -40,6 +44,8 @@
     {{ '--override-channels --channel' if (miniforge3_channels) else '' }}
     {{ miniforge3_channels | join(' --channel ') }}
     {{ miniforge3_base_env_packages | join(' ') }}
+  environment:
+    SSL_CERT_FILE: "{{ miniforge3_cert_path }}"
   when: miniforge3_base_env_packages
   register: __miniforge3_install_packages
   changed_when: __miniforge3_install_packages.rc != 0
@@ -54,6 +60,8 @@
     {{ '--name ' ~ item.key if not item.key.startswith('/') else '--prefix ' ~ item.key }}
     {{ '--copy' if (item.value['copy'] is boolean and item.value['copy']) else '' }}
     {{ item.value.packages | join(' ') }}
+  environment:
+    SSL_CERT_FILE: "{{ miniforge3_cert_path }}"
   args:
     creates: "{{ miniforge3_prefix ~ '/envs/' ~ item.key if not item.key.startswith('/') else item.key }}"
   loop: "{{ miniforge3_conda_environments | dict2items }}"
@@ -66,6 +74,8 @@
     {{ '--name ' ~ item.key if not item.key.startswith('/') else '--prefix ' ~ item.key }}
     {{ '--copy' if (item.value['copy'] is boolean and item.value['copy']) else '' }}
     {{ item.value.packages | join(' ') }}
+  environment:
+    SSL_CERT_FILE: "{{ miniforge3_cert_path }}"
   register: __miniforge3_conda_install_output
   changed_when: "'All requested packages already installed' not in __miniforge3_conda_install_output.stdout"
   loop: "{{ miniforge3_conda_environments | dict2items }}"

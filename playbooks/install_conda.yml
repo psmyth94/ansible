@@ -9,8 +9,13 @@
       prompt: "Reinstall if already installed? (y/n)"
       private: false
       default: n
+    - name: cert_path
+      prompt: "Add /etc/ssl/certs/ca-certificates.crt to .condarc? ([y]es/[n]o)"
+      private: false
+      default: "n"
   roles:
     - role: miniforge3
       vars:
         miniforge3_user: "{{ dotfiles_user }}"
         miniforge3_force_build: "{{ force_build == 'y' }}"
+        miniforge3_cert_path: "{{ '' if cert_path == 'n' else '/etc/ssl/certs/ca-certificates.crt' }}"

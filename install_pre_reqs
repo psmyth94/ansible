@@ -2,5 +2,14 @@
 
 sudo apt update
 sudo apt install python3-pip
+LOCAL_BIN_PATH_LINE="export PATH=\"\$HOME/.local/bin:\$PATH\""
+if ! grep -q "$LOCAL_BIN_PATH_LINE" ~/.bashrc; then
+    echo "$LOCAL_BIN_PATH_LINE" >> ~/.bashrc
+fi
+if [ -f ~/.zshrc ]; then
+  if ! grep -q "$LOCAL_BIN_PATH_LINE" ~/.zshrc; then
+      echo "$LOCAL_BIN_PATH_LINE" >> ~/.zshrc
+  fi
+fi
 
 python3 -m pip install --user ansible
