@@ -1,0 +1,5 @@
+---
+dependencies:
+  - role: rust
+    vars:
+      rust_user: "{{ tmux_user }}"
