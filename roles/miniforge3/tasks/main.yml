@@ -38,6 +38,12 @@
   changed_when: "'All requested packages already installed' not in __miniforge3_update.stdout"
   when: miniforge3_version == 'latest'
 
+- name: Init mamba
+  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/mamba init --all"
+  when: miniforge3_init
+  register: __miniforge3_init
+  changed_when: __miniforge3_init.rc != 0
+
 - name: Install packages to conda base environment
   ansible.builtin.command: >-
     {{ miniforge3_prefix }}/bin/mamba install --yes
