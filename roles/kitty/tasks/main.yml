@@ -1,0 +1,37 @@
+---
+- name: Add repository for Kitty
+  ansible.builtin.apt_repository:
+    repo: ppa:kisak/kisak-mesa
+    state: present
+    update_cache: true
+  become: true
+  become_user: root
+
+- name: Install x11-apps
+  ansible.builtin.apt:
+    name: x11-apps
+    state: present
+  become: true
+  become_user: root
+
+- name: Install mesa-utils
+  ansible.builtin.apt:
+    name: mesa-utils
+    state: present
+  become: true
+  become_user: root
+
+- name: Install Kitty
+  ansible.builtin.apt:
+    name: kitty
+    state: present
+  become: true
+  become_user: root
+
+- name: Create config and add linux_display_server X11 in ~/.config/kitty/kitty.conf
+  ansible.builtin.shell: |
+      mkdir -p ~/.config/kitty
+      echo "linux_display_server X11" > ~/.config/kitty/kitty.conf
+  become: true
+  become_user: "{{ ansible_user_id }}"
+	

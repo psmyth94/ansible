@@ -7,6 +7,25 @@
   become: true
   become_user: "root"
 
+- name: Check if Oh-My-Zsh is installed
+  ansible.builtin.stat:
+    path: ~/.oh-my-zsh
+  register: check_oh_my_zsh
+
+- name: Download oh-my-zsh if not exists
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    dest: "/tmp/install.sh"
+  become: true
+  become_user: "oh_my_zsh_user"
+  when: not check_oh_my_zsh.stat.exists
+
+- name: Install oh-my-zsh if not exists
+  ansible.builtin.command: /tmp/install.sh
+  become: true
+  become_user: "oh_my_zsh_user"
+  when: not check_oh_my_zsh.stat.exists
+
 - name: Install zsh, git, wget, fd-find, fzf
   ansible.builtin.package:
     name:

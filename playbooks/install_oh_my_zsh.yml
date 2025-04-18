@@ -4,10 +4,10 @@
   become: true
   become_user: "{{ dotfiles_user }}"
   vars_prompt:
-    # - name: oh-my-zsh_force_rebuild
-      # prompt: "Do you want to force rebuild oh-my-zsh from source? (y/n)"
-      # private: false
-      # default: n
+    - name: oh-my-zsh_force_rebuild
+      prompt: "Do you want to force rebuild oh-my-zsh from source? (y/n)"
+      private: false
+      default: n
 
   vars:
     dotfiles_repo: "{{ dotfiles_repo | default('') }}"

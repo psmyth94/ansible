@@ -1,3 +1,4 @@
+---
 - name: Check if zshrc exists
   ansible.builtin.stat:
     path: "~{{ nodejs_user }}/.zshrc"

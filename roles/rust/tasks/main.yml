@@ -2,6 +2,7 @@
 - name: Check if cargo is installed
   ansible.builtin.command: bash -c "command -v cargo"
   register: cargo_check
+  failed_when: false
   changed_when: false
 
 - name: Download cargo

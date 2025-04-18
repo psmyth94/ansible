@@ -1,5 +1,6 @@
 ---
-oh_my_zsh_user: "{{ dotfiles_user_id }}"
+oh_my_zsh_user: "{{ ansible_user_id }}"
+oh_my_zsh_dotfiles: "~{{ oh_my_zsh_user }}/.dotfiles"
 oh_my_zsh_force_build: false
 
 # .zshrc config
@@ -243,12 +244,16 @@ oh_my_zsh_fzf_arch: >-
   {% elif '64' in ansible_architecture %}amd64
   {% elif 'armv7' in ansible_architecture %}armv7
   {% else %}386{% endif %}
-oh_my_zsh_fzf_url: "https://github.com/junegunn/fzf/releases/download/{{ oh_my_zsh_fzf_version }}/fzf-{{ oh_my_zsh_fzf_version }}-{{ oh_my_zsh_fzf_os }}_{{ oh_my_zsh_fzf_arch }}.tar.gz"
+oh_my_zsh_fzf_url: "https://github.com/junegunn/fzf/releases/download/{{ oh_my_zsh_fzf_version }}/fzf-{{ oh_my_zsh_fzf_version }}-{{ oh_my_zsh_fzf_os }}_{{ oh_my_zsh_fzf_arch | trim }}.tar.gz"
 oh_my_zsh_antigen_fzf_path: "{{ oh_my_zsh_antigen_path }}/repos/https-COLON--SLASH--SLASH-github.com-SLASH-junegunn-SLASH-fzf.git"
 oh_my_zsh_fzf_default_opts: >-
   --height {{ oh_my_zsh_fzf_height }}
   {% if oh_my_zsh_fzf_reverse %} --reverse{% endif %}
   {% if oh_my_zsh_fzf_border %} --border{% endif %}
+
+# local zsh config
+oh_my_zsh_src_local_config: "{{ oh_my_zsh_dotfiles }}/zsh/.zshrc"
+oh_my_zsh_dest_local_config: "~{{ oh_my_zsh_user }}/.zshrc.local.pre-p10k"
 
 # booleans for powerlevel9k
 oh_my_zsh_powerlevel9k_prompt_on_newline_bool: "{% if oh_my_zsh_powerlevel9k_prompt_on_newline %}true{% else %}false{% endif %}"

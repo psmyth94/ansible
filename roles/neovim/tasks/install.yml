@@ -4,6 +4,7 @@
   ansible.builtin.package:
     name: "{{ neovim_dependencies }}"
     state: present
+  become_user: "root"
   become: true
 
 # - name: Ensure required third-party dependencies are installed
@@ -16,12 +17,15 @@
   ansible.builtin.package:
     name: "{{ neovim_plugin_dependencies }}"
     state: present
+  become_user: "root"
   become: true
 
 - name: Ensure required python libraries are installed
   ansible.builtin.pip:
     name: "{{ neovim_pip_dependencies }}"
     state: present
+    extra_args: --break-system-packages
+  become_user: "root"
   become: true
 
 - name: Check if Neovim source is already downloaded

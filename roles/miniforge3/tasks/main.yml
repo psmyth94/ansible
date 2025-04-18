@@ -10,7 +10,7 @@
   when: not miniforge3_exists.stat.exists
 
 - name: Collect miniforge3 version
-  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/mamba -V"
+  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/mamba -v"
   register: miniforge3_installed_version
   changed_when: false
 
@@ -38,11 +38,8 @@
   changed_when: "'All requested packages already installed' not in __miniforge3_update.stdout"
   when: miniforge3_version == 'latest'
 
-- name: Init mamba
-  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/mamba init --all"
-  when: miniforge3_init
-  register: __miniforge3_init
-  changed_when: __miniforge3_init.rc != 0
+- name: Init conda
+  ansible.builtin.command: "{{ miniforge3_prefix }}/bin/conda init --all"
 
 - name: Install packages to conda base environment
   ansible.builtin.command: >-

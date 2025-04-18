@@ -64,6 +64,16 @@
       vars:
         sshkey_user: "{{ dotfiles_user }}"
 
+    - name: Setup Rust
+      ansible.builtin.include_role:
+        name: rust
+      vars:
+        rust_user: "{{ dotilfes_user }}"
+
+    - name: Setup WSL Clipboard Support if on WSL
+      ansible.builtin.include_role:
+        name: wsl_clipboard_support
+
     - name: Setup Neovim
       ansible.builtin.include_role:
         name: neovim
@@ -83,16 +93,6 @@
         oh_my_zsh_user: "{{ dotfiles_user }}"
         oh_my_zsh_force_build: "{{ install_zsh == 'f' }}" # doesn't do anything for now
       when: install_zsh == 'y' or install_zsh == 'f'
-
-    - name: Setup Rust
-      ansible.builtin.include_role:
-        name: rust
-      vars:
-        rust_user: "{{ dotilfes_user }}"
-
-    - name: Setup WSL Clipboard Support if on WSL
-      ansible.builtin.include_role:
-        name: wsl_clipboard_support
 
     - name: Setup Node.js
       ansible.builtin.include_role:

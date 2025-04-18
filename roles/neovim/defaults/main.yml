@@ -67,3 +67,4 @@ neovim_pip_dependencies:
   - "debugpy"
   - "pytest"
   - "pytest-xdist"
+  - "jupytext"

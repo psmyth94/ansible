@@ -1,0 +1,10 @@
+---
+- name: Cargo Setup
+  hosts: localhost
+  tasks:
+    - name: Install R
+      ansible.builtin.package:
+        name: r-base
+        state: present
+      become: true
+      become_user: root

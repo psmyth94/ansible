@@ -77,6 +77,18 @@
     mode: '0644'
     backup: true
 
+- name: Check if local zshrc exists
+  ansible.builtin.stat:
+    path: "{{ oh_my_zsh_src_local_config }}"
+  register: local_zshrc_check
+
+- name: Add local zsh if exists
+  ansible.builtin.copy:
+    src: "{{ oh_my_zsh_src_local_config }}"
+    dest: "{{ oh_my_zsh_dest_local_config }}"
+    mode: '0755'
+    force: true
+
 - name: Set zsh as default shell
   ansible.builtin.user:
     name: "{{ oh_my_zsh_user }}"
