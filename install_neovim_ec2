@@ -19,10 +19,31 @@ NEOVIM_FORCE_BUILD=false
 echo "Installing Neovim on Amazon Linux 2023..."
 
 echo "Installing build dependencies..."
-sudo dnf install -y ninja-build gettext cmake gcc-c++ unzip curl git
+for pkg in ninja-build gettext cmake gcc-c++ unzip git; do
+  if ! rpm -q $pkg &>/dev/null; then
+    echo "Installing $pkg..."
+    sudo dnf install -y $pkg
+  else
+    echo "$pkg is already installed."
+  fi
+done
+
+if rpm -q curl &>/dev/null || rpm -q curl-minimal &>/dev/null; then
+  echo "curl or curl-minimal is already installed."
+else
+  echo "Installing curl..."
+  sudo dnf install -y curl
+fi
 
 echo "Installing plugin dependencies..."
-sudo dnf install -y ripgrep luarocks python3-pip
+for pkg in ripgrep luarocks python3-pip; do
+  if ! rpm -q $pkg &>/dev/null; then
+    echo "Installing $pkg..."
+    sudo dnf install -y $pkg
+  else
+    echo "$pkg is already installed."
+  fi
+done
 
 echo "Installing Python dependencies..."
 sudo pip3 install --break-system-packages pynvim ruff pyright debugpy pytest pytest-xdist jupytext
