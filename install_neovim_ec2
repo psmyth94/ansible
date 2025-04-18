@@ -2,6 +2,10 @@
 set -e
 
 NEOVIM_USER=$(whoami)
+#!/bin/bash
+set -e
+
+NEOVIM_USER=$(whoami)
 NEOVIM_USER_GROUP=$(whoami)
 NEOVIM_DOTFILES_DIR=~/.dotfiles
 NEOVIM_INSTALL_DIR=~/neovim
@@ -13,13 +17,16 @@ NEOVIM_DEST_CONFIG_DIR="$HOME/.config/nvim"
 NEOVIM_GITHUB_COPILOT_SRC_DIR="$NEOVIM_DOTFILES_DIR/github-copilot"
 NEOVIM_GITHUB_COPILOT_SRC_KEY="$NEOVIM_GITHUB_COPILOT_SRC_DIR/apps.json"
 NEOVIM_GITHUB_COPILOT_DEST_DIR="$HOME/.config/github-copilot"
+NEOVIM_GITHUB_COPILOT_DEST_VAULT="$NEOVIM_GITHUB_COPILOT_DEST_DIR/apps.vault"
 NEOVIM_GITHUB_COPILOT_DEST_KEY="$NEOVIM_GITHUB_COPILOT_DEST_DIR/apps.json"
 NEOVIM_FORCE_BUILD=false
+BASHRC="$HOME/.bashrc"
+CARGO_PATH_LINE='export PATH="$HOME/.cargo/bin:$PATH"'
 
 echo "Installing Neovim on Amazon Linux 2023..."
 
-echo "Installing build dependencies..."
-for pkg in ninja-build gettext cmake gcc-c++ unzip git; do
+echo "Installing dependencies..."
+for pkg in rust cargo ninja-build gettext cmake gcc-c++ unzip git; do
   if ! rpm -q $pkg &>/dev/null; then
     echo "Installing $pkg..."
     sudo dnf install -y $pkg
@@ -35,18 +42,28 @@ else
   sudo dnf install -y curl
 fi
 
-echo "Installing plugin dependencies..."
-for pkg in ripgrep luarocks python3-pip; do
-  if ! rpm -q $pkg &>/dev/null; then
-    echo "Installing $pkg..."
-    sudo dnf install -y $pkg
-  else
-    echo "$pkg is already installed."
-  fi
-done
+echo "Installing ripgrep with cargo"
+if ! command -v rg &>/dev/null; then
+  echo "Installing ripgrep..."
+  cargo install ripgrep
+else
+  echo "ripgrep is already installed."
+fi
+
+if [ ! -f "$BASHRC" ]; then
+  echo "Creating .bashrc file..."
+  touch "$BASHRC"
+fi
+
+if grep -Fxq "$CARGO_PATH_LINE" "$BASHRC"; then
+  echo "CARGO_PATH_LINE already exists in $BASHRC, skipping..."
+else
+  echo "Adding CARGO_PATH_LINE to .bashrc..."
+  echo "$CARGO_PATH_LINE" >>"$BASHRC"
+fi
 
 echo "Installing Python dependencies..."
-sudo pip3 install --break-system-packages pynvim ruff pyright debugpy pytest pytest-xdist jupytext
+sudo pip3 install pynvim ruff pyright debugpy pytest pytest-xdist jupytext
 
 if [ -d "$NEOVIM_INSTALL_DIR/.git" ]; then
   echo "Neovim repository already exists, updating..."
@@ -78,7 +95,8 @@ mkdir -p "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
 chmod 700 "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
 
 if [ -f "$NEOVIM_GITHUB_COPILOT_SRC_KEY" ]; then
-  cp "$NEOVIM_GITHUB_COPILOT_SRC_KEY" "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
+  cp "$NEOVIM_GITHUB_COPILOT_SRC_KEY" "$NEOVIM_GITHUB_COPILOT_DEST_VAULT"
+  ansible-vault decrypt "$NEOVIM_GITHUB_COPILOT_DEST_VAULT" --output "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
   chmod 600 "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
 fi
 
