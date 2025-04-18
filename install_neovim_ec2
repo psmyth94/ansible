@@ -1,10 +1,5 @@
 #!/bin/bash
 set -e
-
-NEOVIM_USER=$(whoami)
-#!/bin/bash
-set -e
-
 NEOVIM_USER=$(whoami)
 NEOVIM_USER_GROUP=$(whoami)
 NEOVIM_DOTFILES_DIR=~/.dotfiles
@@ -22,11 +17,12 @@ NEOVIM_GITHUB_COPILOT_DEST_KEY="$NEOVIM_GITHUB_COPILOT_DEST_DIR/apps.json"
 NEOVIM_FORCE_BUILD=false
 BASHRC="$HOME/.bashrc"
 CARGO_PATH_LINE='export PATH="$HOME/.cargo/bin:$PATH"'
+LUAROCKS_VERSION="3.11.1"
 
 echo "Installing Neovim on Amazon Linux 2023..."
 
 echo "Installing dependencies..."
-for pkg in rust cargo ninja-build gettext cmake gcc-c++ unzip git; do
+for pkg in rust cargo ninja-build gettext cmake gcc-c++ unzip git luajit luajit-devel; do
   if ! rpm -q $pkg &>/dev/null; then
     echo "Installing $pkg..."
     sudo dnf install -y $pkg
@@ -40,6 +36,51 @@ if rpm -q curl &>/dev/null || rpm -q curl-minimal &>/dev/null; then
 else
   echo "Installing curl..."
   sudo dnf install -y curl
+fi
+
+echo "Installing Node.js LTS using NVM..."
+if [ ! -d "$HOME/.nvm" ]; then
+  echo "Installing NVM..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+  if ! grep -q "NVM_DIR" "$BASHRC"; then
+    echo 'export NVM_DIR="$HOME/.nvm"' >>"$BASHRC"
+    echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >>"$BASHRC"
+    echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >>"$BASHRC"
+  fi
+
+  nvm install --lts
+  nvm use --lts
+
+  echo "Node.js $(node -v) installed successfully"
+else
+  echo "NVM is already installed"
+  # Load NVM
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+  # Ensure LTS is installed
+  nvm install --lts
+  nvm use --lts
+  echo "Using Node.js $(node -v)"
+fi
+
+if ! command -v luarocks &>/dev/null; then
+  echo "Installing LuaRocks from source..."
+  cd /tmp
+  wget https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz
+  tar zxpf luarocks-${LUAROCKS_VERSION}.tar.gz
+  cd luarocks-${LUAROCKS_VERSION}
+  ./configure --with-lua-include=/usr/include/luajit-2.1
+  make
+  sudo make install
+  cd ..
+  rm -rf luarocks-${LUAROCKS_VERSION}*
+else
+  echo "LuaRocks is already installed."
 fi
 
 echo "Installing ripgrep with cargo"
@@ -94,7 +135,7 @@ echo "Setting up GitHub Copilot..."
 mkdir -p "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
 chmod 700 "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
 
-if [ -f "$NEOVIM_GITHUB_COPILOT_SRC_KEY" ]; then
+if [ -f "$NEOVIM_GITHUB_COPILOT_SRC_KEY" ] && [ ! -f "$NEOVIM_GITHUB_COPILOT_DEST_KEY" ]; then
   cp "$NEOVIM_GITHUB_COPILOT_SRC_KEY" "$NEOVIM_GITHUB_COPILOT_DEST_VAULT"
   ansible-vault decrypt "$NEOVIM_GITHUB_COPILOT_DEST_VAULT" --output "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
   chmod 600 "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
