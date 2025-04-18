@@ -28,4 +28,4 @@
     group: "{{ neovim_user_group }}"
     state: directory
     mode: '0700'
-  when: xdg_runtime_dir is defined
+  when: xdg_runtime_dir != ''
