@@ -42,7 +42,7 @@ neovim_dependencies:
   - "cmake"
   - "g++"
   - "unzip"
-  - "curl"
+  - "{{ 'curl' if ansible_os_family == 'Debian' else None }}"
 
 neovim_bundle_dependencies:
   - libuv1-dev
