@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+# First argument is the playbook name
+PLAYBOOK=""
+if [ -z "$1" ]; then
+  PLAYBOOK="install"
+else
+  PLAYBOOK="install_$1"
+fi
+
+# Run Ansible bootstrap playbook
+echo "Running Ansible playbook..."
+ANSIBLE_CONFIG="./ansible.cfg" \
+  ansible-playbook \
+  "./playbooks/${PLAYBOOK}.yml" \
+  --ask-become-pass \
+  --ask-vault-pass \
+  -e "dotfiles_user=$(whoami) dotfiles_repo=ssh://git@ssh.github.com:443/psmyth94/.dotfiles dotfiles_version=main dotfiles_dir=${HOME}/.dotfiles"
