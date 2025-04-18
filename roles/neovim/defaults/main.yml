@@ -32,6 +32,7 @@ neovim_github_copilot_src_dir: "{{ neovim_dotfiles_dir }}/github-copilot"
 neovim_github_copilot_src_key: "{{ neovim_github_copilot_src_dir }}/apps.json"
 neovim_github_copilot_dest_dir: "~{{ neovim_user }}/.config/github-copilot"
 neovim_github_copilot_dest_key: "{{ neovim_github_copilot_dest_dir }}/apps.json"
+neovim_luarocks_version: "3.11.1"
 
 # force rebuild of Neovim from source
 neovim_force_build: false
@@ -42,7 +43,6 @@ neovim_dependencies:
   - "cmake"
   - "g++"
   - "unzip"
-  - "{{ 'curl' if ansible_os_family == 'Debian' else None }}"
 
 neovim_bundle_dependencies:
   - libuv1-dev
@@ -54,11 +54,6 @@ neovim_bundle_dependencies:
   - lua-mpack
   - libmsgpack-dev
   - tree-sitter-cli
-
-neovim_plugin_dependencies:
-  - "ripgrep"
-  - "luarocks"
-  - "python3-pip"
 
 neovim_pip_dependencies:
   - "pynvim"

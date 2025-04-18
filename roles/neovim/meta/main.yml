@@ -1,0 +1,8 @@
+---
+dependencies:
+  - role: rust
+    vars:
+      rust_user: "{{ neovim_user }}"
+  - role: nodejs
+    vars:
+      nodejs_user: "{{ neovim_user }}"

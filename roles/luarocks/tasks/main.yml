@@ -1,0 +1,15 @@
+# Install dependencies for LuaRocks
+- name: Install luarocks dependencies
+  ansible.builtin.package:
+    name: "{{ luarocks_dependencies }}"
+    state: present
+  become: true
+
+# Include OS-specific task files
+- name: Include tasks for Amazon Linux
+  ansible.builtin.include_tasks: install_amazon.yml
+  when: ansible_distribution == "Amazon"
+
+- name: Include tasks for Debian distributions
+  ansible.builtin.include_tasks: install_debian.yml
+  when: ansible_distribution == "Debian"

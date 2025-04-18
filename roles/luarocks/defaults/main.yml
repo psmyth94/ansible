@@ -1,0 +1,17 @@
+---
+# User to run the installation as
+luarocks_user: "{{ ansible_user_id }}"
+
+# LuaRocks version for source installation
+luarocks_version: "3.11.1"
+
+# Installation directory for source installation
+luarocks_install_dir: "/usr/local"
+
+# Dependencies for installation
+luarocks_dependencies:
+  - lua
+  - lua-devel
+  - gcc
+  - make
+  - wget

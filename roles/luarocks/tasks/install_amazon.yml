@@ -1,0 +1,64 @@
+---
+- name: Check if luarocks is already installed
+  ansible.builtin.stat:
+    path: "{{ luarocks_install_dir }}/bin/luarocks"
+  register: luarocks_bin
+
+- name: Download luarocks source
+  ansible.builtin.get_url:
+    url: "https://luarocks.org/releases/luarocks-{{ luarocks_version }}.tar.gz"
+    dest: "/tmp/luarocks-{{ luarocks_version }}.tar.gz"
+    mode: '0644'
+  when: not luarocks_bin.stat.exists
+  become: true
+  become_user: "{{ luarocks_user }}"
+
+- name: Extract luarocks source
+  ansible.builtin.unarchive:
+    src: "/tmp/luarocks-{{ luarocks_version }}.tar.gz"
+    dest: "/tmp"
+    remote_src: true
+  when: not luarocks_bin.stat.exists
+  become: true
+  become_user: "{{ luarocks_user }}"
+
+- name: Configure luarocks
+  ansible.builtin.command:
+    cmd: ./configure --with-lua-include=/usr/include --prefix={{ luarocks_install_dir }}
+    chdir: "/tmp/luarocks-{{ luarocks_version }}"
+  when: not luarocks_bin.stat.exists
+  become: true
+  become_user: "{{ luarocks_user }}"
+  changed_when: not luarocks_bin.stat.exists
+
+- name: Build luarocks
+  ansible.builtin.command:
+    cmd: make
+    chdir: "/tmp/luarocks-{{ luarocks_version }}"
+  when: not luarocks_bin.stat.exists
+  become: true
+  become_user: "{{ luarocks_user }}"
+  changed_when: not luarocks_bin.stat.exists
+
+- name: Install luarocks
+  ansible.builtin.command:
+    cmd: make install
+    chdir: "/tmp/luarocks-{{ luarocks_version }}"
+  when: not luarocks_bin.stat.exists
+  become: true
+  changed_when: not luarocks_bin.stat.exists
+
+- name: Clean up luarocks source files
+  ansible.builtin.file:
+    path: "/tmp/luarocks-{{ luarocks_version }}"
+    state: absent
+  when: not luarocks_bin.stat.exists
+  become: true
+
+- name: Remove downloaded tarball
+  ansible.builtin.file:
+    path: "/tmp/luarocks-{{ luarocks_version }}.tar.gz"
+    state: absent
+  when: not luarocks_bin.stat.exists
+  become: true
+  changed_when: false

@@ -7,18 +7,37 @@
   become_user: "root"
   become: true
 
-# - name: Ensure required third-party dependencies are installed
-#   ansible.builtin.package:
-#     name: "{{ neovim_bundle_dependencies }}"
-#     state: present
-#   become: true
-
-- name: Ensure required plugin dependencies are installed
+- name: Install curl
   ansible.builtin.package:
-    name: "{{ neovim_plugin_dependencies }}"
+    name: curl
     state: present
   become_user: "root"
   become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install python3-pip
+  ansible.builtin.package:
+    name: python3-pip
+    state: present
+  become_user: "root"
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install ripgrep for debian
+  ansible.builtin.package:
+    name: ripgrep
+    state: present
+  become_user: "root"
+  become: true
+  when: ansible_os_family == "Debian"
+
+- name: Install ripgrep for amazon with cargo
+  ansible.builtin.command:
+    cmd: cargo install ripgrep
+  become_user: "root"
+  become: true
+  when: ansible_os_family == "Amazon"
+  changed_when: false
 
 - name: Ensure required python libraries are installed
   ansible.builtin.pip:

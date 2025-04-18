@@ -1,0 +1,7 @@
+---
+- name: Install luarocks via package manager
+  ansible.builtin.package:
+    name: "luarocks"
+    state: present
+  become: true
+  become_user: "root"
