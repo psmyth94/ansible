@@ -1,0 +1,78 @@
+#!/bin/bash
+set -e
+
+NEOVIM_USER=$(whoami)
+NEOVIM_USER_GROUP=$(whoami)
+NEOVIM_DOTFILES_DIR=~/.dotfiles
+NEOVIM_INSTALL_DIR=~/neovim
+NEOVIM_CMAKE_INSTALL_DIR=/usr/local
+NEOVIM_REPO="https://github.com/neovim/neovim.git"
+NEOVIM_VERSION="master"
+NEOVIM_SRC_CONFIG_DIR="$NEOVIM_DOTFILES_DIR/nvim"
+NEOVIM_DEST_CONFIG_DIR="$HOME/.config/nvim"
+NEOVIM_GITHUB_COPILOT_SRC_DIR="$NEOVIM_DOTFILES_DIR/github-copilot"
+NEOVIM_GITHUB_COPILOT_SRC_KEY="$NEOVIM_GITHUB_COPILOT_SRC_DIR/apps.json"
+NEOVIM_GITHUB_COPILOT_DEST_DIR="$HOME/.config/github-copilot"
+NEOVIM_GITHUB_COPILOT_DEST_KEY="$NEOVIM_GITHUB_COPILOT_DEST_DIR/apps.json"
+NEOVIM_FORCE_BUILD=false
+
+echo "Installing Neovim on Amazon Linux 2023..."
+
+echo "Installing build dependencies..."
+sudo dnf install -y ninja-build gettext cmake gcc-c++ unzip curl git
+
+echo "Installing plugin dependencies..."
+sudo dnf install -y ripgrep luarocks python3-pip
+
+echo "Installing Python dependencies..."
+sudo pip3 install --break-system-packages pynvim ruff pyright debugpy pytest pytest-xdist jupytext
+
+if [ -d "$NEOVIM_INSTALL_DIR/.git" ]; then
+  echo "Neovim repository already exists, updating..."
+  cd "$NEOVIM_INSTALL_DIR"
+  git fetch --depth 1
+  git reset --hard origin/$NEOVIM_VERSION
+else
+  echo "Cloning Neovim repository..."
+  git clone --depth 1 -b "$NEOVIM_VERSION" "$NEOVIM_REPO" "$NEOVIM_INSTALL_DIR"
+fi
+
+if [ ! -f "$NEOVIM_CMAKE_INSTALL_DIR/bin/nvim" ] || [ "$NEOVIM_FORCE_BUILD" = true ]; then
+  echo "Building Neovim from source..."
+  cd "$NEOVIM_INSTALL_DIR"
+  make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX="$NEOVIM_CMAKE_INSTALL_DIR"
+
+  echo "Installing Neovim..."
+  sudo make install
+
+  echo "Cleaning up build directory..."
+  cd ~
+  sudo rm -rf "$NEOVIM_INSTALL_DIR"
+else
+  echo "Neovim is already installed, skipping build."
+fi
+
+echo "Setting up GitHub Copilot..."
+mkdir -p "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
+chmod 700 "$NEOVIM_GITHUB_COPILOT_DEST_DIR"
+
+if [ -f "$NEOVIM_GITHUB_COPILOT_SRC_KEY" ]; then
+  cp "$NEOVIM_GITHUB_COPILOT_SRC_KEY" "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
+  chmod 600 "$NEOVIM_GITHUB_COPILOT_DEST_KEY"
+fi
+
+echo "Setting up Neovim configuration..."
+if [ -d "$NEOVIM_DEST_CONFIG_DIR" ]; then
+  echo "Removing existing config directory..."
+  rm -rf "$NEOVIM_DEST_CONFIG_DIR"
+fi
+
+echo "Creating symbolic link to Neovim configuration..."
+ln -s "$NEOVIM_SRC_CONFIG_DIR" "$NEOVIM_DEST_CONFIG_DIR"
+
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+  echo "Applying permission fix for XDG_RUNTIME_DIR..."
+  sudo mkdir -p "$XDG_RUNTIME_DIR"
+  sudo chown "$NEOVIM_USER:$NEOVIM_USER_GROUP" "$XDG_RUNTIME_DIR"
+  sudo chmod 700 "$XDG_RUNTIME_DIR"
+fi
