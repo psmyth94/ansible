@@ -46,6 +46,16 @@
     extra_args: --break-system-packages
   become_user: "root"
   become: true
+  when: ansible_os_family == "Debian"
+
+- name: Ensure required python libraries are installed
+  ansible.builtin.pip:
+    name: "{{ neovim_pip_dependencies }}"
+    state: present
+  become_user: "root"
+  become: true
+  when: ansible_os_family == "Amazon"
+
 
 - name: Check if Neovim source is already downloaded
   ansible.builtin.stat:
