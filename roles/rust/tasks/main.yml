@@ -2,8 +2,14 @@
 - name: Check if cargo is installed
   ansible.builtin.command: bash -c "command -v cargo"
   register: cargo_check
+  ignore_errors: true
   failed_when: false
   changed_when: false
+
+- name: Show cargo path
+  ansible.builtin.debug:
+    msg: "Cargo is installed at {{ cargo_check.stdout }}"
+  when: cargo_check.rc == 0
 
 - name: Download cargo
   ansible.builtin.get_url:
@@ -11,13 +17,51 @@
     dest: "/tmp/rustup.sh"
     mode: '0755'
   become: true
-  become_user: "root"
+  become_user: "{{ rust_user }}"
   when: cargo_check.rc != 0
 
 - name: Install cargo
   ansible.builtin.command: bash -c "/tmp/rustup.sh -y"
   args:
-    creates: /usr/local/cargo/bin/cargo
+    creates: "{{ rust_cargo_path }}"
   become: true
-  become_user: "root"
+  become_user: "{{ rust_user }}"
   when: cargo_check.rc != 0
+
+- name: Check if zshrc exists
+  ansible.builtin.stat:
+    path: "~{{ rust_user }}/.zshrc"
+  register: zshrc_check
+
+- name: Check if bashrc exists
+  ansible.builtin.stat:
+    path: "~{{ rust_user }}/.bashrc"
+  register: bashrc_check
+
+- name: Adding cargo to path in zshrc
+  ansible.builtin.lineinfile:
+    path: "~{{ rust_user }}/.zshrc"
+    create: true
+    line: |
+      . "$HOME/.cargo/env"
+    state: present
+    mode: "0644"
+    owner: "{{ rust_user }}"
+    group: "{{ rust_user }}"
+  register: _cargo_in_zshrc
+  changed_when: _cargo_in_zshrc.msg is defined and 'line added' in _cargo_in_zshrc.msg
+  when: zshrc_check.stat.exists
+
+- name: Adding cargo to path in bashrc
+  ansible.builtin.lineinfile:
+    path: "~{{ rust_user }}/.bashrc"
+    create: true
+    line: |
+      . "$HOME/.cargo/env"
+    state: present
+    mode: "0644"
+    owner: "{{ rust_user }}"
+    group: "{{ rust_user }}"
+  register: _cargo_in_bashrc
+  changed_when: _cargo_in_bashrc.msg is defined and 'line added' in _cargo_in_bashrc.msg
+  when: bashrc_check.stat.exists

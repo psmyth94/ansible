@@ -39,4 +39,5 @@ ANSIBLE_CONFIG="./ansible.cfg" \
   ansible-playbook \
   "./playbooks/${PLAYBOOK}.yml" \
   --vault-password-file="$VAULT_FILE" \
+  -vvv \
   -e "dotfiles_user=$(whoami) ansible_become_pass=${BECOME_PASS} dotfiles_repo=ssh://git@ssh.github.com:443/psmyth94/.dotfiles dotfiles_version=main dotfiles_dir=${HOME}/.dotfiles"

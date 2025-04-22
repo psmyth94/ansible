@@ -1,13 +1,13 @@
 ---
-- name: Cargo Setup
+- name: Docker Setup
   hosts: localhost
   become: true
   become_user: "{{ dotfiles_user }}"
   vars:
     dotfiles_repo: "{{ dotfiles_repo | default('') }}"
   tasks:
-    - name: Setup rust
+    - name: Setup docker
       ansible.builtin.include_role:
-        name: rust
+        name: docker
       vars:
-        rust_user: "{{ dotfiles_user }}"
+        docker_user: "{{ dotfiles_user }}"
