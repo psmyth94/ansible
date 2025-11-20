@@ -4,6 +4,7 @@
     name: "{{ luarocks_dependencies }}"
     state: present
   become: true
+  become_user: root
 
 # Include OS-specific task files
 - name: Include tasks for Amazon Linux
@@ -12,4 +13,4 @@
 
 - name: Include tasks for Debian distributions
   ansible.builtin.include_tasks: install_debian.yml
-  when: ansible_distribution == "Debian"
+  when: ansible_os_family == "Debian"

@@ -46,7 +46,19 @@
     dest: "{{ neovim_bin_dir }}/bin/nvim"
     force: true
     mode: '0755'
+    remote_src: true
   register: appimage_move
+  become: true
+  become_user: "{{ neovim_bin_user }}"
+  when: neovim_needs_build
+
+- name: Copy Neovim runtime files
+  ansible.builtin.copy:
+    src: "{{ neovim_install_dir }}/squashfs-root/usr/share/nvim/"
+    dest: "{{ neovim_bin_dir }}/share/nvim/"
+    force: true
+    mode: preserve
+    remote_src: true
   become: true
   become_user: "{{ neovim_bin_user }}"
   when: neovim_needs_build

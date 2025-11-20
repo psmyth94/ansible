@@ -8,10 +8,21 @@ luarocks_version: "3.11.1"
 # Installation directory for source installation
 luarocks_install_dir: "/usr/local"
 
-# Dependencies for installation
-luarocks_dependencies:
+# Dependencies for installation (RedHat/Amazon Linux)
+luarocks_dependencies_rhel:
   - lua
   - lua-devel
   - gcc
   - make
   - wget
+
+# Dependencies for installation (Debian/Ubuntu)
+luarocks_dependencies_debian:
+  - lua5.1
+  - liblua5.1-dev
+  - gcc
+  - make
+  - wget
+
+# Set based on OS family
+luarocks_dependencies: "{{ luarocks_dependencies_debian if ansible_os_family == 'Debian' else luarocks_dependencies_rhel }}"

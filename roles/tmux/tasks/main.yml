@@ -15,6 +15,22 @@
     - install
   when: tmux_needs_build
 
+- name: Check if oh-my-tmux exists
+  ansible.builtin.stat:
+    path: "{{ tmux_install_dir }}/.tmux.conf"
+  register: oh_my_tmux_check
+
+- name: Clone oh-my-tmux if not exists
+  ansible.builtin.git:
+    repo: "{{ tmux_repo_url }}"
+    dest: "{{ tmux_install_dir }}"
+    version: "{{ tmux_repo_version }}"
+    update: true
+    force: true
+  become: true
+  become_user: "{{ tmux_user }}"
+  when: not oh_my_tmux_check.stat.exists
+
 - ansible.builtin.include_tasks: configure.yml
   tags:
     - tmux

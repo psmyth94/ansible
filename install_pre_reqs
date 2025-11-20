@@ -1,15 +1,89 @@
-#!/usr/local/bin bash
+#!/usr/bin/env bash
 
+set -e
+
+echo "Installing prerequisites for Ansible development environment..."
+echo
+
+# Update package list
 sudo apt update
-sudo apt install python3-pip
+
+# Install python3-pip
+echo "Installing python3-pip..."
+sudo apt install -y python3-pip
+
+# Add ~/.local/bin to PATH
 LOCAL_BIN_PATH_LINE="export PATH=\"\$HOME/.local/bin:\$PATH\""
 if ! grep -q "$LOCAL_BIN_PATH_LINE" ~/.bashrc; then
     echo "$LOCAL_BIN_PATH_LINE" >> ~/.bashrc
+    echo "Added ~/.local/bin to PATH in ~/.bashrc"
 fi
 if [ -f ~/.zshrc ]; then
   if ! grep -q "$LOCAL_BIN_PATH_LINE" ~/.zshrc; then
       echo "$LOCAL_BIN_PATH_LINE" >> ~/.zshrc
+      echo "Added ~/.local/bin to PATH in ~/.zshrc"
   fi
 fi
 
-python3 -m pip install --user ansible
+# Source the updated PATH
+export PATH="$HOME/.local/bin:$PATH"
+
+# Install ansible-core
+echo
+echo "Installing ansible-core..."
+python3 -m pip install --user ansible-core
+
+# Install GitHub CLI
+echo
+echo "Installing GitHub CLI (gh)..."
+if command -v gh &> /dev/null; then
+    echo "GitHub CLI is already installed"
+else
+    # Install gh using official method
+    type -p curl >/dev/null || (sudo apt update && sudo apt install -y curl)
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && sudo apt update \
+    && sudo apt install -y gh
+fi
+
+# Set up SSH known hosts for GitHub
+echo
+echo "Setting up SSH known hosts for GitHub..."
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# Add GitHub SSH host keys
+if ! ssh-keygen -F github.com &>/dev/null; then
+    echo "Adding github.com to known hosts..."
+    ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+fi
+
+# Add GitHub SSH host keys for port 443 (used for SSH over HTTPS)
+if ! ssh-keygen -F "[ssh.github.com]:443" &>/dev/null; then
+    echo "Adding ssh.github.com (port 443) to known hosts..."
+    ssh-keyscan -p 443 ssh.github.com >> ~/.ssh/known_hosts 2>/dev/null
+fi
+
+echo
+echo "=========================================="
+echo "Prerequisites installed successfully!"
+echo "=========================================="
+echo
+echo "Next steps:"
+echo "1. Authenticate with GitHub:"
+echo "   gh auth login"
+echo "   (Follow the interactive prompts)"
+echo
+echo "2. Clone the required repositories:"
+echo "   gh repo clone psmyth94/ansible ~/ansible"
+echo "   gh repo clone psmyth94/.dotfiles ~/.dotfiles"
+echo
+echo "3. Navigate to the ansible directory and run the installer:"
+echo "   cd ~/ansible"
+echo "   ./install"
+echo
+echo "Note: Make sure you have your .become.password.txt and .vault.password.txt files ready"
+echo "      in your home directory before running ./install"
+echo

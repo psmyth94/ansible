@@ -48,27 +48,20 @@
     dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
     dotfiles_version: "{{ dotfiles_version | default('main') }}"
   tasks:
-    - name: Setup Dotfiles
-      ansible.builtin.git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_dir }}"
-        version: "{{ dotfiles_version }}"
-        update: true
-        recursive: true
-        track_submodules: true
-        force: true
-
-    - name: Setup sshkey
-      ansible.builtin.include_role:
-        name: sshkey
-      vars:
-        sshkey_user: "{{ dotfiles_user }}"
+    - name: Install essential packages
+      ansible.builtin.package:
+        name:
+          - unzip
+          - curl
+        state: present
+      become: true
+      become_user: root
 
     - name: Setup Rust
       ansible.builtin.include_role:
         name: rust
       vars:
-        rust_user: "{{ dotilfes_user }}"
+        rust_user: "{{ dotfiles_user }}"
 
     - name: Setup WSL Clipboard Support if on WSL
       ansible.builtin.include_role:
