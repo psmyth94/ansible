@@ -1,3 +1,4 @@
 ---
 docker_force_build: false
 docker_user: "{{ ansible_user_id }}"
+docker_group: docker

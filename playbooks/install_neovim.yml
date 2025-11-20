@@ -4,10 +4,28 @@
   become: true
   become_user: "{{ dotfiles_user }}"
   vars_prompt:
-    - name: neovim_force_rebuild
-      prompt: "Do you want to force rebuild Neovim from source? (y/[n])"
+    - name: install_neovim_force_rebuild
+      prompt: "Do you want to force rebuild Neovim from source? (y/n)"
       private: false
       default: n
+    - name: install_neovim_from_source
+      prompt: "Do you want to build Neovim from source? (y/n)"
+      private: false
+      default: n
+    - name: install_neovim_branch
+      prompt: |
+        Which branch do you want to build Neovim from?
+      private: false
+      default: master
+    - name: install_neovim_release
+      prompt: |
+        Which release do you want to download?
+      private: false
+      default: stable
+    - name: pull_dotfiles
+      prompt: "Do you want to pull the latest dotfiles? (y/n)"
+      private: false
+      default: y
 
   vars:
     dotfiles_repo: "{{ dotfiles_repo | default('') }}"
@@ -23,13 +41,17 @@
         recursive: true
         track_submodules: true
         force: true
+      when: pull_dotfiles == 'y'
     - name: Setup neovim
       ansible.builtin.include_role:
         name: neovim
       vars:
         neovim_user: "{{ dotfiles_user }}"
-        neovim_force_build: "{{ neovim_force_rebuild == 'y' }}"
+        neovim_force_build: "{{ install_neovim_force_rebuild == 'y' }}"
         neovim_dotfiles_dir: "{{ dotfiles_dir }}"
+        neovim_from_source: "{{ install_neovim_from_source == 'y' }}"
+        neovim_branch: "{{ install_neovim_branch }}"
+        neovim_release: "{{ install_neovim_release }}"
       tags:
         - install
         - configure

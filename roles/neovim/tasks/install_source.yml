@@ -1,0 +1,56 @@
+---
+- name: Check if Neovim source is already downloaded
+  ansible.builtin.stat:
+    path: "{{ neovim_install_dir }}/.git"
+  register: neovim_git_folder
+
+- name: Clone Neovim repository
+  become: true
+  ansible.builtin.git:
+    repo: "{{ neovim_repo }}"
+    dest: "{{ neovim_install_dir }}"
+    version: "{{ neovim_branch }}"
+    depth: 1
+    force: true
+    update: true
+  register: clone
+  when: not neovim_git_folder.stat.exists
+
+- name: Check if Neovim binary already exists at {{ neovim_bin_dir }}/bin/nvim
+  ansible.builtin.stat:
+    path: "{{ neovim_bin_dir }}/bin/nvim"
+  register: neovim_binary
+
+- name: Does neovim need to be built?
+  ansible.builtin.set_fact:
+    neovim_needs_build: "{{ not neovim_binary.stat.exists or neovim_force_build }}"
+
+- name: Build Neovim from source
+  community.general.make:
+    chdir: "{{ neovim_install_dir }}"
+    params:
+      CMAKE_BUILD_TYPE: "RelWithDebInfo"
+      # USE_BUNDLED: "OFF"
+      CMAKE_INSTALL_PREFIX: "{{ neovim_bin_dir }}"
+  register: build_neovim
+  become: true
+  become_user: "{{ neovim_user }}"
+  changed_when: "'[100%]' in build_neovim.stdout or '[100%]' in build_neovim.stderr"
+  when: neovim_needs_build
+
+- name: Install Neovim
+  community.general.make:
+    chdir: "{{ neovim_install_dir }}"
+    target: install
+  become: true
+  become_user: "root"
+  register: install_neovim
+  changed_when: "'-- Installing:' in install_neovim.stdout or '-- Installing:' in install_neovim.stderr"
+  when: neovim_needs_build
+
+- name: Remove Neovim install directory
+  become: true
+  become_user: "root"
+  ansible.builtin.file:
+    path: "{{ neovim_install_dir }}"
+    state: absent

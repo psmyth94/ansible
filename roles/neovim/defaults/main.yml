@@ -13,15 +13,22 @@ neovim_user_group: "{{ neovim_user }}"
 
 neovim_install_dir: "~{{ neovim_user }}/neovim"
 
-neovim_cmake_install_dir: >-
+neovim_bin_dir: >-
   {{ '/usr/local' if neovim_bin_shared
      else '~' + neovim_user + '/.local' }}
 
 
 # Git repo to clone for building Neovim from source.
 neovim_repo: "https://github.com/neovim/neovim.git"
-# Branch to build from (default: master).
-neovim_version: "master"
+
+neovim_from_source: false
+### BUILD FROM SOURCE ###
+# Branch to build from
+neovim_branch: "master"
+
+### INSTALL FROM APPIMAGE ###
+neovim_release: "stable"
+neovim_appimage_url: "https://github.com/neovim/neovim/releases/download/{{ neovim_release }}/nvim-linux-x86_64.appimage"
 
 neovim_dotfiles_dir: "~{{ neovim_user }}/.dotfiles"
 neovim_src_config_dir: "{{ neovim_dotfiles_dir }}/nvim"

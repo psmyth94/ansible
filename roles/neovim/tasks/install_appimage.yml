@@ -1,0 +1,59 @@
+---
+- name: Check if Neovim source is already downloaded
+  ansible.builtin.stat:
+    path: "{{ neovim_install_dir }}/squashfs-root"
+  register: neovim_git_folder
+
+- name: Check if Neovim binary already exists at {{ neovim_bin_dir }}/bin/nvim
+  ansible.builtin.stat:
+    path: "{{ neovim_bin_dir }}/bin/nvim"
+  register: neovim_binary
+
+- name: Does neovim need to be built?
+  ansible.builtin.set_fact:
+    neovim_needs_build: "{{ not neovim_binary.stat.exists or neovim_force_build }}"
+
+- name: Create install directory
+  ansible.builtin.file:
+    path: "{{ neovim_install_dir }}"
+    state: directory
+    mode: '0755'
+  become: true
+  become_user: "{{ neovim_user }}"
+  when: neovim_needs_build
+
+- name: Download Appimage
+  ansible.builtin.get_url:
+    url: "{{ neovim_appimage_url }}"
+    dest: "{{ neovim_install_dir }}/nvim-linux-x86_64.appimage"
+    mode: '0755'
+  register: appimage
+  become: true
+  become_user: "{{ neovim_user }}"
+  when: neovim_needs_build
+
+- name: Install Appimage
+  ansible.builtin.shell: |
+    cd {{ neovim_install_dir }} && ./nvim-linux-x86_64.appimage --appimage-extract
+  become: true
+  become_user: "{{ neovim_user }}"
+  changed_when: true
+  when: neovim_needs_build
+
+- name: Move Appimage to install directory
+  ansible.builtin.copy:
+    src: "{{ neovim_install_dir }}/squashfs-root/usr/bin/nvim"
+    dest: "{{ neovim_bin_dir }}/bin/nvim"
+    force: true
+    mode: '0755'
+  register: appimage_move
+  become: true
+  become_user: "{{ neovim_bin_user }}"
+  when: neovim_needs_build
+
+- name: Clean up Appimage
+  ansible.builtin.file:
+    path: "{{ neovim_install_dir }}/nvim-linux-x86_64.appimage"
+    state: absent
+  become: true
+  become_user: "{{ neovim_user }}"
