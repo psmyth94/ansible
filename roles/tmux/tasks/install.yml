@@ -35,12 +35,9 @@
     - dir_contents.matched == 0
 
 - name: Clone oh-my-tmux repository
-  ansible.builtin.git:
-    repo: "{{ tmux_repo_url }}"
-    dest: "{{ tmux_install_dir }}"
-    version: "{{ tmux_repo_version }}"
-    update: true
-    force: true
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ tmux_repo }} {{ tmux_install_dir }} -- --branch {{ tmux_repo_version }}"
+    creates: "{{ tmux_install_dir }}"
   become: true
   become_user: "{{ tmux_user }}"
   register: tmux_register_clone

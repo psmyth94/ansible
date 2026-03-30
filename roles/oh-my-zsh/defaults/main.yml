@@ -25,7 +25,7 @@ oh_my_zsh_load_etc_profile: yes
 fzf_widgets: viasite-ansible/fzf-widgets
 
 # Use a patched Antigen until PR is merged:
-oh_my_zsh_antigen_repo: https://github.com/viasite-ansible/antigen
+oh_my_zsh_antigen_repo: viasite-ansible/antigen
 oh_my_zsh_antigen_version: patch-1
 
 oh_my_zsh_fzf_version: 0.52.1

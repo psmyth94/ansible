@@ -19,7 +19,7 @@ neovim_bin_dir: >-
 
 
 # Git repo to clone for building Neovim from source.
-neovim_repo: "https://github.com/neovim/neovim.git"
+neovim_repo: "neovim/neovim"
 
 neovim_from_source: false
 ### BUILD FROM SOURCE ###

@@ -6,13 +6,9 @@
 
 - name: Clone Neovim repository
   become: true
-  ansible.builtin.git:
-    repo: "{{ neovim_repo }}"
-    dest: "{{ neovim_install_dir }}"
-    version: "{{ neovim_branch }}"
-    depth: 1
-    force: true
-    update: true
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ neovim_repo }} {{ neovim_install_dir }} -- --depth 1 --branch {{ neovim_branch }}"
+    creates: "{{ neovim_install_dir }}"
   register: clone
   when: not neovim_git_folder.stat.exists
 

@@ -56,21 +56,17 @@
   when: not oh_my_zsh_antigen_path_present.stat.exists
 
 - name: Clone antigen {{ oh_my_zsh_antigen_version }}
-  ansible.builtin.git:
-    repo: "{{ oh_my_zsh_antigen_repo }}"
-    dest: "{{ oh_my_zsh_antigen_path }}/antigen"
-    version: "{{ oh_my_zsh_antigen_version }}"
-    force: true
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ oh_my_zsh_antigen_repo }} {{ oh_my_zsh_antigen_path }}/antigen -- --branch {{ oh_my_zsh_antigen_version }}"
+    creates: "{{ oh_my_zsh_antigen_path }}/antigen"
   become: true
   become_user: "{{ oh_my_zsh_user }}"
   register: oh_my_zsh_register_antigen_clone
 
 - name: Clone iwfmp/mc-solarized-skin
-  ansible.builtin.git:
-    repo: https://github.com/iwfmp/mc-solarized-skin.git
-    version: master
-    dest: "~{{ oh_my_zsh_user }}/.mc/lib/mc-solarized"
-    force: true
+  ansible.builtin.command:
+    cmd: "gh repo clone iwfmp/mc-solarized-skin ~{{ oh_my_zsh_user }}/.mc/lib/mc-solarized"
+    creates: "~{{ oh_my_zsh_user }}/.mc/lib/mc-solarized"
   become: true
   become_user: "{{ oh_my_zsh_user }}"
   when: oh_my_zsh_mc_solarized_skin and not oh_my_zsh_shared

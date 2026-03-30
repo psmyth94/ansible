@@ -21,7 +21,7 @@ tmux_shared: false                  # Set to true for a shared installation
 tmux_source_for_all_users: false    # Set to true if the config should be sourced for all users (Debian/Ubuntu environments)
 
 tmux_install_dir: "{{ '/opt/oh-my-tmux' if tmux_shared else '~' + tmux_user + '/.oh-my-tmux' }}"
-tmux_repo_url: "https://github.com/gpakosz/.tmux.git"
+tmux_repo: "gpakosz/.tmux"
 tmux_repo_version: "master"
 
 

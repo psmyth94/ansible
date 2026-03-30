@@ -32,16 +32,23 @@
     dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
     dotfiles_version: "{{ dotfiles_version | default('main') }}"
   tasks:
-    - name: Setup Dotfiles
-      ansible.builtin.git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_dir }}"
-        version: "{{ dotfiles_version }}"
-        update: true
-        recursive: true
-        track_submodules: true
-        force: true
-      when: pull_dotfiles == 'y'
+    - name: Check if dotfiles exists
+      ansible.builtin.stat:
+        path: "{{ dotfiles_dir }}"
+      register: dotfiles_dir_check
+      when: pull_dotfiles == 'y' and dotfiles_repo | length > 0
+
+    - name: Clone dotfiles
+      ansible.builtin.command:
+        cmd: "gh repo clone {{ dotfiles_repo }} {{ dotfiles_dir }} -- --recursive --branch {{ dotfiles_version }}"
+      when: pull_dotfiles == 'y' and dotfiles_repo | length > 0 and not dotfiles_dir_check.stat.exists
+
+    - name: Update dotfiles
+      ansible.builtin.command:
+        cmd: "git -C {{ dotfiles_dir }} pull --recurse-submodules"
+      register: dotfiles_pull_result
+      changed_when: "'Already up to date' not in dotfiles_pull_result.stdout"
+      when: pull_dotfiles == 'y' and dotfiles_repo | length > 0 and dotfiles_dir_check.stat.exists
     - name: Setup neovim
       ansible.builtin.include_role:
         name: neovim

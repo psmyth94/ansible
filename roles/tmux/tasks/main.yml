@@ -21,12 +21,9 @@
   register: oh_my_tmux_check
 
 - name: Clone oh-my-tmux if not exists
-  ansible.builtin.git:
-    repo: "{{ tmux_repo_url }}"
-    dest: "{{ tmux_install_dir }}"
-    version: "{{ tmux_repo_version }}"
-    update: true
-    force: true
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ tmux_repo }} {{ tmux_install_dir }} -- --branch {{ tmux_repo_version }}"
+    creates: "{{ tmux_install_dir }}"
   become: true
   become_user: "{{ tmux_user }}"
   when: not oh_my_tmux_check.stat.exists
