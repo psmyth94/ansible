@@ -2,3 +2,5 @@
 gh_user: "{{ ansible_user_id }}"
 gh_keyring_path: /usr/share/keyrings/githubcli-archive-keyring.gpg
 gh_repo_url: "https://cli.github.com/packages"
+gh_dotfiles_dir: "/home/{{ gh_user }}/.dotfiles"
+gh_config_dir: "/home/{{ gh_user }}/.config/gh"
