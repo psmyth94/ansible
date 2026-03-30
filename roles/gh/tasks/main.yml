@@ -22,31 +22,50 @@
   become_user: root
   when: gh_needs_install and gh_snap_check.rc == 0
 
-- name: Install gh signing key
-  ansible.builtin.shell: |
-    curl -fsSL {{ gh_repo_url }}/githubcli-archive-keyring.gpg \
-      | dd of={{ gh_keyring_path }}
-    chmod go+r {{ gh_keyring_path }}
-  args:
-    creates: "{{ gh_keyring_path }}"
+- name: Create apt keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
   become: true
   become_user: root
   when: gh_needs_install
 
-- name: Add gh apt repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ ansible_architecture | regex_replace('x86_64', 'amd64') }} signed-by={{ gh_keyring_path }}] {{ gh_repo_url }} stable main"
-    filename: github-cli
-    state: present
+- name: Download gh GPG key
+  ansible.builtin.get_url:
+    url: "{{ gh_repo_url }}/githubcli-archive-keyring.gpg"
+    dest: "{{ gh_keyring_path }}"
+    mode: '0644'
+  become: true
+  become_user: root
+  when: gh_needs_install
+
+- name: Get system architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: gh_system_arch
+  changed_when: false
+  when: gh_needs_install
+
+- name: Create gh repository file
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/github-cli.list
+    content: "deb [arch={{ gh_system_arch.stdout }} signed-by={{ gh_keyring_path }}] {{ gh_repo_url }} stable main"
+    mode: '0644'
+  become: true
+  become_user: root
+  when: gh_needs_install
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
   become: true
   become_user: root
   when: gh_needs_install
 
 - name: Install gh
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name: gh
     state: latest
-    update_cache: true
   become: true
   become_user: root
   when: gh_needs_install
