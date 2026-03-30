@@ -48,3 +48,18 @@
     mode: '0755'
     force: true
   when: tmux_src_local_config_wsl != '' or tmux_src_local_config != ''
+
+- name: Check if dotfiles tmux directory exists
+  ansible.builtin.stat:
+    path: "{{ tmux_dotfiles_dir }}/tmux"
+  register: dotfiles_tmux_check
+
+- name: Stow tmux dotfiles
+  become: true
+  become_user: "{{ tmux_user }}"
+  ansible.builtin.command:
+    cmd: "stow --verbose=2 --target={{ '~' + tmux_user }} tmux --restow"
+    chdir: "{{ tmux_dotfiles_dir }}"
+  register: stow_result
+  changed_when: 'stow_result.stderr is search("LINK: ") or stow_result.stderr is search("UNLINK: ")'
+  when: dotfiles_tmux_check.stat.exists and dotfiles_tmux_check.stat.isdir

@@ -89,6 +89,22 @@
     mode: '0755'
     force: true
 
+- name: Check if dotfiles .zshrc exists
+  ansible.builtin.stat:
+    path: "{{ oh_my_zsh_dotfiles }}/.zshrc"
+  register: dotfiles_zshrc_check
+
+- name: Replace .zshrc with dotfiles version
+  ansible.builtin.copy:
+    src: "{{ oh_my_zsh_dotfiles }}/.zshrc"
+    dest: "~{{ oh_my_zsh_user }}/.zshrc"
+    owner: "{{ oh_my_zsh_user }}"
+    group: "{{ oh_my_zsh_user_group }}"
+    mode: '0644'
+    remote_src: true
+    force: true
+  when: dotfiles_zshrc_check.stat.exists
+
 - name: Set zsh as default shell
   ansible.builtin.user:
     name: "{{ oh_my_zsh_user }}"
