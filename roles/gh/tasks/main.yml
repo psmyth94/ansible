@@ -1,0 +1,35 @@
+---
+- name: Check if gh is installed
+  ansible.builtin.command: bash -c "command -v gh"
+  register: gh_check
+  changed_when: false
+  failed_when: false
+
+- name: Install gh signing key
+  ansible.builtin.shell: |
+    curl -fsSL {{ gh_repo_url }}/githubcli-archive-keyring.gpg \
+      | dd of={{ gh_keyring_path }}
+    chmod go+r {{ gh_keyring_path }}
+  args:
+    creates: "{{ gh_keyring_path }}"
+  become: true
+  become_user: root
+  when: gh_check.rc != 0
+
+- name: Add gh apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ ansible_architecture | regex_replace('x86_64', 'amd64') }} signed-by={{ gh_keyring_path }}] {{ gh_repo_url }} stable main"
+    filename: github-cli
+    state: present
+  become: true
+  become_user: root
+  when: gh_check.rc != 0
+
+- name: Install gh
+  ansible.builtin.package:
+    name: gh
+    state: present
+    update_cache: true
+  become: true
+  become_user: root
+  when: gh_check.rc != 0

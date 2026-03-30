@@ -1,0 +1,4 @@
+---
+gh_user: "{{ ansible_user_id }}"
+gh_keyring_path: /usr/share/keyrings/githubcli-archive-keyring.gpg
+gh_repo_url: "https://cli.github.com/packages"

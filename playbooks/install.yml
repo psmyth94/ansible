@@ -58,6 +58,12 @@
       become: true
       become_user: root
 
+    - name: Setup GitHub CLI
+      ansible.builtin.include_role:
+        name: gh
+      vars:
+        gh_user: "{{ dotfiles_user }}"
+
     - name: Check if dotfiles exists
       ansible.builtin.stat:
         path: "{{ dotfiles_dir }}"

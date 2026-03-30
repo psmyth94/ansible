@@ -1,0 +1,9 @@
+---
+- name: Install GitHub CLI
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  roles:
+    - role: gh
+      vars:
+        gh_user: "{{ dotfiles_user }}"
