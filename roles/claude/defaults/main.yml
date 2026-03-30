@@ -1,0 +1,6 @@
+---
+claude_user: "{{ ansible_user_id }}"
+claude_install_url: "https://claude.ai/install.sh"
+claude_bin_path: "/home/{{ claude_user }}/.claude/local/claude"
+claude_dotfiles_dir: "/home/{{ claude_user }}/.dotfiles"
+claude_awscli_url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"

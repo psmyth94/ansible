@@ -160,29 +160,11 @@
       become_user: root
       when: install_r == 'y'
 
-    - name: Copy scripts from dotfiles to home
-      ansible.builtin.copy:
-        src: "{{ dotfiles_dir }}/scripts/"
-        dest: "~{{ dotfiles_user }}/"
-        mode: '0755'
-        remote_src: true
-      when: dotfiles_repo | length > 0
-
-    - name: Install AWS CLI
-      ansible.builtin.shell: |
-        curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
-        unzip -qo /tmp/awscliv2.zip -d /tmp
-        /tmp/aws/install --update
-        rm -rf /tmp/awscliv2.zip /tmp/aws
-      args:
-        creates: /usr/local/bin/aws
-      become: true
-      become_user: root
-
-    - name: Install Claude Code
-      ansible.builtin.shell: curl -fsSL https://claude.ai/install.sh | sh
-      args:
-        creates: "~{{ dotfiles_user }}/.claude/local/claude"
+    - name: Setup Claude Code
+      ansible.builtin.include_role:
+        name: claude
+      vars:
+        claude_user: "{{ dotfiles_user }}"
 
     - name: Deploy dotfiles with stow
       ansible.builtin.include_role:

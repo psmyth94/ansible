@@ -1,0 +1,11 @@
+---
+- name: Install Claude Code
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  vars:
+    dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
+  roles:
+    - role: claude
+      vars:
+        claude_user: "{{ dotfiles_user }}"
