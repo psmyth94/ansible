@@ -9,6 +9,19 @@
   ansible.builtin.set_fact:
     gh_needs_install: "{{ gh_check.rc != 0 or gh_force_install }}"
 
+- name: Check if gh was installed via snap
+  ansible.builtin.command: snap list gh
+  register: gh_snap_check
+  changed_when: false
+  failed_when: false
+  when: gh_needs_install
+
+- name: Remove snap version of gh
+  ansible.builtin.command: snap remove gh
+  become: true
+  become_user: root
+  when: gh_needs_install and gh_snap_check.rc == 0
+
 - name: Install gh signing key
   ansible.builtin.shell: |
     curl -fsSL {{ gh_repo_url }}/githubcli-archive-keyring.gpg \
