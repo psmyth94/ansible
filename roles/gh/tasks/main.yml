@@ -33,3 +33,13 @@
   become: true
   become_user: root
   when: gh_check.rc != 0
+
+- name: Check if gh copilot extension is installed
+  ansible.builtin.command: gh extension list
+  register: gh_extensions_list
+  changed_when: false
+  failed_when: false
+
+- name: Install gh copilot extension
+  ansible.builtin.command: gh extension install github/gh-copilot
+  when: "'gh-copilot' not in gh_extensions_list.stdout"
