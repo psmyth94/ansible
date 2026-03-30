@@ -27,6 +27,11 @@ while IFS= read -r -d '' file; do
     dest="$TARGET_DIR/$inner"
 
     mkdir -p "$(dirname "$dest")"
+    # make sure that there are differences
+    if [ -f "$dest" ] && cmp -s "$file" "$dest"; then
+      echo "Already decrypted and up-to-date: $dest"
+      continue
+    fi
     cp "$file" "$dest"
     ansible-vault decrypt "$dest" --vault-password-file="$VAULT_PASSWORD_FILE"
     chmod 600 "$dest"

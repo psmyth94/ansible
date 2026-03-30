@@ -56,10 +56,11 @@
   when: gh_needs_install
 
 - name: Update apt cache
-  ansible.builtin.apt:
+  ansible.builtin.package:
     update_cache: true
+    cache_valid_time: 86400
   become: true
-  become_user: root
+  become_user: "root"
   when: gh_needs_install
 
 - name: Install gh

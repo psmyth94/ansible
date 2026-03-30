@@ -63,8 +63,9 @@
   become_user: "root"
 
 - name: Update apt cache again
-  ansible.builtin.apt:
+  ansible.builtin.package:
     update_cache: true
+    cache_valid_time: 86400
   become: true
   become_user: "root"
 

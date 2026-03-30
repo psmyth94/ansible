@@ -1,12 +1,12 @@
 ---
 - name: Update apt cache
-  ansible.builtin.apt:
+  ansible.builtin.package:
     update_cache: true
-    cache_valid_time: 3600
+    cache_valid_time: 86400
+  become: true
+  become_user: "root"
   when: ansible_pkg_mgr == 'apt'
   changed_when: false
-  become: true
-  become_user: root
 
 - name: Install stow and git
   ansible.builtin.package:
