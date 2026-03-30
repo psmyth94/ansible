@@ -3,7 +3,13 @@
   hosts: localhost
   become: true
   become_user: "{{ dotfiles_user }}"
+  vars_prompt:
+    - name: gh_force_reinstall
+      prompt: "Force reinstall gh via apt? ([y]es/[n]o)"
+      private: false
+      default: n
   roles:
     - role: gh
       vars:
         gh_user: "{{ dotfiles_user }}"
+        gh_force_install: "{{ gh_force_reinstall == 'y' }}"

@@ -5,6 +5,10 @@
   changed_when: false
   failed_when: false
 
+- name: Set gh needs install fact
+  ansible.builtin.set_fact:
+    gh_needs_install: "{{ gh_check.rc != 0 or gh_force_install }}"
+
 - name: Install gh signing key
   ansible.builtin.shell: |
     curl -fsSL {{ gh_repo_url }}/githubcli-archive-keyring.gpg \
@@ -14,7 +18,7 @@
     creates: "{{ gh_keyring_path }}"
   become: true
   become_user: root
-  when: gh_check.rc != 0
+  when: gh_needs_install
 
 - name: Add gh apt repository
   ansible.builtin.apt_repository:
@@ -23,16 +27,16 @@
     state: present
   become: true
   become_user: root
-  when: gh_check.rc != 0
+  when: gh_needs_install
 
 - name: Install gh
   ansible.builtin.package:
     name: gh
-    state: present
+    state: latest
     update_cache: true
   become: true
   become_user: root
-  when: gh_check.rc != 0
+  when: gh_needs_install
 
 - name: Ensure gh config directory exists
   ansible.builtin.file:
