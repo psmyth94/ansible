@@ -57,6 +57,12 @@
       become: true
       become_user: root
 
+    - name: Setup Linuxbrew
+      ansible.builtin.include_role:
+        name: linuxbrew
+      vars:
+        linuxbrew_user: "{{ dotfiles_user }}"
+
     - name: Setup Rust
       ansible.builtin.include_role:
         name: rust
@@ -128,3 +134,11 @@
       become: true
       become_user: root
       when: install_r == 'y'
+
+    - name: Deploy dotfiles with stow
+      ansible.builtin.include_role:
+        name: stow
+      vars:
+        dotfiles_repo_local_destination: "{{ dotfiles_dir }}"
+        dotfiles_home: "~{{ dotfiles_user }}"
+        dotfiles_conflict_mode: "adopt_and_reset"

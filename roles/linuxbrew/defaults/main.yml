@@ -1,0 +1,9 @@
+---
+linuxbrew_user: "{{ ansible_user_id }}"
+linuxbrew_home: "/home/linuxbrew/.linuxbrew"
+linuxbrew_dependencies:
+  - build-essential
+  - procps
+  - curl
+  - file
+  - git
