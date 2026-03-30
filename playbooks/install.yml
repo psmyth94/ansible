@@ -53,9 +53,21 @@
         name:
           - unzip
           - curl
+          - git
         state: present
       become: true
       become_user: root
+
+    - name: Clone or update dotfiles
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_dir }}"
+        version: "{{ dotfiles_version }}"
+        update: true
+        recursive: true
+        track_submodules: true
+        force: true
+      when: dotfiles_repo | length > 0
 
     - name: Setup Linuxbrew
       ansible.builtin.include_role:
@@ -139,6 +151,4 @@
       ansible.builtin.include_role:
         name: stow
       vars:
-        dotfiles_repo_local_destination: "{{ dotfiles_dir }}"
-        dotfiles_home: "~{{ dotfiles_user }}"
-        dotfiles_conflict_mode: "adopt_and_reset"
+        stow_user: "{{ dotfiles_user }}"

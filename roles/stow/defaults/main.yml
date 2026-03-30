@@ -1,0 +1,5 @@
+---
+stow_user: "{{ ansible_user_id }}"
+stow_dotfiles_dir: "~{{ stow_user }}/.dotfiles"
+stow_target_dir: "~{{ stow_user }}"
+stow_conflict_mode: "adopt_and_reset"

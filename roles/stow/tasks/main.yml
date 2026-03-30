@@ -17,24 +17,24 @@
 
 - name: Build directories list
   ansible.builtin.find:
-    paths: ["{{ dotfiles_repo_local_destination }}"]
+    paths: ["{{ stow_dotfiles_dir }}"]
     recurse: false
     file_type: directory
-  register: files
+  register: stow_directories
 
 - name: Deploy dotfiles
-  with_items: '{{ files.files }}'
+  with_items: '{{ stow_directories.files }}'
   ansible.builtin.command:
     cmd: |
-      stow --verbose=2 --target={{ dotfiles_home }} {{ item.path | basename }}
-      {% if 'adopt' in dotfiles_conflict_mode %} --adopt{% endif %}
-    chdir: "{{ dotfiles_repo_local_destination }}"
-  register: result
-  changed_when: 'result.stderr is search("LINK: ")'
+      stow --verbose=2 --target={{ stow_target_dir }} {{ item.path | basename }}
+      {% if 'adopt' in stow_conflict_mode %} --adopt{% endif %}
+    chdir: "{{ stow_dotfiles_dir }}"
+  register: stow_result
+  changed_when: 'stow_result.stderr is search("LINK: ")'
 
 - name: Revert dotfiles repository after adopt
   ansible.builtin.command:
     cmd: "git restore ."
-    chdir: "{{ dotfiles_repo_local_destination }}"
+    chdir: "{{ stow_dotfiles_dir }}"
   changed_when: false
-  when: dotfiles_conflict_mode == 'adopt_and_reset'
+  when: stow_conflict_mode == 'adopt_and_reset'
