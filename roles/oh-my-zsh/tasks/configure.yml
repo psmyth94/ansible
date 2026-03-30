@@ -91,12 +91,12 @@
 
 - name: Check if dotfiles .zshrc exists
   ansible.builtin.stat:
-    path: "{{ oh_my_zsh_dotfiles }}/.zshrc"
+    path: "{{ oh_my_zsh_dotfiles }}/zsh/.zshrc"
   register: dotfiles_zshrc_check
 
 - name: Replace .zshrc with dotfiles version
   ansible.builtin.copy:
-    src: "{{ oh_my_zsh_dotfiles }}/.zshrc"
+    src: "{{ oh_my_zsh_dotfiles }}/zsh/.zshrc"
     dest: "~{{ oh_my_zsh_user }}/.zshrc"
     owner: "{{ oh_my_zsh_user }}"
     group: "{{ oh_my_zsh_user_group }}"
