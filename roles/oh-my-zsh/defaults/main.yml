@@ -3,6 +3,16 @@ oh_my_zsh_user: "{{ ansible_user_id }}"
 oh_my_zsh_dotfiles: "~{{ oh_my_zsh_user }}/.dotfiles"
 oh_my_zsh_force_build: false
 
+oh_my_zsh_custom_dir: "~{{ oh_my_zsh_user }}/.oh-my-zsh/custom"
+oh_my_zsh_custom_plugins:
+  - { name: zsh-autosuggestions, repo: zsh-users/zsh-autosuggestions }
+  - { name: zsh-syntax-highlighting, repo: zsh-users/zsh-syntax-highlighting }
+  - { name: you-should-use, repo: MichaelAquilina/zsh-you-should-use }
+  - { name: zsh-bat, repo: fdellwing/zsh-bat }
+
+oh_my_zsh_custom_themes:
+  - { name: powerlevel10k, repo: romkatv/powerlevel10k }
+
 # .zshrc config
 oh_my_zsh_hist_stamps: yyyy-mm-dd
 oh_my_zsh_share_history: no

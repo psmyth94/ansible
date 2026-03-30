@@ -105,6 +105,22 @@
     force: true
   when: dotfiles_zshrc_check.stat.exists
 
+- name: Install custom oh-my-zsh plugins
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ item.repo }} {{ oh_my_zsh_custom_dir }}/plugins/{{ item.name }}"
+    creates: "{{ oh_my_zsh_custom_dir }}/plugins/{{ item.name }}"
+  become: true
+  become_user: "{{ oh_my_zsh_user }}"
+  with_items: "{{ oh_my_zsh_custom_plugins }}"
+
+- name: Install custom oh-my-zsh themes
+  ansible.builtin.command:
+    cmd: "gh repo clone {{ item.repo }} {{ oh_my_zsh_custom_dir }}/themes/{{ item.name }}"
+    creates: "{{ oh_my_zsh_custom_dir }}/themes/{{ item.name }}"
+  become: true
+  become_user: "{{ oh_my_zsh_user }}"
+  with_items: "{{ oh_my_zsh_custom_themes }}"
+
 - name: Set zsh as default shell
   ansible.builtin.user:
     name: "{{ oh_my_zsh_user }}"
