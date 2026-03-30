@@ -65,7 +65,6 @@
         version: "{{ dotfiles_version }}"
         update: true
         recursive: true
-        track_submodules: true
         force: true
       when: dotfiles_repo | length > 0
 

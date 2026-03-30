@@ -1,0 +1,25 @@
+---
+- name: Deploy dotfiles with stow
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  vars:
+    dotfiles_repo: "{{ dotfiles_repo | default('') }}"
+    dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
+    dotfiles_version: "{{ dotfiles_version | default('main') }}"
+  tasks:
+    - name: Clone or update dotfiles
+      ansible.builtin.git:
+        repo: "{{ dotfiles_repo }}"
+        dest: "{{ dotfiles_dir }}"
+        version: "{{ dotfiles_version }}"
+        update: true
+        recursive: true
+        force: true
+      when: dotfiles_repo | length > 0
+
+    - name: Deploy dotfiles with stow
+      ansible.builtin.include_role:
+        name: stow
+      vars:
+        stow_user: "{{ dotfiles_user }}"

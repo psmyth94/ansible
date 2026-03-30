@@ -1,0 +1,9 @@
+---
+- name: Install Linuxbrew
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  roles:
+    - role: linuxbrew
+      vars:
+        linuxbrew_user: "{{ dotfiles_user }}"
