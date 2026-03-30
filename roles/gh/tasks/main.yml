@@ -77,6 +77,8 @@
     mode: '0700'
     owner: "{{ gh_user }}"
     group: "{{ gh_user }}"
+  become: true
+  become_user: root
 
 - name: Check if dotfiles gh hosts.yml exists
   ansible.builtin.stat:
@@ -90,6 +92,8 @@
     mode: '0600'
     owner: "{{ gh_user }}"
     group: "{{ gh_user }}"
+  become: true
+  become_user: root
   when: gh_dotfiles_hosts_check.stat.exists
 
 - name: Deploy gh config.yml from dotfiles
@@ -100,16 +104,22 @@
     owner: "{{ gh_user }}"
     group: "{{ gh_user }}"
     remote_src: true
+  become: true
+  become_user: root
   when: gh_dotfiles_hosts_check.stat.exists
 
 - name: Check if gh is authenticated
   ansible.builtin.command: gh auth status
+  become: true
+  become_user: "{{ gh_user }}"
   register: gh_auth_check
   changed_when: false
   failed_when: false
 
 - name: Check if gh copilot extension is installed
   ansible.builtin.command: gh extension list
+  become: true
+  become_user: "{{ gh_user }}"
   register: gh_extensions_list
   changed_when: false
   failed_when: false
@@ -117,4 +127,6 @@
 
 - name: Install gh copilot extension
   ansible.builtin.command: gh extension install github/gh-copilot
+  become: true
+  become_user: "{{ gh_user }}"
   when: gh_auth_check.rc == 0 and "'gh-copilot' not in gh_extensions_list.stdout"
