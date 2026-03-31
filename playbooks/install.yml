@@ -174,7 +174,7 @@
 
     - name: Find all files in dot-directories
       ansible.builtin.shell: |
-        find {{ dotfiles_dir }} -maxdepth 1 -name '.*' -not -name '.git' -not -name '.gitignore' -not -name '.gitmodules' -type d \
+        find {{ dotfiles_dir }} -mindepth 1 -maxdepth 1 -name '.*' -not -name '.git' -not -name '.gitignore' -not -name '.gitmodules' -type d \
           -exec find {} -type f \;
       register: dot_dir_files
       changed_when: false
