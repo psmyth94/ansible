@@ -1,0 +1,29 @@
+---
+- name: Decrypt vault-encrypted dotfiles
+  hosts: localhost
+  become: true
+  become_user: "{{ dotfiles_user }}"
+  vars:
+    dotfiles_dir: "~{{ dotfiles_user }}/.dotfiles"
+  tasks:
+    - name: Find vault-encrypted files in dotfiles
+      ansible.builtin.shell: |
+        find {{ dotfiles_dir }} -type f -not -path '*/.git/*' -exec grep -l '^\$ANSIBLE_VAULT;' {} \;
+      register: vault_files
+      changed_when: false
+      failed_when: false
+
+    - name: Decrypt vault-encrypted dotfiles to target locations
+      ansible.builtin.shell: |
+        rel="{{ item | regex_replace('^' + dotfiles_dir + '/', '') }}"
+        dest="/home/{{ dotfiles_user }}/$rel"
+        mkdir -p "$(dirname "$dest")"
+        rm -f "$dest"
+        cp "{{ item }}" "$dest"
+        ansible-vault decrypt "$dest" --vault-password-file="/home/{{ dotfiles_user }}/.vault.password.txt"
+        chmod 600 "$dest"
+        chown {{ dotfiles_user }}:{{ dotfiles_user }} "$dest"
+      become: true
+      become_user: "root"
+      with_items: "{{ vault_files.stdout_lines }}"
+      when: vault_files.stdout_lines | length > 0
