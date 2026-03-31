@@ -35,7 +35,7 @@ neovim_src_config_dir: "{{ neovim_dotfiles_dir }}/nvim"
 neovim_dest_config_dir: "~{{ neovim_user }}/.config/nvim"
 
 neovim_enable_github_copilot: true
-neovim_github_copilot_src_dir: "{{ neovim_dotfiles_dir }}/github-copilot"
+neovim_github_copilot_src_dir: "{{ neovim_dotfiles_dir }}/github-copilot/.config/github-copilot"
 neovim_github_copilot_src_key: "{{ neovim_github_copilot_src_dir }}/apps.json"
 neovim_github_copilot_dest_dir: "~{{ neovim_user }}/.config/github-copilot"
 neovim_github_copilot_dest_key: "{{ neovim_github_copilot_dest_dir }}/apps.json"
