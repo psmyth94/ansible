@@ -182,8 +182,7 @@
     - name: Decrypt vault-encrypted dotfiles to target locations
       ansible.builtin.shell: |
         rel="{{ item | regex_replace('^' + dotfiles_dir + '/', '') }}"
-        inner="${rel#*/}"
-        dest="/home/{{ dotfiles_user }}/$inner"
+        dest="/home/{{ dotfiles_user }}/$rel"
         mkdir -p "$(dirname "$dest")"
         rm -f "$dest"
         cp "{{ item }}" "$dest"

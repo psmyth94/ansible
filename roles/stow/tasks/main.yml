@@ -22,6 +22,7 @@
     paths: ["{{ stow_dotfiles_dir }}"]
     recurse: false
     file_type: directory
+    excludes: ".*"
   register: stow_directories
 
 - name: Deploy dotfiles

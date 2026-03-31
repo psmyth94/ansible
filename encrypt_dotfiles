@@ -16,20 +16,22 @@ if [ ! -d "$DOTFILES_DIR" ]; then
   exit 1
 fi
 
-# find all vault-encrypted files, copy to their target location, then decrypt the copy
+# find all vault-encrypted files in dotfiles, then re-encrypt from the live target
 found=0
 while IFS= read -r -d '' file; do
   if head -1 "$file" 2>/dev/null | grep -q '^\$ANSIBLE_VAULT;'; then
     # dotfiles mirrors home structure directly
     rel="${file#"$DOTFILES_DIR"/}"
-    dest="$TARGET_DIR/$rel"
+    src="$TARGET_DIR/$rel"
 
-    mkdir -p "$(dirname "$dest")"
-    rm -f "$dest"
-    cp "$file" "$dest"
-    ansible-vault decrypt "$dest" --vault-password-file="$VAULT_PASSWORD_FILE"
-    chmod 600 "$dest"
-    echo "Decrypted: $file -> $dest"
+    if [ ! -f "$src" ]; then
+      echo "Skipping: $src not found"
+      continue
+    fi
+
+    cp "$src" "$file"
+    ansible-vault encrypt "$file" --vault-password-file="$VAULT_PASSWORD_FILE"
+    echo "Encrypted: $src -> $file"
     found=$((found + 1))
   fi
 done < <(find "$DOTFILES_DIR" -type f -not -path '*/.git/*' -print0)
@@ -37,5 +39,5 @@ done < <(find "$DOTFILES_DIR" -type f -not -path '*/.git/*' -print0)
 if [ "$found" -eq 0 ]; then
   echo "No vault-encrypted files found in $DOTFILES_DIR"
 else
-  echo "Decrypted $found file(s)"
+  echo "Encrypted $found file(s)"
 fi

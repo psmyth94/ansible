@@ -83,12 +83,12 @@
 
 - name: Check if dotfiles gh hosts.yml exists
   ansible.builtin.stat:
-    path: "{{ gh_dotfiles_dir }}/gh/.config/gh/hosts.yml"
+    path: "{{ gh_dotfiles_dir }}/hosts.yml"
   register: gh_dotfiles_hosts_check
 
 - name: Deploy gh hosts.yml from dotfiles
   ansible.builtin.copy:
-    src: "{{ gh_dotfiles_dir }}/gh/.config/gh/hosts.yml"
+    src: "{{ gh_dotfiles_dir }}/hosts.yml"
     dest: "{{ gh_config_dir }}/hosts.yml"
     mode: '0600'
     owner: "{{ gh_user }}"
@@ -99,7 +99,7 @@
 
 - name: Deploy gh config.yml from dotfiles
   ansible.builtin.copy:
-    src: "{{ gh_dotfiles_dir }}/gh/.config/gh/config.yml"
+    src: "{{ gh_dotfiles_dir }}/config.yml"
     dest: "{{ gh_config_dir }}/config.yml"
     mode: '0600'
     owner: "{{ gh_user }}"
